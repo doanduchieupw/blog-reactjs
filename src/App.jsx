@@ -1,10 +1,10 @@
+import Routers from './routes/Routers'
 function App() {
-
-  return (
-    <div className="App">
-      Hello
-    </div>
-  )
+    return (
+        <div>
+            <Routers />
+        </div>
+    );
 }
 
-export default App
+export default App;

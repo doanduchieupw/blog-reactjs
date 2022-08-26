@@ -1,0 +1,63 @@
+// @import url("https://use.typekit.net/lpt8mca.css");
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* Font emmbeded */
+@font-face {
+    font-family: 'PoppinsVN';
+    src: url('/fonts/PoppinsVN-400.woff2');
+    font-weight: 400;
+}
+@font-face {
+    font-family: 'PoppinsVN';
+    src: url('/fonts/PoppinsVN-600-italic.woff2');
+    font-weight: 600;
+    font-style: italic;
+}
+@font-face {
+    font-family: 'PoppinsVN';
+    src: url('/fonts/PoppinsVN-700.woff2');
+    font-weight: 700;
+}
+@font-face {
+    font-family: 'PoppinsVN';
+    src: url('/fonts/SVN-Poppins-600.woff2');
+    font-weight: 600;
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-display: block;
+}
+@layer base {
+    body {
+        max-width: 100vw;
+        max-height: 100vh;
+        overflow: hidden;
+        font-family: 'PoppinsVN',monospace;
+    }
+}
+*,
+*:before,
+*:after {
+    box-sizing: border-box;
+}
+input,
+textarea,
+select,
+button {
+    outline: none;
+}
+input {
+    line-height: normal;
+}
+label,
+button {
+    cursor: pointer;
+}
+a {
+    text-decoration: none;
+}
