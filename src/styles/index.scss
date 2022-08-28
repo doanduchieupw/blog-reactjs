@@ -11,6 +11,12 @@
 }
 @font-face {
     font-family: 'PoppinsVN';
+    src: url('/fonts/PoppinsVN-500.woff2');
+    font-weight: 500;
+}
+
+@font-face {
+    font-family: 'PoppinsVN';
     src: url('/fonts/PoppinsVN-600-italic.woff2');
     font-weight: 600;
     font-style: italic;
@@ -37,7 +43,7 @@
         max-width: 100vw;
         max-height: 100vh;
         overflow: hidden;
-        font-family: 'PoppinsVN',monospace;
+        font-family: 'PoppinsVN', monospace;
     }
 }
 *,
@@ -60,4 +66,16 @@ button {
 }
 a {
     text-decoration: none;
+}
+
+// Reset css Modal antd
+.ant-modal {
+    max-width: unset;
+    margin: unset;
+}
+.ant-modal-centered::before {
+    content: unset;
+}
+.ant-modal-close {
+    left: 0;
 }

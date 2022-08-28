@@ -1,5 +1,11 @@
-const MainLayout = () => {
-    return ( <h1>Main Layout</h1> )
-}
- 
+import { FullHeader } from '../Header';
+const MainLayout = ({ children }) => {
+    return (
+        <div className=''>
+            <FullHeader />
+            {children}
+        </div>
+    );
+};
+
 export default MainLayout;
