@@ -7,13 +7,19 @@ import { faEnvelope, faAngleLeft } from '@fortawesome/free-solid-svg-icons';
 
 import { FacebookIcon, GoogleIcon } from '../assets/icons';
 import { BorderButton, HoverButton } from '../components/Button';
-import { SignUpModal } from '../components/FormModal';
+import { SignUpModal, ChoiceHobby } from '../components/FormModal';
 
 const SignUp = () => {
     const [showSignUpModal, setShowSignUpModal] = useState(false);
+    const [step, setStep] = useState(0);
     const handleCancel = () => {
         setShowSignUpModal(false);
     };
+    const stepPage = [
+        <SignUpModal onCancel={handleCancel} />,
+        <ChoiceHobby />,
+        <div>content3</div>,
+    ];
     return (
         <div className='max-w-xl md:max-w-md h-full mx-auto flex flex-col items-center justify-center'>
             {/*========== Title ==========*/}
@@ -62,19 +68,25 @@ const SignUp = () => {
                 </span>
             </div>
 
-            {/* Modal SignUp */}
+            {/*========== Modal SignUp ==========*/}
             <div className='signup-modal'>
                 <Modal
                     visible={showSignUpModal}
                     onCancel={handleCancel}
                     centered
-                    bodyStyle={{ height: '100vh', padding: '0px' }}
+                    bodyStyle={{ minHeight: '100vh', padding: '0px' }}
                     width='100%'
-                    closeIcon={<FontAwesomeIcon icon={faAngleLeft} />}
+                    // closeIcon={<FontAwesomeIcon icon={faAngleLeft} />}
+                    closable={false}
+                    footer={null}
+                    // footer={[<div onClick={() => setStep(step + 1)}>Next</div>]}
                 >
-                    <SignUpModal />
+                    <SignUpModal onCancel={handleCancel} />
+                    {/* {stepPage[step]} */}
                 </Modal>
             </div>
+
+            
         </div>
     );
 };

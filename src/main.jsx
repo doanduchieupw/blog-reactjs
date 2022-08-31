@@ -9,13 +9,13 @@ import { theme } from './utils/constants';
 import './styles/index.scss'
 
 ReactDOM.createRoot(document.getElementById('root')).render(
-    <React.StrictMode>
+    // <React.StrictMode>
         <ThemeProvider theme={theme}>
             <GlobalStyles></GlobalStyles>
             <Router>
                 <App />
             </Router>
         </ThemeProvider>
-    </React.StrictMode>
+    // </React.StrictMode>
 );
 

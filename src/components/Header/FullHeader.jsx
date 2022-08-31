@@ -25,7 +25,7 @@ const navList = [
 
 const FullHeader = () => {
     return (
-        <header className='w-full sticky top-0 h-16 lg:h-14 bg-header-primary z-10 shadow-md'>
+        <header className='w-full sticky top-0 h-16 lg:h-14 bg-primary-bg z-10 shadow-md'>
             {/* Cotainer */}
             <div className='mx-[136px]'>
                 {/* Mobile Header*/}
