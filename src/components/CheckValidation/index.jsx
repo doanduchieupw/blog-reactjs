@@ -3,6 +3,7 @@ import {
     faTriangleExclamation,
     faCheck,
 } from '@fortawesome/free-solid-svg-icons';
+import { ErrorMessage } from 'formik';
 
 const passwordValidation = [
     'Độ dài ít nhất 6 ký tự',
@@ -10,14 +11,12 @@ const passwordValidation = [
     'Bao gồm ít nhất 1 ký tự chữ',
 ];
 
-const CheckValidation = ({ message, type, error }) => {
-   
-    console.log('CheckValidation - 15',message);
+const CheckValidation = ({ message, type, name, error }) => {
     return type === 'text' ? (
         <div>
-            <span className='text-xs text-error-font leading-snug pl-4'>
-                {message}
-            </span>
+            <div className='text-xs text-error-font leading-snug pl-4 mt-1.5'>
+                <ErrorMessage name={name} />
+            </div>
         </div>
     ) : (
         <div>

@@ -1,14 +1,15 @@
 import styled from 'styled-components';
-import { useController } from 'react-hook-form';
 import 'antd/dist/antd.css';
 import { DatePicker } from 'antd';
+import { Field, useField } from 'formik';
 
 const InputContainer = styled.div`
     :focus-within {
         border-color: ${(props) => (props.error ? '#B72727' : '#000')};
     }
     input:valid {
-        background-color: ${(props) => (props.error ? '#FFF8F8' : '#e8f0fe')};
+        background-color: ${(props) =>
+            props.error ? '#FFF8F8 !important' : ''};
     }
     .ant-picker-input > input {
         background-color: #fff !important;
@@ -25,10 +26,9 @@ const BorderInput = ({
     setValue,
     ...props
 }) => {
-    const { field } = useController({ control, name, defaultValue: '' });
-
     const isIcon = icon ? true : false;
     const isSubIcon = subIcon ? true : false;
+    const [field, meta, helpers] = useField(name);
     return (
         <InputContainer
             error={error}
@@ -56,12 +56,13 @@ const BorderInput = ({
                         }
                     />
                 ) : (
-                    <input
+                    <Field
                         id={name}
-                        required
+                        name={name}
                         type={type}
-                        className='w-full max-h-6 h-6 text-sm font-normal leading-6'
-                        {...field}
+                        className={`w-full max-h-6 h-6 text-sm font-normal leading-6 ${
+                            field?.value === '' ? 'bg-white' : 'bg-[#e8f0fe] ? '
+                        }`}
                         {...props}
                     />
                 )}
