@@ -1,23 +1,20 @@
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faEye, faEyeSlash, faCircleXmark, faAngleLeft } from '@fortawesome/free-solid-svg-icons';
-import { Formik, Form } from 'formik';
+import { faEye, faEyeSlash, faCircleXmark, faAngleLeft, faEnvelope } from '@fortawesome/free-solid-svg-icons';
+import { Formik, Form, ErrorMessage } from 'formik';
 import * as yup from 'yup';
 import BorderInput from '../Input/BorderInput';
-import { MoreButton, ConfirmButton } from '../Button';
-import CheckValidation from '../CheckValidation';
-import { createUserWithEmailAndPassword, updateProfile } from 'firebase/auth';
-import { auth, db } from '../../firebase-app/firebase-config';
-import { addDoc, collection } from 'firebase/firestore';
+import { ConfirmButton } from '../Button';
+import { signInWithEmailAndPassword, updateProfile } from 'firebase/auth';
+import { auth } from '../../firebase-app/firebase-config';
 import { useNavigate } from 'react-router-dom';
 
-const initialSignUp = {
+const initialLogin = {
   email: '',
   password: '',
-  fullname: '',
 };
 
-const signUpSchema = yup.object().shape({
+const loginSchema = yup.object().shape({
   email: yup.string().email('Email chưa đúng').required('Email không thể để trống'),
   password: yup
     .string()
@@ -27,51 +24,39 @@ const signUpSchema = yup.object().shape({
     .matches(RegExp('(^.*[a-zA-Z]+.*$)'), 'Bao gồm ít nhất 1 ký tự chữ'),
 });
 
-const SignUpModal = ({ onCancel }) => {
+const LoginModal = ({ onCancel }) => {
   const [togglePass, setTogglePass] = useState(false);
-  const [showMore, setShowMore] = useState(true);
-  const [errorPassword, setErrorPassword] = useState([]);
   const navigate = useNavigate();
 
-  const handleSignUp = async (user, actions) => { 
+  const handleLogin = async (user, actions) => {
     try {
       await createUserWithEmailAndPassword(auth, user.email, user.password);
       await updateProfile(auth.currentUser, {
-        displayName: user.fullname !== '' ? user.fullname : 'Người mới',
+        displayName: user.fullname,
       });
       const collectionRef = collection(db, 'users');
       await addDoc(collectionRef, {
         email: user.email,
         password: user.password,
-        fullname: user.fullname !== '' ? user.fullname : 'Người mới',
+        fullname: user.fullname === '' ? 'Người mới' : user.fullname,
         dateOfBirth: user?.dateOfBirth || '1970-01-01',
       });
       navigate('/');
     } catch (err) {
-      actions.setFieldError('email', 'Email đã tồn tại');
+      actions.setFieldError;
     }
   };
 
+  useEffect(() => {
+    document.title = "Đăng nhập | TechEBlog"
+  }, [])
+
   return (
     <Formik
-      initialValues={initialSignUp}
-      validationSchema={signUpSchema}
-      validate={(values) =>
-        signUpSchema
-          .validate(values, { abortEarly: false })
-          .then(() => {})
-          .catch((err) => {
-            let errorArray = [];
-            err.inner.forEach((e) => {
-              if (e.path === 'password') {
-                errorArray.push(e.message);
-              }
-            });
-            setErrorPassword(errorArray);
-          })
-      }
+      initialValues={initialLogin}
+      validationSchema={loginSchema}
       onSubmit={(user, actions) => {
-        handleSignUp(user, actions);
+        handleLogin(user);
       }}
     >
       {(props) => (
@@ -82,14 +67,16 @@ const SignUpModal = ({ onCancel }) => {
               className='absolute top-[calc(50%-10px)] left-1/4 cursor-pointer'
               onClick={onCancel}
             />
-            <span>Tạo Tài Khoản</span>
+            <span>Đăng nhập</span>
           </div>
-          <div className='max-w-[668px] p-2 md:p-5 lg:p-10 flex-1'>
+          <div className='max-w-full w-[642px] p-10 flex-1'>
             <div className='w-full flex flex-col items-start'>
-              <span className='text-sm font-semibold text-light-gray-font uppercase'>Bước 1</span>
-              <span className='text-[32px] font-semibold text-black mt-2'>Tạo tài khoản với Email</span>
+              <span className='w-14 h-14 mb-6 flex justify-center items-center bg-gray-bg-btn active:bg-dark-gray-bg rounded-full border font-semibold text-primary-bg cursor-pointer'>
+                <FontAwesomeIcon icon={faEnvelope} fontSize='24px' />
+              </span>
+              <span className='text-[32px] font-semibold text-black mt-2'>Đăng nhập với Email</span>
               <span className='text-base font-normal text-gray-submenu-font mt-2'>
-                Nhập địa chỉ email, mật khẩu và xác thực captcha để tạo tài khoản
+                Nhập địa chỉ email và mật khẩu để tiếp tục
               </span>
 
               <Form className='mt-3 w-full'>
@@ -106,7 +93,9 @@ const SignUpModal = ({ onCancel }) => {
                     />
                   }
                 />
-                {props?.errors?.email && <CheckValidation name='email' message={props?.errors?.email} type='text' />}
+                <div className='text-xs text-error-font leading-snug pl-4 mt-1.5'>
+                  <ErrorMessage name='email' />
+                </div>
                 <BorderInput
                   name='password'
                   type={togglePass ? 'text' : 'password'}
@@ -136,48 +125,14 @@ const SignUpModal = ({ onCancel }) => {
                     />
                   }
                 />
-                {props?.errors?.password && props?.touched?.password && (
-                  <CheckValidation message={errorPassword} type='password' />
-                )}
-
-                <div className='h-px w-full my-6 bg-slate-200 '></div>
-
-                <MoreButton title='Thông tin bổ sung' state={showMore} onClick={() => setShowMore(!showMore)} />
-                {showMore && (
-                  <div className='more-information transition transform duration-200'>
-                    <BorderInput
-                      name='fullname'
-                      label='Họ và tên'
-                      placeholder='VD: Nguyễn Văn A'
-                      icon={
-                        <FontAwesomeIcon
-                          icon={faCircleXmark}
-                          className='px-4 text-lg text-light-gray-font hover:text-black cursor-pointer'
-                          onClick={() => props.setFieldValue('fullname', '')}
-                        />
-                      }
-                    />
-                    <BorderInput
-                      name='dateOfBirth'
-                      label='Ngày sinh'
-                      placeholder='DD-MM-YYYY'
-                      type='date'
-                      setValue={props.setFieldValue}
-                      icon={
-                        <FontAwesomeIcon
-                          icon={faCircleXmark}
-                          className='px-4 text-lg text-light-gray-font hover:text-black cursor-pointer'
-                          onClick={() => props.setFieldValue('dateOfBirth', '')}
-                        />
-                      }
-                    />
-                  </div>
-                )}
+                <div className='text-xs text-error-font leading-snug pl-4 mt-1.5'>
+                  <ErrorMessage name='password' />
+                </div>
               </Form>
             </div>
           </div>
           <div className='sticky bottom-0 h-16 w-full px-4 py-2 flex items-center justify-center bg-white border-t border-slate-200'>
-            <ConfirmButton title='Tạo tài khoản' disabled={props.isValid} isLoading={props.isSubmitting} />
+            <ConfirmButton title='Đăng nhập' disabled={props.isValid} />
           </div>
         </div>
       )}
@@ -185,4 +140,4 @@ const SignUpModal = ({ onCancel }) => {
   );
 };
 
-export default SignUpModal;
+export default LoginModal;
