@@ -24,6 +24,7 @@ module.exports = {
         'primary-bg': '#292929',
         'gray-bg': '#F2F3F5',
         'dark-gray-bg': '#BFBFBF',
+        'submenu-bg': '#2f3136',
 
         /*===== ERROR =====*/
         'error-font': '#B72727',
