@@ -1,7 +1,7 @@
 import { FullHeader } from '../Header';
 const MainLayout = ({ children }) => {
     return (
-        <div className=''>
+        <div className='h-screen overflow-scroll'>
             <FullHeader />
             {children}
         </div>

@@ -57,14 +57,14 @@ const FullHeader = () => {
     <div>
       <header className={`w-full ${isOpenMenu ? 'hidden' : 'sticky'} top-0 h-16 lg:h-14 bg-primary-bg z-10 shadow-md`}>
         {/* Container */}
-        <div className='lg:mx-32 flex justify-between'>
+        <div className='h-full lg:max-w-6xl lg:mx-auto lg:w-[90%] flex justify-between'>
           {/* Left Header */}
           <div className='flex items-center'>
             {/* Logo */}
-            <div className='w-16 lg:w-14 cursor-pointer'>
+            <div className='w-16 lg:w-14 cursor-pointer hidden sm:block'>
               <img src='/logo-blog-rm.png' alt='logo-header' />
             </div>
-            <span className='lg:hidden text-2xl text-white font-bold tracking-wider'>TechEBlog.</span>
+            <span className='ml-3 sm:ml-0 lg:hidden text-2xl text-white font-bold tracking-wider'>TechEBlog.</span>
             {/* Navigation */}
             <div className='hidden lg:flex'>
               {navList.map((item, index) =>
