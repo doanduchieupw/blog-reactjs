@@ -55,7 +55,7 @@ const FullHeader = () => {
 
   return (
     <div>
-      <header className={`w-full ${isOpenMenu ? 'hidden' : 'sticky'} top-0 h-16 lg:h-14 bg-primary-bg z-10 shadow-md`}>
+      <header className={`w-full ${isOpenMenu ? 'hidden' : 'sticky'} top-0 h-16 lg:h-14 bg-primary-bg z-50 shadow-md`}>
         {/* Container */}
         <div className='h-full lg:max-w-6xl lg:mx-auto lg:w-[90%] flex justify-between'>
           {/* Left Header */}

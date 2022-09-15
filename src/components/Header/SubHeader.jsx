@@ -6,7 +6,7 @@ const SubHeader = ({ isMobile, ...props }) => {
     <div
       className={`bg-submenu-bg z-30 w-screen h-screen px-4 ${
         isMobile ? 'animate-switchLeft' : 'transition translate-x-full duration-300 hidden'
-      }`}
+      } overflow-hidden`}
     >
       <div>
         <div className='flex flex-col pt-4 pb-6 '>
