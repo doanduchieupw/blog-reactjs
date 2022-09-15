@@ -15,8 +15,8 @@ module.exports = {
       lg: '1024px',
       // => @media (min-width: 1024px) { ... }
 
-      xl: '1280px',
-      // => @media (min-width: 1280px) { ... }
+      xl: '1200px',
+      // => @media (min-width: 1200px) { ... }
 
       '2xl': '1536px',
       // => @media (min-width: 1536px) { ... }
@@ -51,11 +51,16 @@ module.exports = {
       },
       animation: {
         switchLeft: 'rightToLeft 0.3s ease-in-out',
+        switchRight: 'leftToRight 0.3s ease-in-out',
       },
       keyframes: {
         rightToLeft: {
           '0%': { transform: 'translateX(100%)' },
           '100%': { transform: 'translateX(0%)' },
+        },
+        leftToRight: {
+          '0%': { transform: 'translateX(0%)' },
+          '100%': { transform: 'translateX(100%)' },
         },
       },
     },

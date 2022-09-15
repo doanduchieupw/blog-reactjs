@@ -46,6 +46,20 @@ export const FacebookIcon = () => {
   );
 };
 
+export const Bookmark = () => {
+  return (
+    <svg className='block' width='24' height='24' fill='none' xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'>
+      <path
+        className='s-main-element'
+        fillRule='evenodd'
+        clipRule='evenodd'
+        d='M3.70996 4.57168C3.70996 3.42752 4.63749 2.5 5.78165 2.5H18.2118C19.3559 2.5 20.2834 3.42752 20.2834 4.57168V19.4242C20.2834 21.3371 17.9123 22.228 16.6526 20.7884L11.9967 15.4673L7.34074 20.7884C6.08107 22.228 3.70996 21.3371 3.70996 19.4242V4.57168ZM18.2118 4.57168L5.78165 4.57168V19.4242L10.4376 14.1031C11.263 13.1598 12.7304 13.1598 13.5558 14.1031L18.2118 19.4242V4.57168Z'
+        fill='rgb(85, 85, 85)'
+      ></path>
+    </svg>
+  );
+};
+
 export const NotFoundIcon = () => {
   return (
     <svg xmlns='http://www.w3.org/2000/svg' width='503' height='310' viewBox='0 0 503 310' fill='none'>

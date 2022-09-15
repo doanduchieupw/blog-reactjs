@@ -1,12 +1,13 @@
 import { faGlobe, faMagnifyingGlass, faXmark } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
-const SubHeader = ({ isMobile, ...props }) => {
+const SubHeader = ({ isMobile, isHidden, ...props }) => {
   return (
     <div
+      //
       className={`bg-submenu-bg z-30 w-screen h-screen px-4 ${
-        isMobile ? 'animate-switchLeft' : 'transition translate-x-full duration-300 hidden'
-      } overflow-hidden`}
+        isMobile ? 'animate-switchLeft' : 'transition translate-x-full duration-300'
+      } ${isHidden ? 'hidden' : ''}`}
     >
       <div>
         <div className='flex flex-col pt-4 pb-6 '>

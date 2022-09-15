@@ -26,6 +26,7 @@ const SignUp = () => {
       </span>
 
       {/*========== SignUp Method ==========*/}
+
       <BorderButton title='ĐĂNG KÝ VỚI GOOGLE' icon={<GoogleIcon />} />
       <BorderButton title='ĐĂNG KÝ VỚI FACEBOOK' icon={<FacebookIcon />} />
       <BorderButton
