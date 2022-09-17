@@ -22,7 +22,7 @@ module.exports = {
       // => @media (min-width: 1536px) { ... }
     },
     fontFamily: {
-      'merriweather': ['Merriweather']
+      merriweather: ['Merriweather'],
     },
     extend: {
       colors: {
@@ -42,20 +42,21 @@ module.exports = {
         'orange-bg-btn': '#e27602',
         'light-blue-bg': '#E8F0FE',
 
-        /*===== HEADER =====*/
+        /*===== HEADER & FOOTER =====*/
         'primary-bg': '#292929',
         'gray-bg': '#F2F3F5',
         'dark-gray-bg': '#BFBFBF',
         'submenu-bg': '#2f3136',
+        'footer-bg': '#f6f6f6',
 
         /*===== ERROR =====*/
         'error-font': '#B72727',
         'error-bg': '#FFF8F8',
 
-        /*===== ERROR =====*/
+        /*===== PLAYER =====*/
         'player-slider': '#ebecee',
         'player-process': '#ddd',
-        'player-thumb': '#868686'
+        'player-thumb': '#868686',
       },
       animation: {
         switchLeft: 'rightToLeft 0.3s ease-in-out',
