@@ -1,2 +1,5 @@
 export { default as NewestBlog } from './NewestBlog'
 export { default as ExploreBlog } from './ExploreBlog'
+export { default as ForYouBlog } from './ForYouBlog'
+export { default as TrendingBlog } from './TrendingBlog'
+export { default as PodcastBlog } from './PodcastBlog'

@@ -21,6 +21,9 @@ module.exports = {
       '2xl': '1536px',
       // => @media (min-width: 1536px) { ... }
     },
+    fontFamily: {
+      'merriweather': ['Merriweather']
+    },
     extend: {
       colors: {
         /*===== LOGO =====*/
@@ -48,6 +51,11 @@ module.exports = {
         /*===== ERROR =====*/
         'error-font': '#B72727',
         'error-bg': '#FFF8F8',
+
+        /*===== ERROR =====*/
+        'player-slider': '#ebecee',
+        'player-process': '#ddd',
+        'player-thumb': '#868686'
       },
       animation: {
         switchLeft: 'rightToLeft 0.3s ease-in-out',
