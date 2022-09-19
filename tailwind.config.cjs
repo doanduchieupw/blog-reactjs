@@ -34,6 +34,7 @@ module.exports = {
         /*===== FONT, BUTTON & BORDER =====*/
         'gray-font': '#292929',
         'light-gray-font': '#7A7A7A',
+        'lighter-gray-font': '#757575',
         'gray-submenu-font': '#555555',
         'green-font': '#428F5E',
         'gray-border': '#757575',
@@ -61,6 +62,7 @@ module.exports = {
       animation: {
         switchLeft: 'rightToLeft 0.3s ease-in-out',
         switchRight: 'leftToRight 0.3s ease-in-out',
+        switchDown: 'upToDown 0.2s linear',
       },
       keyframes: {
         rightToLeft: {
@@ -70,6 +72,10 @@ module.exports = {
         leftToRight: {
           '0%': { transform: 'translateX(0%)' },
           '100%': { transform: 'translateX(100%)' },
+        },
+        upToDown: {
+          '0%': { transform: 'translateY(100%)' },
+          '100%': { transform: 'translateY(0%)' },
         },
       },
     },
