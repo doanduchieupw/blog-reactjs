@@ -1,15 +1,14 @@
 import { faGlobe, faMagnifyingGlass, faXmark } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
-const SubHeader = ({ isMobile, isHidden, ...props }) => {
+const SubHeader = ({ isMobile, ...props }) => {
   return (
     <div
-      //
-      className={`bg-submenu-bg z-30 w-screen h-screen px-4 ${
-        isMobile ? 'animate-switchLeft' : 'transition translate-x-full duration-300'
-      } ${isHidden ? 'hidden' : ''}`}
+      className={`transition-all ease-in-out duration-500 fixed h-screen top-0 w-screen bg-submenu-bg z-50 ${
+        isMobile ? 'left-0' : 'left-full'
+      }`}
     >
-      <div>
+      <div className='px-4'>
         <div className='flex flex-col pt-4 pb-6 '>
           {/* Header */}
           <div className='flex justify-between'>
@@ -31,6 +30,14 @@ const SubHeader = ({ isMobile, isHidden, ...props }) => {
             <FontAwesomeIcon icon={faMagnifyingGlass} className='p-[9px] text-white hover:text-black cursor-pointer' />
           </div>
         </div>
+      </div>
+      <div className='h-80 overflow-auto'>
+        <div className='h-24'>i am 1</div>
+        <div className='h-24'>i am 2</div>
+        <div className='h-24'>i am 3</div>
+        <div className='h-24'>i am 5</div>
+        <div className='h-24'>i am 6</div>
+        <div className='h-24'>i am 7</div>
       </div>
     </div>
   );

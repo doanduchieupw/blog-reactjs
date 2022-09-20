@@ -42,6 +42,8 @@ module.exports = {
         'green-bg-btn': '#12D8B2',
         'orange-bg-btn': '#e27602',
         'light-blue-bg': '#E8F0FE',
+        'green-border': '#00773e',
+        'lightest-gray': '#d9d9d9',
 
         /*===== HEADER & FOOTER =====*/
         'primary-bg': '#292929',

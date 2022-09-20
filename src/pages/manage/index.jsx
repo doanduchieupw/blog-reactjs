@@ -1,1 +1,1 @@
-export { default as NewBlog } from './NewBlog'
+export { default as CreateBlog } from './CreateBlog';
