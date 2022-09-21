@@ -66,7 +66,7 @@ const FullHeader = () => {
             <div className='hidden lg:flex'>
               {navList.map((item, index) =>
                 item.type === 'submenu' ? (
-                  <DropdownButton key={index} title={item.title} submenu={item.children} />
+                  <DropdownButton key={index} title={item.title} submenu={item.children} type='hover' />
                 ) : (
                   <button
                     key={index}
