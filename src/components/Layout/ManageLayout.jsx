@@ -33,12 +33,12 @@ const ManageLayout = ({ children }) => {
               key={index}
               ref={manageItemRef}
               to={`/quan-ly/${item.slug}`}
-              className={`w-full px-8 py-4 text-lighter-gray-font text-sm font-semibold ${
+              className={`w-full px-8 py-4 text-lighter-gray-font text-sm font-semibold  ${
                 manageActive === index ? 'text-primary-bg hover:text-primary-bg' : ''
               }`}
               onClick={() => setManageActive(index)}
             >
-              {item.name}
+              <span className='line-clamp-1'>{item.name}</span>
             </Link>
           ))}
         </div>
