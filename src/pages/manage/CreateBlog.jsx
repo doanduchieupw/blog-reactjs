@@ -1,24 +1,30 @@
 import { useState, useEffect } from 'react';
 import { Formik } from 'formik';
-import { getStorage, ref, uploadBytesResumable, getDownloadURL } from 'firebase/storage';
-import { collection, getDocs, query, where } from 'firebase/firestore';
+import { addDoc, collection, getDocs, query, where } from 'firebase/firestore';
+import slugify from 'slugify';
+import 'antd/dist/antd.css';
+import { notification } from 'antd';
+
 import { db } from '../../firebase-app/firebase-config';
+import { useAuth } from '../../contexts/auth-context';
 import { BlogInput } from '../../components/Input/';
 import { Editor } from '../../components/Editor';
-import DropdownButton from '../../components/Button/DropdownButton';
-import { async } from '@firebase/util';
+import { DropdownButton } from '../../components/Button';
+import { TitleManage } from '../../components/ManageModule';
 
-const storage = getStorage();
 const initialBlog = {
   titleBlog: '',
   slugBlog: '',
   keywordBlog: '',
   imageBlog: '',
   topic: '',
+  contentBlog: '',
 };
 const CreateBlog = () => {
+  const { userInfo } = useAuth();
   const [topic, setTopic] = useState([]);
   const [contentEditor, setContentEditor] = useState('');
+  const [loading, setLoading] = useState(false);
 
   //get topic in db
   useEffect(() => {
@@ -39,78 +45,81 @@ const CreateBlog = () => {
     fetchData();
   }, []);
 
-  // const handleUploadImage = async (file) => {
-  //   if (!file) return;
-  //   return new Promise(function (resolve, reject) {
-  //     const storageRef = ref(storage, 'images/' + file.name);
-  //     const uploadTask = uploadBytesResumable(storageRef, file);
-  //     uploadTask.on(
-  //       'state_changed',
-  //       (snapshot) => {
-  //         // Get task progress, including the number of bytes uploaded and the total number of bytes to be uploaded
-  //         const progress = (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
-  //         console.log('Upload is ' + progress + '% done');
-  //         setLoadProgress(progress);
-  //         switch (snapshot.state) {
-  //           case 'paused':
-  //             console.log('Upload is paused');
-  //             break;
-  //           case 'running':
-  //             console.log('Upload is running');
-  //             break;
-  //         }
-  //       },
-  //       (error) => {
-  //         console.log(error);
-  //         reject();
-  //       },
-  //       () => {
-  //         // Upload completed successfully, now we can get the download URL
-  //         getDownloadURL(uploadTask.snapshot.ref).then((downloadURL) => {
-  //           console.log('File available at', downloadURL);
-  //           actions.setFieldValue('imageBlog', downloadURL);
-  //           resolve(downloadURL);
-  //         });
-  //       }
-  //     );
-  //   });
-  // };
-
-  const handleBlogDB = async () => {};
-
   const handleSubmit = async (dataBlog, actions) => {
-    console.log(dataBlog);
+    try {
+      setLoading(true);
+      const dataBlogClone = { ...dataBlog };
+      dataBlogClone.slugBlog = slugify(dataBlog.slugBlog || dataBlog.titleBlog , {lower: true});
+      const blogRef = collection(db, 'blogs');
+      const test = await addDoc(blogRef, {
+        ...dataBlogClone,
+        userId: userInfo.uid,
+      });
+      notification['success']({
+        message: 'Tạo bài viết mới thành công',
+        description:
+          'Vui lòng đợi quản trị viên phê duyệt bài viết!',
+      });
+      actions.resetForm();
+      
+    } catch (error) {
+      setLoading(false);
+      notification['error']({
+        message: 'Tạo bài viết mới thành công',
+        description:
+          'Vui lòng đợi quản trị viên phê duyệt bài viết!',
+      });
+    } finally {
+      setLoading(false);
+    }
   };
   return (
-    <div className=''>
-      <div className='pb-2 border-b border-lightest-gray'>
-        <h3 className='text-2xl font-semibold uppercase'>Tạo bài viết</h3>
-      </div>
+    <div className="">
+      <TitleManage title='Tạo bài viết' />
       <Formik initialValues={initialBlog} onSubmit={handleSubmit}>
         {(formik) => (
-          <form className='' onSubmit={formik.handleSubmit}>
-            <div className='grid grid-cols-2 gap-x-2'>
-              <BlogInput label='Tiêu đề' name='titleBlog' placeholder='Tạo tiêu đề bài viết' />
-              <BlogInput label='Đường dẫn' name='slugBlog' placeholder='VD: vi-du-ten-tieu-de' />
-              <BlogInput type='file' label='Ảnh bìa' name='imageBlog' placeholder='Lựa chọn một ảnh bìa.' />
-              <BlogInput label='Từ khóa' name='keywordBlog' placeholder='Công nghệ, khoa học, ... .' />
+          <form className="" onSubmit={formik.handleSubmit}>
+            <div className="grid grid-cols-2 gap-x-2">
+              <BlogInput
+                label="Tiêu đề"
+                name="titleBlog"
+                placeholder="Tạo tiêu đề bài viết"
+              />
+              <BlogInput
+                label="Đường dẫn"
+                name="slugBlog"
+                placeholder="VD: vi-du-ten-tieu-de"
+              />
+              <BlogInput
+                type="file"
+                label="Ảnh bìa"
+                name="imageBlog"
+                placeholder="Lựa chọn một ảnh bìa."
+              />
+              <BlogInput
+                label="Từ khóa"
+                name="keywordBlog"
+                placeholder="Công nghệ, khoa học, ... ."
+              />
               <DropdownButton
-                title='Chủ đề'
+                title="Chủ đề"
                 submenu={topic}
-                name='topic'
-                placeholder='Lựa chọn chủ đề'
-                type='click'
+                name="topic"
+                placeholder="Lựa chọn chủ đề"
+                type="click"
                 setValue={formik.setFieldValue}
               />
             </div>
-            <Editor
-              className='mt-3'
-              title='Nội dung'
-              placeholder='Soạn nội dung blog tại đây...'
-              value={contentEditor}
-              setValue={setContentEditor}
-            />
-            <button type='submit'>OK</button>
+            <div className="mt-3 min-h-[200px] flex flex-col">
+              <Editor
+                className="flex-1"
+                title="Nội dung"
+                placeholder="Soạn nội dung blog tại đây..."
+                value={contentEditor}
+                setValue={setContentEditor}
+              />
+            </div>
+            <button type="submit">OK</button>
           </form>
         )}
       </Formik>

@@ -26,6 +26,7 @@
     "react-quill": "^2.0.0",
     "react-router-dom": "^6.3.0",
     "sass": "^1.54.8",
+    "slugify": "^1.6.5",
     "styled-components": "^5.3.5",
     "yup": "^0.32.11"
   },
