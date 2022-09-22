@@ -2,14 +2,18 @@ import { useEffect, useState } from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faEye, faEyeSlash, faCircleXmark, faAngleLeft } from '@fortawesome/free-solid-svg-icons';
 import { Formik, Form } from 'formik';
+import { notification } from 'antd';
+import 'antd/dist/antd.css';
 import * as yup from 'yup';
 import BorderInput from '../Input/BorderInput';
 import { MoreButton, ConfirmButton } from '../Button';
 import CheckValidation from '../CheckValidation';
 import { createUserWithEmailAndPassword, updateProfile } from 'firebase/auth';
 import { auth, db } from '../../firebase-app/firebase-config';
-import { addDoc, collection } from 'firebase/firestore';
+import { addDoc, collection, serverTimestamp } from 'firebase/firestore';
 import { useNavigate } from 'react-router-dom';
+import { userRole, userStatus } from '../../utils/constants';
+import moment from 'moment';
 
 const initialSignUp = {
   email: '',
@@ -33,11 +37,12 @@ const SignUpModal = ({ onCancel }) => {
   const [errorPassword, setErrorPassword] = useState([]);
   const navigate = useNavigate();
 
-  const handleSignUp = async (user, actions) => { 
+  const handleSignUp = async (user, actions) => {
     try {
       await createUserWithEmailAndPassword(auth, user.email, user.password);
       await updateProfile(auth.currentUser, {
         displayName: user.fullname !== '' ? user.fullname : 'Người mới',
+        photoURL: 'https://yt3.ggpht.com/ytc/AMLnZu_0iIU3NJaO3L3EMmz9hjoA9zHiUSaBCi0aAD5T6Q=s900-c-k-c0x00ffffff-no-rj',
       });
       const collectionRef = collection(db, 'users');
       await addDoc(collectionRef, {
@@ -45,6 +50,15 @@ const SignUpModal = ({ onCancel }) => {
         password: user.password,
         fullname: user.fullname !== '' ? user.fullname : 'Người mới',
         dateOfBirth: user?.dateOfBirth || '1970-01-01',
+        photoAvatar:
+          'https://yt3.ggpht.com/ytc/AMLnZu_0iIU3NJaO3L3EMmz9hjoA9zHiUSaBCi0aAD5T6Q=s900-c-k-c0x00ffffff-no-rj',
+        status: userStatus.ACTIVE,
+        role: userRole.USER,
+        createdAt: serverTimestamp(),
+      });
+      notification['success']({
+        message: 'Đăng ký thành công',
+        description: 'Vui lòng vào cài đặt để tùy chỉnh lại thông tin cá nhân!',
       });
       navigate('/');
     } catch (err) {

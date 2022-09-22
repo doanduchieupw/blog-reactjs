@@ -30,7 +30,7 @@ const Login = () => {
 
       <div className='mt-8 flex items-center'>
         <span className='text-[14px] text-light-gray-font leading-7'>Bạn chưa có tài khoản?</span>
-        <HoverButton to='/signup' title='TẠO TÀI KHOẢN' />
+        <HoverButton to='/dang-ky' title='TẠO TÀI KHOẢN' />
       </div>
 
       {/*========== Modal Login ==========*/}

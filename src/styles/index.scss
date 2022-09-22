@@ -5,75 +5,79 @@
 
 /* Font emmbeded */
 @font-face {
-    font-family: 'PoppinsVN';
-    src: url('/fonts/PoppinsVN-400.woff2');
-    font-weight: 400;
+  font-family: 'PoppinsVN';
+  src: url('/fonts/PoppinsVN-400.woff2');
+  font-weight: 400;
 }
 @font-face {
-    font-family: 'PoppinsVN';
-    src: url('/fonts/PoppinsVN-500.woff2');
-    font-weight: 500;
+  font-family: 'PoppinsVN';
+  src: url('/fonts/PoppinsVN-500.woff2');
+  font-weight: 500;
 }
 
 @font-face {
-    font-family: 'PoppinsVN';
-    src: url('/fonts/PoppinsVN-600-italic.woff2');
-    font-weight: 600;
-    font-style: italic;
+  font-family: 'PoppinsVN';
+  src: url('/fonts/PoppinsVN-600-italic.woff2');
+  font-weight: 600;
+  font-style: italic;
 }
 @font-face {
-    font-family: 'PoppinsVN';
-    src: url('/fonts/PoppinsVN-700.woff2');
-    font-weight: 700;
+  font-family: 'PoppinsVN';
+  src: url('/fonts/PoppinsVN-700.woff2');
+  font-weight: 700;
 }
 @font-face {
-    font-family: 'PoppinsVN';
-    src: url('/fonts/SVN-Poppins-600.woff2');
-    font-weight: 600;
+  font-family: 'PoppinsVN';
+  src: url('/fonts/SVN-Poppins-600.woff2');
+  font-weight: 600;
 }
 
 * {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
-    font-display: block;
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-display: block;
 }
 @layer base {
-    body {
-        max-width: 100vw;
-        max-height: 100vh;
-        overflow: hidden;
-        font-family: 'PoppinsVN', monospace;
-    }
+  body {
+    max-width: 100vw;
+    max-height: 100vh;
+    overflow: hidden;
+    font-family: 'PoppinsVN', monospace;
+  }
 }
 *,
 *:before,
 *:after {
-    box-sizing: border-box;
+  box-sizing: border-box;
 }
 input,
 textarea,
 select,
 button {
-    outline: none;
+  outline: none;
 }
 input {
-    line-height: normal;
+  line-height: normal;
 }
 label,
 button {
-    cursor: pointer;
+  cursor: pointer;
 }
 a {
-    text-decoration: none;
+  text-decoration: none;
 }
 
 // Reset css Modal antd
 .ant-modal {
-    max-width: unset;
-    margin: unset;
+  max-width: unset;
+  margin: unset;
 }
 .ant-modal-centered::before {
-    content: unset;
+  content: unset;
 }
-
+.ant-btn-primary {
+  background-color: #1890ff !important;
+  //   display: flex;
+  //   align-items: center;
+}
