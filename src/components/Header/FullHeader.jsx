@@ -12,6 +12,8 @@ import SubHeader from './SubHeader';
 import { useAuth } from '../../contexts/auth-context';
 import { auth } from '../../firebase-app/firebase-config';
 import { signOut } from 'firebase/auth';
+import { Tooltip } from 'antd';
+import HeaderTooltip from './HeaderTooltip';
 const navList = [
   {
     title: 'Dành cho bạn',
@@ -34,6 +36,10 @@ const navList = [
 
 const FullHeader = () => {
   const { userInfo } = useAuth();
+  console.log(
+    '🚀 ~ file: FullHeader.jsx ~ line 37 ~ FullHeader ~ userInfo',
+    userInfo
+  );
   const [isOpenMenu, setOpenMenu] = useState(false);
   const [size, setSize] = useState({
     width: undefined,
@@ -57,14 +63,14 @@ const FullHeader = () => {
     }
   }, [size.width, isOpenMenu]);
 
-  // logout
-  const handleLogout = async () => {
-    try {
-      await signOut(auth);
-    } catch (err) {
-      console.log(err);
-    }
-  };
+  // // logout
+  // const handleLogout = async () => {
+  //   try {
+  //     await signOut(auth);
+  //   } catch (err) {
+  //     console.log(err);
+  //   }
+  // };
 
   return (
     <div className="relative">
@@ -122,11 +128,16 @@ const FullHeader = () => {
             </Link>
 
             {userInfo ? (
-              <div className="text-white gap-x-1">
-                <span>{userInfo.displayName}</span>
-                <button className="" onClick={() => handleLogout()}>
-                  Logout
-                </button>
+              <div className="flex text-white gap-x-1">
+                <Tooltip placement="bottomRight" color="white" mouseLeaveDelay={0.3} title={<HeaderTooltip /> }>
+                  <div className="w-10 h-10">
+                    <img
+                      src={userInfo.photoURL}
+                      alt={userInfo.displayName}
+                      className="w-full h-full object-cover rounded-full"
+                    />
+                  </div>
+                </Tooltip>
               </div>
             ) : (
               <button className="uppercase p-2.5 lg:px-3 lg:py-1.5 bg-white rounded-full text-sm font-semibold">

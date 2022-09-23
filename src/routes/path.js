@@ -1,5 +1,5 @@
 import { Login, Home, SignUp, NotFound } from '../pages';
-import { CreateBlog, CreateTopic } from '../pages/manage';
+import { CreateBlog, CreateTopic, SettingUser } from '../pages/manage';
 import { AuthLayout, MainLayout, ManageLayout } from '../components/Layout';
 
 //Public Routes
@@ -10,7 +10,7 @@ const publicPath = [
   { path: '/dang-ky', component: SignUp, layout: AuthLayout },
   { path: '/quan-ly', component: CreateBlog, layout: ManageLayout },
   { path: '/quan-ly/tao-bai-viet', component: CreateBlog, layout: ManageLayout },
-  { path: '/quan-ly/cai-dat', component: CreateBlog, layout: ManageLayout },
+  { path: '/quan-ly/cai-dat', component: SettingUser, layout: ManageLayout },
   { path: '/quan-ly/bai-viet-da-thich', component: CreateBlog, layout: ManageLayout },
   { path: '/quan-ly/chu-de-theo-doi', component: CreateBlog, layout: ManageLayout },
   { path: '/quan-ly/tac-gia-dang-theo-doi', component: CreateBlog, layout: ManageLayout },
