@@ -65,6 +65,7 @@ module.exports = {
         switchLeft: 'rightToLeft 0.3s ease-in-out',
         switchRight: 'leftToRight 0.3s ease-in-out',
         switchDown: 'upToDown 0.2s linear',
+        switchUp: 'downToUp 0.1s linear',
       },
       keyframes: {
         rightToLeft: {
@@ -75,9 +76,13 @@ module.exports = {
           '0%': { transform: 'translateX(0%)' },
           '100%': { transform: 'translateX(100%)' },
         },
+        downToUp: {
+          '0%': { transform: 'translateY(100%)', opacity: 0 },
+          '100%': { transform: 'translateY(0%)', opacity: 1 },
+        },
         upToDown: {
-          '0%': { transform: 'translateY(100%)' },
-          '100%': { transform: 'translateY(0%)' },
+          '0%': { transform: 'translateY(0%)' },
+          '100%': { transform: 'translateY(100%)' },
         },
       },
     },

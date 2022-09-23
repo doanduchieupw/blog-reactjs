@@ -10,10 +10,9 @@ import { MoreButton, ConfirmButton } from '../Button';
 import CheckValidation from '../CheckValidation';
 import { createUserWithEmailAndPassword, updateProfile } from 'firebase/auth';
 import { auth, db } from '../../firebase-app/firebase-config';
-import { addDoc, collection, serverTimestamp } from 'firebase/firestore';
+import { doc, serverTimestamp, setDoc } from 'firebase/firestore';
 import { useNavigate } from 'react-router-dom';
 import { userRole, userStatus } from '../../utils/constants';
-import moment from 'moment';
 
 const initialSignUp = {
   email: '',
@@ -38,14 +37,15 @@ const SignUpModal = ({ onCancel }) => {
   const navigate = useNavigate();
 
   const handleSignUp = async (user, actions) => {
+    console.log(auth);
     try {
       await createUserWithEmailAndPassword(auth, user.email, user.password);
       await updateProfile(auth.currentUser, {
         displayName: user.fullname !== '' ? user.fullname : 'Người mới',
         photoURL: 'https://yt3.ggpht.com/ytc/AMLnZu_0iIU3NJaO3L3EMmz9hjoA9zHiUSaBCi0aAD5T6Q=s900-c-k-c0x00ffffff-no-rj',
       });
-      const collectionRef = collection(db, 'users');
-      await addDoc(collectionRef, {
+      const collectionRef = doc(db, 'users', auth.currentUser.uid);
+      await setDoc(collectionRef, {
         email: user.email,
         password: user.password,
         fullname: user.fullname !== '' ? user.fullname : 'Người mới',
@@ -62,6 +62,7 @@ const SignUpModal = ({ onCancel }) => {
       });
       navigate('/');
     } catch (err) {
+      console.log('🚀 ~ file: SignUpModal.jsx ~ line 65 ~ handleSignUp ~ err', err);
       actions.setFieldError('email', 'Email đã tồn tại');
     }
   };
