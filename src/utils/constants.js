@@ -1,4 +1,9 @@
 export const theme = {};
+export const blogStatus = {
+  ACCEPTED: 1,
+  PENDING: 2,
+  REJECTED: 3,
+};
 export const userStatus = {
   ACTIVE: 1,
   PENDING: 2,

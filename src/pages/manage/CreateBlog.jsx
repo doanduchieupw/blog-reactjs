@@ -9,8 +9,11 @@ import { db } from '../../firebase-app/firebase-config';
 import { useAuth } from '../../contexts/auth-context';
 import { BlogInput } from '../../components/Input/';
 import { Editor } from '../../components/Editor';
-import { DropdownButton } from '../../components/Button';
+import { DropdownButton, NormalButton } from '../../components/Button';
 import { TitleManage } from '../../components/ManageModule';
+import { blogStatus } from '../../utils/constants';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faSpinner } from '@fortawesome/free-solid-svg-icons';
 
 const initialBlog = {
   titleBlog: '',
@@ -19,6 +22,7 @@ const initialBlog = {
   imageBlog: '',
   topic: '',
   contentBlog: '',
+  status: blogStatus.PENDING,
 };
 const CreateBlog = () => {
   const { userInfo } = useAuth();
@@ -49,77 +53,61 @@ const CreateBlog = () => {
     try {
       setLoading(true);
       const dataBlogClone = { ...dataBlog };
-      dataBlogClone.slugBlog = slugify(dataBlog.slugBlog || dataBlog.titleBlog , {lower: true});
+      dataBlogClone.slugBlog = slugify(dataBlog.slugBlog || dataBlog.titleBlog, { lower: true });
       const blogRef = collection(db, 'blogs');
       const test = await addDoc(blogRef, {
         ...dataBlogClone,
-        userId: userInfo.uid,
+        user: { id: userInfo.uid, displayName: userInfo.displayName, photoAvatar: userInfo.photoURL },
       });
       notification['success']({
         message: 'Tạo bài viết mới thành công',
-        description:
-          'Vui lòng đợi quản trị viên phê duyệt bài viết!',
+        description: 'Vui lòng đợi quản trị viên phê duyệt bài viết!',
       });
       actions.resetForm();
-      
     } catch (error) {
       setLoading(false);
       notification['error']({
         message: 'Tạo bài viết mới thành công',
-        description:
-          'Vui lòng đợi quản trị viên phê duyệt bài viết!',
+        description: 'Vui lòng đợi quản trị viên phê duyệt bài viết!',
       });
     } finally {
       setLoading(false);
     }
   };
   return (
-    <div className="">
+    <div className=''>
       <TitleManage title='Tạo bài viết' />
       <Formik initialValues={initialBlog} onSubmit={handleSubmit}>
         {(formik) => (
-          <form className="" onSubmit={formik.handleSubmit}>
-            <div className="grid grid-cols-2 gap-x-2">
-              <BlogInput
-                label="Tiêu đề"
-                name="titleBlog"
-                placeholder="Tạo tiêu đề bài viết"
-              />
-              <BlogInput
-                label="Đường dẫn"
-                name="slugBlog"
-                placeholder="VD: vi-du-ten-tieu-de"
-              />
-              <BlogInput
-                type="file"
-                label="Ảnh bìa"
-                name="imageBlog"
-                placeholder="Lựa chọn một ảnh bìa."
-              />
-              <BlogInput
-                label="Từ khóa"
-                name="keywordBlog"
-                placeholder="Công nghệ, khoa học, ... ."
-              />
+          <form className='' onSubmit={formik.handleSubmit}>
+            <div className='grid grid-cols-2 gap-x-2'>
+              <BlogInput label='Tiêu đề' name='titleBlog' placeholder='Tạo tiêu đề bài viết' />
+              <BlogInput label='Đường dẫn' name='slugBlog' placeholder='VD: vi-du-ten-tieu-de' />
+              <BlogInput type='file' label='Ảnh bìa' name='imageBlog' placeholder='Lựa chọn một ảnh bìa.' />
+              <BlogInput label='Từ khóa' name='keywordBlog' placeholder='Công nghệ, khoa học, ... .' />
               <DropdownButton
-                title="Chủ đề"
+                title='Chủ đề'
                 submenu={topic}
-                name="topic"
-                placeholder="Lựa chọn chủ đề"
-                type="click"
+                name='topic'
+                placeholder='Lựa chọn chủ đề'
+                type='click'
                 setValue={formik.setFieldValue}
               />
             </div>
-            <div className="mt-3 min-h-[200px] flex flex-col">
+            <div className='mt-3 min-h-[200px] flex flex-col'>
               <Editor
-                className="flex-1"
-                title="Nội dung"
-                placeholder="Soạn nội dung blog tại đây..."
+                className='flex-1'
+                title='Nội dung'
+                placeholder='Soạn nội dung blog tại đây...'
                 value={contentEditor}
                 setValue={setContentEditor}
               />
             </div>
-            <button type="submit">OK</button>
+            <NormalButton
+              type='submit'
+              title={loading ? <FontAwesomeIcon icon={faSpinner} className='animate-spin' /> : 'Tạo bài viết mới'}
+              className={`p-2 mx-auto block mt-4 ${loading ? 'opacity-70' : 'opacity-100'}`}
+            />
           </form>
         )}
       </Formik>

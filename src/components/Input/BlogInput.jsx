@@ -3,11 +3,10 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faSpinner, faUpload, faXmark } from '@fortawesome/free-solid-svg-icons';
 import { useState } from 'react';
 import { getStorage, ref, uploadBytesResumable, getDownloadURL, deleteObject } from 'firebase/storage';
-import { icon } from '@fortawesome/fontawesome-svg-core';
 
 const storage = getStorage();
 
-const BlogInput = ({ label, name, error, icon,  ...props }) => {
+const BlogInput = ({ label, name, error, icon, ...props }) => {
   const [fileName, setFileName] = useState();
   const [field, meta, helpers] = useField(name);
   const [loadProcess, setLoadProgress] = useState();
