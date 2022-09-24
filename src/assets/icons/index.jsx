@@ -81,7 +81,7 @@ export const NotFoundIcon = () => {
         d='M479 7.99619C475.242 7.87323 472.233 4.78799 472.233 1H471.767C471.767 4.78799 468.758 7.87323 465 7.99619V8.47139C468.602 8.58925 471.516 11.4287 471.752 15H472.248C472.484 11.4287 475.398 8.58925 479 8.47139V7.99619Z'
         fill='#009E52'
       ></path>
-      <circle cx='241' cy='185' r='125' fill='#F7F7F7' fill-opacity='0.5'></circle>
+      <circle cx='241' cy='185' r='125' fill='#F7F7F7' fillOpacity='0.5'></circle>
       <circle cx='241' cy='185' r='98' fill='#F7F7F7'></circle>
       <circle cx='241.5' cy='184.5' r='71.5' fill='#D9D9D9'></circle>
       <circle cx='241.5' cy='184.5' r='35.5' fill='white'></circle>

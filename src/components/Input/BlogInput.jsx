@@ -3,10 +3,11 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faSpinner, faUpload, faXmark } from '@fortawesome/free-solid-svg-icons';
 import { useState } from 'react';
 import { getStorage, ref, uploadBytesResumable, getDownloadURL, deleteObject } from 'firebase/storage';
+import { icon } from '@fortawesome/fontawesome-svg-core';
 
 const storage = getStorage();
 
-const BlogInput = ({ label, name, error, ...props }) => {
+const BlogInput = ({ label, name, error, icon,  ...props }) => {
   const [fileName, setFileName] = useState();
   const [field, meta, helpers] = useField(name);
   const [loadProcess, setLoadProgress] = useState();
@@ -126,11 +127,12 @@ const BlogInput = ({ label, name, error, ...props }) => {
             {label}
           </label>
           <div
-            className={`p-4 border rounded-[4px] border-dark-gray-bg focus-within:border-green-border ${
+            className={`flex items-center gap-x-1 p-4 border rounded-[4px] border-dark-gray-bg focus-within:border-green-border ${
               error ? 'border-error-font focus-within:border-error-font' : ''
             }`}
           >
             <input id={name} name={name} {...field} {...props} className='w-full text-lighter-gray-font text-sm' />
+            {icon}
           </div>
           <div className='text-xs text-error-font leading-snugs mt-1.5'>
             <ErrorMessage name={name} />
