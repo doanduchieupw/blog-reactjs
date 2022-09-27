@@ -54,6 +54,10 @@ const SignUpModal = ({ onCancel }) => {
           'https://yt3.ggpht.com/ytc/AMLnZu_0iIU3NJaO3L3EMmz9hjoA9zHiUSaBCi0aAD5T6Q=s900-c-k-c0x00ffffff-no-rj',
         status: userStatus.ACTIVE,
         role: userRole.USER,
+        like: [],
+        folowing: [],
+        folower: [],
+        topic: [],
         createdAt: serverTimestamp(),
       });
       notification['success']({

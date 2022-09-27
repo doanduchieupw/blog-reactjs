@@ -2,6 +2,7 @@ import { useState } from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faChevronDown, faChevronUp } from '@fortawesome/free-solid-svg-icons';
 import styled from 'styled-components';
+import { ErrorMessage } from 'formik';
 const DropdownContainer = styled.div`
   .item-list {
     /* width */
@@ -26,7 +27,7 @@ const DropdownContainer = styled.div`
   }
 `;
 
-const DropdownButton = ({ title, submenu, name, type, setValue, ...props }) => {
+const DropdownButton = ({ title, submenu, name, type, setValue, value, ...props }) => {
   const [isShow, setShow] = useState(false);
   const [valueDropdown, setValueDropdown] = useState();
   return (
@@ -73,7 +74,7 @@ const DropdownButton = ({ title, submenu, name, type, setValue, ...props }) => {
             onClick={() => setShow(!isShow)}
           >
             <span className={`${valueDropdown && 'text-primary-bg'} text-sm`}>
-              {valueDropdown || props.placeholder}
+              {valueDropdown || value || props.placeholder}
             </span>
             {isShow ? <FontAwesomeIcon icon={faChevronUp} /> : <FontAwesomeIcon icon={faChevronDown} />}
           </div>
@@ -87,7 +88,8 @@ const DropdownButton = ({ title, submenu, name, type, setValue, ...props }) => {
                     onClick={() => {
                       setShow(false);
                       setValueDropdown(item.name);
-                      setValue(name, item.name);
+                      // setValue(name, item.name);
+                      setValue(item.name);
                     }}
                   >
                     {item.name}
@@ -95,6 +97,9 @@ const DropdownButton = ({ title, submenu, name, type, setValue, ...props }) => {
                 ))}
             </ul>
           )}
+          <div className='text-xs text-error-font leading-snugs mt-1.5'>
+            <ErrorMessage name={name} />
+          </div>
         </div>
       )}
     </DropdownContainer>

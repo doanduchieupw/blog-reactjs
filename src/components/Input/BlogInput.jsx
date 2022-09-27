@@ -1,8 +1,18 @@
 import { ErrorMessage, useField, useFormikContext } from 'formik';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faSpinner, faUpload, faXmark } from '@fortawesome/free-solid-svg-icons';
+import {
+  faSpinner,
+  faUpload,
+  faXmark,
+} from '@fortawesome/free-solid-svg-icons';
 import { useState } from 'react';
-import { getStorage, ref, uploadBytesResumable, getDownloadURL, deleteObject } from 'firebase/storage';
+import {
+  getStorage,
+  ref,
+  uploadBytesResumable,
+  getDownloadURL,
+  deleteObject,
+} from 'firebase/storage';
 
 const storage = getStorage();
 
@@ -30,7 +40,8 @@ const BlogInput = ({ label, name, error, icon, ...props }) => {
       'state_changed',
       (snapshot) => {
         // Get task progress, including the number of bytes uploaded and the total number of bytes to be uploaded
-        const progress = (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
+        const progress =
+          (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
         console.log('Upload is ' + progress + '% done');
         setLoadProgress(progress);
         switch (snapshot.state) {
@@ -71,58 +82,81 @@ const BlogInput = ({ label, name, error, icon, ...props }) => {
     <>
       {props.type === 'file' ? (
         // Image Upload Input
-        <label htmlFor={name} className='cursor-pointer mt-4'>
-          <input id={name} type='file' onChange={handleImageSelect} className='hidden' />
-          <span className='font-semibold mb-2'>{label}</span>
-          {values.imageBlog ? (
-            <div className='group relative mt-1'>
-              <img src={values.imageBlog} className='object-cover w-full h-full rounded-md' />
-              {/* Loading image */}
-              <div className='absolute bottom-0 w-full h-full flex flex-col'>
-                <div
-                  className={`flex-1 ${
-                    loadProcess > 0 && loadProcess < 100
-                      ? 'opacity-50 bg-lightest-gray flex items-center justify-center'
-                      : ''
-                  }`}
+        <div>
+          <label htmlFor={name} className="cursor-pointer mt-4">
+            <input
+              id={name}
+              type="file"
+              onChange={handleImageSelect}
+              className="hidden"
+            />
+            <span className="font-semibold mb-2">{label}</span>
+            {values.imageBlog ? (
+              <div className="group relative mt-1">
+                <img
+                  src={values.imageBlog}
+                  className="object-cover w-full h-full rounded-md"
+                />
+                {/* Loading image */}
+                <div className="absolute bottom-0 w-full h-full flex flex-col">
+                  <div
+                    className={`flex-1 ${
+                      loadProcess > 0 && loadProcess < 100
+                        ? 'opacity-50 bg-lightest-gray flex items-center justify-center'
+                        : ''
+                    }`}
+                  >
+                    <FontAwesomeIcon
+                      icon={faSpinner}
+                      size="3x"
+                      className={`text-green-500 opacity-100 ${
+                        loadProcess > 0 && loadProcess < 100
+                          ? 'animate-spin'
+                          : 'hidden'
+                      } `}
+                    />
+                  </div>
+                  <div
+                    className={`bg-green-500 h-1 bottom-0 rounded-md ${
+                      loadProcess > 0 && loadProcess < 100 ? '' : 'hidden'
+                    }`}
+                    style={{
+                      width: `${Math.ceil(loadProcess)}%`,
+                    }}
+                  ></div>
+                </div>
+                <button
+                  className="absolute p-0.5 bg-orange-bg-btn rounded-full top-[-8px] right-[-8px] opacity-0 group-hover:opacity-100 transition-all"
+                  onClick={() => {
+                    handleDeleteImage();
+                  }}
                 >
                   <FontAwesomeIcon
-                    icon={faSpinner}
-                    size='3x'
-                    className={`text-green-500 opacity-100 ${
-                      loadProcess > 0 && loadProcess < 100 ? 'animate-spin' : 'hidden'
-                    } `}
+                    icon={faXmark}
+                    className="w-4 h-4 block text-white"
                   />
-                </div>
-                <div
-                  className={`bg-green-500 h-1 bottom-0 rounded-md ${
-                    loadProcess > 0 && loadProcess < 100 ? '' : 'hidden'
-                  }`}
-                  style={{
-                    width: `${Math.ceil(loadProcess)}%`,
-                  }}
-                ></div>
+                </button>
               </div>
-              <button
-                className='absolute p-0.5 bg-orange-bg-btn rounded-full top-[-8px] right-[-8px] opacity-0 group-hover:opacity-100 transition-all'
-                onClick={() => {
-                  handleDeleteImage();
-                }}
-              >
-                <FontAwesomeIcon icon={faXmark} className='w-4 h-4 block text-white' />
-              </button>
-            </div>
-          ) : (
-            <div className='flex flex-col items-center border border-dark-gray-bg rounded-[4px] mt-1 py-6 image-upload'>
-              <FontAwesomeIcon icon={faUpload} className='w-8 h-8 block p-2' />
-              <span className='text-xs italic text-light-gray-font'>{props.placeholder}</span>
-            </div>
-          )}
-        </label>
+            ) : (
+              <div className="flex flex-col items-center border border-dark-gray-bg rounded-[4px] mt-1 py-6 image-upload">
+                <FontAwesomeIcon
+                  icon={faUpload}
+                  className="w-8 h-8 block p-2"
+                />
+                <span className="text-xs italic text-light-gray-font">
+                  {props.placeholder}
+                </span>
+              </div>
+            )}
+          </label>
+          <div className="text-xs text-error-font leading-snugs mt-1.5">
+            <ErrorMessage name={name} />
+          </div>
+        </div>
       ) : (
         // Text Input
-        <div className='flex flex-col w-full py-3 '>
-          <label htmlFor={name} className='font-semibold mb-2'>
+        <div className="flex flex-col w-full py-3 ">
+          <label htmlFor={name} className="font-semibold mb-2">
             {label}
           </label>
           <div
@@ -130,10 +164,16 @@ const BlogInput = ({ label, name, error, icon, ...props }) => {
               error ? 'border-error-font focus-within:border-error-font' : ''
             }`}
           >
-            <input id={name} name={name} {...field} {...props} className='w-full text-lighter-gray-font text-sm' />
+            <input
+              id={name}
+              name={name}
+              {...field}
+              {...props}
+              className="w-full text-lighter-gray-font text-sm"
+            />
             {icon}
           </div>
-          <div className='text-xs text-error-font leading-snugs mt-1.5'>
+          <div className="text-xs text-error-font leading-snugs mt-1.5">
             <ErrorMessage name={name} />
           </div>
         </div>

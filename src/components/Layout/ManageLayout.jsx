@@ -12,6 +12,7 @@ const manageList = [
   { name: 'Tác giả đang theo dõi', slug: 'tac-gia-dang-theo-doi' },
   { name: 'Chủ đề', slug: 'them-chu-de' },
   { name: 'Quản lý nội dung', slug: 'quan-ly-noi-dung' },
+  { name: 'Cập nhật bài viết', slug: 'chinh-sua-bai-viet/dMinF2wOOiGcAajD3yd8' },
 ];
 const ManageLayout = ({ children }) => {
   const { userInfo } = useAuth();
