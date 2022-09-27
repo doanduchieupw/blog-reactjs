@@ -1,11 +1,10 @@
-import { Login, Home, SignUp, NotFound } from '../pages';
+import { Login, Home, SignUp, NotFound, FullBlog } from '../pages';
 import { CreateBlog, CreateTopic, ManageBlog, SettingUser, UpdateBlog } from '../pages/manage';
 import { AuthLayout, MainLayout, ManageLayout } from '../components/Layout';
 
 //Public Routes
 const publicPath = [
   { path: '/', component: Home, layout: MainLayout },
-  { path: '/*', component: NotFound },
   { path: '/dang-nhap', component: Login, layout: AuthLayout },
   { path: '/dang-ky', component: SignUp, layout: AuthLayout },
   { path: '/quan-ly', component: CreateBlog, layout: ManageLayout },
@@ -17,7 +16,8 @@ const publicPath = [
   { path: '/quan-ly/them-chu-de', component: CreateTopic, layout: ManageLayout },
   { path: '/quan-ly/quan-ly-noi-dung', component: ManageBlog, layout: ManageLayout },
   { path: '/quan-ly/chinh-sua-bai-viet/:blogID', component: UpdateBlog, layout: ManageLayout },
-  ManageBlog,
+  { path: '/:slug', component: FullBlog, layout: MainLayout },
+  { path: '/*', component: NotFound },
 ];
 const privatePath = [];
 

@@ -1,5 +1,9 @@
 import React from 'react';
 import { Quill } from 'react-quill';
+import ImageUploader from 'quill-image-uploader';
+import axios from 'axios';
+
+Quill.register('modules/imageUploader', ImageUploader);
 
 // Custom Undo button icon component for Quill editor. You can import it directly
 // from 'quill/assets/icons/undo.svg' but I found that a number of loaders do not
@@ -50,6 +54,14 @@ export const modules = {
     delay: 500,
     maxStack: 100,
     userOnly: true,
+  },
+  imageUploader: {
+    upload: async (file) => {
+      const formData = new FormData();
+      formData.append('image', file);
+      const imgURL = await axios.post(`https://api.imgbb.com/1/upload?key=ba3c30c5e82434be56b4cece81e66674`, formData);
+      return imgURL?.data?.data?.display_url;
+    },
   },
 };
 

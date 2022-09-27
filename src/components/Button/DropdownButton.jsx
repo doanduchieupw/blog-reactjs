@@ -88,7 +88,7 @@ const DropdownButton = ({ title, submenu, name, type, setValue, value, ...props 
                     onClick={() => {
                       setShow(false);
                       setValueDropdown(item.name);
-                      // setValue(name, item.name);
+                      setValue(name, item.name);
                       setValue(item.name);
                     }}
                   >

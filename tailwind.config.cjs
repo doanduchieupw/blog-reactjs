@@ -37,6 +37,7 @@ module.exports = {
         'lighter-gray-font': '#757575',
         'gray-submenu-font': '#555555',
         'green-font': '#428F5E',
+        'light-green-font': '#00773e',
         'gray-border': '#757575',
         'gray-bg-btn': '#F2F3F5',
         'green-bg-btn': '#12D8B2',
