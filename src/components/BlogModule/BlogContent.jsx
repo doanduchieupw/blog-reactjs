@@ -2,7 +2,8 @@ import parse from 'html-react-parser';
 import styled from 'styled-components';
 
 const BlogContentContainer = styled.div`
-  p {
+  p,
+  li {
     color: #292929;
     font-family: Merriweather;
     font-size: 18px;
@@ -14,6 +15,12 @@ const BlogContentContainer = styled.div`
       padding: 0;
     }
   }
+  a {
+    color: #3172d8;
+    font-family: Merriweather;
+    font-size: 18px;
+    line-height: 32px;
+  }
 
   h2 {
     color: #292929;
@@ -23,10 +30,26 @@ const BlogContentContainer = styled.div`
     padding: 0 16px;
     margin-bottom: 16px;
   }
-  img {
-    max-width: 567px;
-    width: 100%;
+
+  ul {
+    padding: 0 16px 0 40px;
+    margin-bottom: 32px;
+    list-style: disc;
+    li {
+      padding: 0;
+    }
   }
+  figure {
+    img {
+      max-width: 567px;
+      width: 100%;
+    }
+
+    figcaption {
+      margin: 8px 16px 32px;
+    }
+  }
+
   @media (min-width: 576px) {
     p {
       padding: 0;
@@ -34,7 +57,7 @@ const BlogContentContainer = styled.div`
   }
 `;
 const BlogContent = ({ content }) => {
-  return <BlogContentContainer className='w-[90%] mx-auto'>{parse(content)}</BlogContentContainer>;
+  return <BlogContentContainer className=''>{parse(content)}</BlogContentContainer>;
 };
 
 export default BlogContent;

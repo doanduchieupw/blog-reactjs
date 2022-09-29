@@ -6,7 +6,6 @@ const BlogHeaderContainer = styled.div`
   }
 `;
 const BlogHeader = ({ title, process }) => {
-  console.log('🚀 ~ file: BlogHeader.jsx ~ line 9 ~ BlogHeader ~ process', process);
   return (
     <BlogHeaderContainer
       process={process}

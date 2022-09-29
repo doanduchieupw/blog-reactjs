@@ -61,7 +61,7 @@ const FullBlog = ({ layoutRef }) => {
   return (
     <div>
       {blog && (
-        <div className='relative min-h-full'>
+        <div className='relative min-h-full pt-14'>
           {showBlogHeader.state && <BlogHeader title={blog.titleBlog} process={showBlogHeader.position} />}
           <div className='max-w-6xl'>
             <div className=''>
@@ -77,6 +77,9 @@ const FullBlog = ({ layoutRef }) => {
                   <h1 className='text-[26px] leading-[34px] font-bold text-primary-bg tracking-normal my-4'>
                     {blog.titleBlog}
                   </h1>
+                  <div className='mb-4 text-sm leading-6 text-lighter-gray-font font-merriweather '>
+                    {blog.excerptBlog}
+                  </div>
                   {/* Author */}
                   <div className='flex gap-x-2 items-center'>
                     <Link to={`/${blog.user.id}`} className='w-10 h-10 bg-transparent cursor-pointer'>
@@ -101,6 +104,9 @@ const FullBlog = ({ layoutRef }) => {
               {/* Second part of blog */}
               <div className='my-8 mx-auto'>
                 <img src={blog.imageBlog} alt={blog.titleBlog} className='w-full h-auto' />
+                <p className='mt-2 mb-8 px-4 font-merriweather font-light text-sm leading-[22px] text-light-gray-font'>
+                  {blog.captionImageBlog}
+                </p>
               </div>
               {/* Content of blog */}
               <BlogContent content={blog.contentBlog} />

@@ -9,19 +9,20 @@ import * as yup from 'yup';
 import { db } from '../../firebase-app/firebase-config';
 import { useAuth } from '../../contexts/auth-context';
 import { BlogInput } from '../../components/Input/';
-// import { Editor } from '../../components/Editor';
 import { DropdownButton, NormalButton } from '../../components/Button';
 import { TitleManage } from '../../components/ManageModule';
 import { blogStatus } from '../../utils/constants';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faSpinner } from '@fortawesome/free-solid-svg-icons';
-import CKEditorCustom from '../../components/Editor/CKEditorCustom';
+import { CKEditorCustom } from '../../components/Editor/';
 
 const initialBlog = {
   titleBlog: '',
   slugBlog: '',
   keywordBlog: '',
   imageBlog: '',
+  captionImageBlog: '',
+  excerptBlog: '',
   topic: '',
   contentBlog: '',
   status: blogStatus.PENDING,
@@ -32,12 +33,15 @@ const blogSchema = yup.object().shape({
   keywordBlog: yup.string().required('Đây là thông tin bắt buộc.'),
   imageBlog: yup.string().required('Đây là thông tin bắt buộc.'),
   topic: yup.string().required('Đây là thông tin bắt buộc.'),
+  captionImageBlog: yup.string().required('Đây là thông tin bắt buộc.'),
+  excerptBlog: yup.string().required('Đây là thông tin bắt buộc.'),
 });
 
 const CreateBlog = () => {
   const { userInfo } = useAuth();
   const [topic, setTopic] = useState([]);
   const [contentEditor, setContentEditor] = useState('');
+  console.log('🚀 ~ file: CreateBlog.jsx ~ line 41 ~ CreateBlog ~ contentEditor', contentEditor);
   const [loading, setLoading] = useState(false);
 
   //get topic in db
@@ -101,7 +105,9 @@ const CreateBlog = () => {
               <BlogInput label='Tiêu đề' name='titleBlog' placeholder='Tạo tiêu đề bài viết' />
               <BlogInput label='Đường dẫn' name='slugBlog' placeholder='VD: vi-du-ten-tieu-de' />
               <BlogInput type='file' label='Ảnh bìa' name='imageBlog' placeholder='Lựa chọn một ảnh bìa.' />
+              <BlogInput label='Chú thích ảnh bìa' name='captionImageBlog' placeholder='VD: Nguồn của ảnh bìa' />
               <BlogInput label='Từ khóa' name='keywordBlog' placeholder='Công nghệ, khoa học, ... .' />
+              <BlogInput label='Trích đoạn' name='excerptBlog' placeholder='Viết trích đoạn cho blog' />
               <DropdownButton
                 title='Chủ đề'
                 submenu={topic}
@@ -119,7 +125,12 @@ const CreateBlog = () => {
                 value={contentEditor}
                 setValue={setContentEditor}
               /> */}
-              <CKEditorCustom />
+              <CKEditorCustom
+                title='Nội dung'
+                placeholder='Soạn nội dung blog tại đây...'
+                value={contentEditor}
+                setValue={setContentEditor}
+              />
             </div>
             <NormalButton
               type='submit'
