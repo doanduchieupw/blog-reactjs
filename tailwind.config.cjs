@@ -82,8 +82,8 @@ module.exports = {
           '100%': { transform: 'translateY(0%)', opacity: 1 },
         },
         upToDown: {
-          '0%': { transform: 'translateY(0%)' },
-          '100%': { transform: 'translateY(100%)' },
+          '0%': { transform: 'translateY(-100%)', opacity: 0 },
+          '100%': { transform: 'translateY(0%)', opacity: 1 },
         },
       },
     },

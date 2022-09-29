@@ -1,16 +1,6 @@
 import { useState, useEffect } from 'react';
 import { Formik } from 'formik';
-import {
-  addDoc,
-  collection,
-  doc,
-  getDoc,
-  getDocs,
-  query,
-  serverTimestamp,
-  updateDoc,
-  where,
-} from 'firebase/firestore';
+import { addDoc, collection, doc, getDoc, getDocs, query, serverTimestamp, updateDoc, where } from 'firebase/firestore';
 import slugify from 'slugify';
 import 'antd/dist/antd.css';
 import { notification } from 'antd';
@@ -22,7 +12,7 @@ import { useParams } from 'react-router-dom';
 import { db } from '../../firebase-app/firebase-config';
 import { useAuth } from '../../contexts/auth-context';
 import { BlogInput } from '../../components/Input/';
-import { Editor } from '../../components/Editor';
+// import { Editor } from '../../components/Editor';
 import { DropdownButton, NormalButton } from '../../components/Button';
 import { TitleManage } from '../../components/ManageModule';
 import { blogStatus } from '../../utils/constants';
@@ -74,10 +64,7 @@ const UpdateBlog = () => {
     try {
       setLoading(true);
       const dataBlogClone = { ...dataBlog };
-      dataBlogClone.slugBlog = slugify(
-        dataBlog.slugBlog || dataBlog.titleBlog,
-        { lower: true }
-      );
+      dataBlogClone.slugBlog = slugify(dataBlog.slugBlog || dataBlog.titleBlog, { lower: true });
       const blogRef = doc(db, 'blogs', blogID);
       const test = await updateDoc(blogRef, {
         ...dataBlogClone,
@@ -87,13 +74,13 @@ const UpdateBlog = () => {
         values: {
           ...dataBlogClone,
         },
-      })
+      });
       notification['success']({
         message: 'Thành công',
         description: 'Cập nhật bài viết thành công!',
       });
     } catch (error) {
-      console.log("🚀 ~ file: UpdateBlog.jsx ~ line 91 ~ handleSubmit ~ error", error)
+      console.log('🚀 ~ file: UpdateBlog.jsx ~ line 91 ~ handleSubmit ~ error', error);
       setLoading(false);
       notification['error']({
         message: 'Có lỗi',
@@ -104,22 +91,15 @@ const UpdateBlog = () => {
     }
   };
   return (
-    <div className="">
-      <TitleManage title="Cập nhật bài viết" />
-      <Formik
-        initialValues={initialBlog}
-        onSubmit={handleSubmit}
-        validationSchema={blogSchema}
-      >
+    <div className=''>
+      <TitleManage title='Cập nhật bài viết' />
+      <Formik initialValues={initialBlog} onSubmit={handleSubmit} validationSchema={blogSchema}>
         {(formik) => {
           useEffect(() => {
             const fetchData = async () => {
               const blogRef = doc(db, 'blogs', blogID);
               const blogQuery = await getDoc(blogRef);
-              console.log(
-                '🚀 ~ file: UpdateBlog.jsx ~ line 122 ~ fetchData ~ blogQuery',
-                blogQuery.data()
-              );
+              console.log('🚀 ~ file: UpdateBlog.jsx ~ line 122 ~ fetchData ~ blogQuery', blogQuery.data());
               formik.resetForm({
                 values: {
                   ...blogQuery.data(),
@@ -129,40 +109,23 @@ const UpdateBlog = () => {
             fetchData();
           }, []);
           return (
-            <form className="" onSubmit={formik.handleSubmit}>
-              <div className="grid grid-cols-2 gap-x-2">
-                <BlogInput
-                  label="Tiêu đề"
-                  name="titleBlog"
-                  placeholder="Tạo tiêu đề bài viết"
-                />
-                <BlogInput
-                  label="Đường dẫn"
-                  name="slugBlog"
-                  placeholder="VD: vi-du-ten-tieu-de"
-                />
-                <BlogInput
-                  type="file"
-                  label="Ảnh bìa"
-                  name="imageBlog"
-                  placeholder="Lựa chọn một ảnh bìa."
-                />
-                <BlogInput
-                  label="Từ khóa"
-                  name="keywordBlog"
-                  placeholder="Công nghệ, khoa học, ... ."
-                />
+            <form className='' onSubmit={formik.handleSubmit}>
+              <div className='grid grid-cols-2 gap-x-2'>
+                <BlogInput label='Tiêu đề' name='titleBlog' placeholder='Tạo tiêu đề bài viết' />
+                <BlogInput label='Đường dẫn' name='slugBlog' placeholder='VD: vi-du-ten-tieu-de' />
+                <BlogInput type='file' label='Ảnh bìa' name='imageBlog' placeholder='Lựa chọn một ảnh bìa.' />
+                <BlogInput label='Từ khóa' name='keywordBlog' placeholder='Công nghệ, khoa học, ... .' />
                 <DropdownButton
-                  title="Chủ đề"
+                  title='Chủ đề'
                   submenu={topic}
-                  name="topic"
-                  placeholder="Lựa chọn chủ đề"
-                  type="click"
+                  name='topic'
+                  placeholder='Lựa chọn chủ đề'
+                  type='click'
                   setValue={formik.setFieldValue}
                   value={formik.values.topic}
                 />
               </div>
-              <div className="mt-3 min-h-[200px] flex flex-col">
+              {/* <div className="mt-3 min-h-[200px] flex flex-col">
                 <Editor
                   className="flex-1"
                   title="Nội dung"
@@ -170,22 +133,13 @@ const UpdateBlog = () => {
                   value={contentEditor}
                   setValue={setContentEditor}
                 />
-              </div>
+              </div> */}
               <NormalButton
-                type="submit"
-                title={
-                  loading ? (
-                    <FontAwesomeIcon
-                      icon={faSpinner}
-                      className="animate-spin"
-                    />
-                  ) : (
-                    'Cập nhật bài viết'
-                  )
-                }
-                className={`p-2 mx-auto block mt-4 ${
-                  !formik.isValid ? 'opacity-50' : 'opacity-100'
-                } ${loading ? 'opacity-70' : ''} `}
+                type='submit'
+                title={loading ? <FontAwesomeIcon icon={faSpinner} className='animate-spin' /> : 'Cập nhật bài viết'}
+                className={`p-2 mx-auto block mt-4 ${!formik.isValid ? 'opacity-50' : 'opacity-100'} ${
+                  loading ? 'opacity-70' : ''
+                } `}
               />
             </form>
           );

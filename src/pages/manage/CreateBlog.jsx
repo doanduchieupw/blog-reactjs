@@ -9,12 +9,13 @@ import * as yup from 'yup';
 import { db } from '../../firebase-app/firebase-config';
 import { useAuth } from '../../contexts/auth-context';
 import { BlogInput } from '../../components/Input/';
-import { Editor } from '../../components/Editor';
+// import { Editor } from '../../components/Editor';
 import { DropdownButton, NormalButton } from '../../components/Button';
 import { TitleManage } from '../../components/ManageModule';
 import { blogStatus } from '../../utils/constants';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faSpinner } from '@fortawesome/free-solid-svg-icons';
+import CKEditorCustom from '../../components/Editor/CKEditorCustom';
 
 const initialBlog = {
   titleBlog: '',
@@ -111,13 +112,14 @@ const CreateBlog = () => {
               />
             </div>
             <div className='mt-3 min-h-[200px] flex flex-col'>
-              <Editor
+              {/* <Editor
                 className='flex-1'
                 title='Nội dung'
                 placeholder='Soạn nội dung blog tại đây...'
                 value={contentEditor}
                 setValue={setContentEditor}
-              />
+              /> */}
+              <CKEditorCustom />
             </div>
             <NormalButton
               type='submit'
