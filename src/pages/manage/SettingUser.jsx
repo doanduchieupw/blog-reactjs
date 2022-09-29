@@ -1,12 +1,7 @@
 import { useState, useEffect } from 'react';
 import { Formik } from 'formik';
 import * as yup from 'yup';
-import {
-  getStorage,
-  ref,
-  uploadBytesResumable,
-  getDownloadURL,
-} from 'firebase/storage';
+import { getStorage, ref, uploadBytesResumable, getDownloadURL } from 'firebase/storage';
 import { doc, getDoc, updateDoc } from 'firebase/firestore';
 
 import { NormalButton } from '../../components/Button';
@@ -17,12 +12,7 @@ import { auth, db } from '../../firebase-app/firebase-config';
 import { faFileUpload } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { LineSkeleton } from '../../components/LoadingSkeleton';
-import {
-  EmailAuthProvider,
-  reauthenticateWithCredential,
-  updatePassword,
-  updateProfile,
-} from 'firebase/auth';
+import { EmailAuthProvider, reauthenticateWithCredential, updatePassword, updateProfile } from 'firebase/auth';
 import { notification } from 'antd';
 
 const initialUser = {
@@ -45,10 +35,7 @@ const updateProfileSchema = yup.object().shape({
   confirmNewPassword: yup
     .string()
     // .required('Đây là thông tin bắt buộc.')
-    .oneOf(
-      [yup.ref('newPassword'), null],
-      'Xác nhận lại mật khẩu chưa đúng. Hãy nhập lại!'
-    ),
+    .oneOf([yup.ref('newPassword'), null], 'Xác nhận lại mật khẩu chưa đúng. Hãy nhập lại!'),
 });
 
 const storage = getStorage();
@@ -61,10 +48,7 @@ const SettingUser = () => {
     console.log(values);
     try {
       if (values.oldPassword === '') {
-        if (
-          values.photoAvatar !== userInfo.photoURL ||
-          values.fullname !== userInfo.displayName
-        ) {
+        if (values.photoAvatar !== userInfo.photoURL || values.fullname !== userInfo.displayName) {
           await updateProfile(auth.currentUser, {
             displayName: values.fullname,
             photoURL: values.photoAvatar,
@@ -80,10 +64,7 @@ const SettingUser = () => {
           });
         }
       } else {
-        if (
-          values.photoAvatar !== userInfo.photoURL ||
-          values.fullname !== userInfo.displayName
-        ) {
+        if (values.photoAvatar !== userInfo.photoURL || values.fullname !== userInfo.displayName) {
           await updateProfile(auth.currentUser, {
             displayName: values.fullname,
             photoURL: values.photoAvatar,
@@ -94,10 +75,7 @@ const SettingUser = () => {
             photoAvatar: values.photoAvatar,
           });
         }
-        const credential = EmailAuthProvider.credential(
-          auth.currentUser.email,
-          values.oldPassword
-        );
+        const credential = EmailAuthProvider.credential(auth.currentUser.email, values.oldPassword);
         await reauthenticateWithCredential(auth.currentUser, credential);
         await updatePassword(auth.currentUser, values.newPassword);
         const userRef = doc(db, 'users', userInfo.uid);
@@ -113,34 +91,21 @@ const SettingUser = () => {
         });
       }
     } catch (err) {
-      console.log(
-        '🚀 ~ file: SettingUser.jsx ~ line 90 ~ handleSubmit ~ err',
-        err
-      );
+      console.log('🚀 ~ file: SettingUser.jsx ~ line 90 ~ handleSubmit ~ err', err);
       const errorCode = err.code;
       const errorMessage = err.message;
       if (errorCode === 'auth/wrong-password') {
-        actions.setFieldError(
-          'oldPassword',
-          'Mật khẩu cũ chưa đúng, hãy nhập lại!'
-        );
+        actions.setFieldError('oldPassword', 'Mật khẩu cũ chưa đúng, hãy nhập lại!');
       } else if (errorCode === 'auth/too-many-requests') {
-        actions.setFieldError(
-          'oldPassword',
-          'Thử lại quá nhiều lần, vui lòng đợi'
-        );
+        actions.setFieldError('oldPassword', 'Thử lại quá nhiều lần, vui lòng đợi');
       }
       setEdit(true);
     }
   };
   return (
     <div>
-      <TitleManage title="Thông tin tài khoản" />
-      <Formik
-        initialValues={initialUser}
-        validationSchema={updateProfileSchema}
-        onSubmit={handleSubmit}
-      >
+      <TitleManage title='Thông tin tài khoản' />
+      <Formik initialValues={initialUser} validationSchema={updateProfileSchema} onSubmit={handleSubmit}>
         {(formik) => {
           useEffect(() => {
             const fetchData = async () => {
@@ -148,15 +113,9 @@ const SettingUser = () => {
                 const userRef = doc(db, 'users', userInfo.uid);
                 const userSnapshot = await getDoc(userRef);
                 formik.setFieldValue('fullname', userSnapshot.data().fullname);
-                formik.setFieldValue(
-                  'photoAvatar',
-                  userSnapshot.data().photoAvatar
-                );
+                formik.setFieldValue('photoAvatar', userSnapshot.data().photoAvatar);
               } catch (err) {
-                console.log(
-                  '🚀 ~ file: SettingUser.jsx ~ line 46 ~ fetchData ~ r',
-                  err
-                );
+                console.log('🚀 ~ file: SettingUser.jsx ~ line 46 ~ fetchData ~ r', err);
               }
             };
             const fetchDataTimeoutID = setTimeout(() => fetchData(), 2000);
@@ -183,8 +142,7 @@ const SettingUser = () => {
               'state_changed',
               (snapshot) => {
                 // Get task progress, including the number of bytes uploaded and the total number of bytes to be uploaded
-                const progress =
-                  (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
+                const progress = (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
                 console.log('Upload is ' + progress + '% done');
                 setUploadPercent(Math.floor(progress));
                 switch (snapshot.state) {
@@ -210,113 +168,102 @@ const SettingUser = () => {
           };
 
           return (
-            <form className="relative" onSubmit={formik.handleSubmit}>
+            <form className='relative' onSubmit={formik.handleSubmit}>
               <NormalButton
                 title={`${isEdit ? 'OK' : 'Sửa'}`}
                 type={`${isEdit ? 'button' : 'submit'}`}
                 onClick={() => setEdit(!isEdit)}
                 className={`absolute -top-20 right-0 ${
-                  isEdit
-                    ? 'bg-transparent text-[#00773e] border border-[#00773e]'
-                    : ''
+                  isEdit ? 'bg-white text-[#00773e] border border-[#00773e]' : ''
                 }`}
               />
-              <div className="flex w-full mt-8">
-                <div className="w-1/4 flex justify-center">
-                  <div className="relative group w-32 h-32">
+              <div className='flex w-full mt-8'>
+                <div className='w-1/4 flex justify-center'>
+                  <div className='relative group w-32 h-32'>
                     {formik.values.photoAvatar ? (
-                      <div className="w-full h-full">
+                      <div className='w-full h-full'>
                         <img
                           src={formik.values.photoAvatar}
                           alt={userInfo.displayName}
-                          className="w-full h-full object-cover rounded-full"
+                          className='w-full h-full object-cover rounded-full'
                         />
                         {uploadPercent > 0 && uploadPercent < 100 && (
-                          <span className="text-white text-3xl font-bold absolute top-5 left-0 right-0 text-center">{`${uploadPercent} %`}</span>
+                          <span className='text-white text-3xl font-bold absolute top-5 left-0 right-0 text-center'>{`${uploadPercent} %`}</span>
                         )}
                       </div>
                     ) : (
-                      <div className="w-full h-full rounded-full border-4 border-transparent border-t-gray-border animate-spin"></div>
+                      <div className='w-full h-full rounded-full border-4 border-transparent border-t-gray-border animate-spin'></div>
                     )}
                     {isEdit && (
                       <label
-                        htmlFor="photoAvatar"
-                        className="absolute -bottom-16 w-32 h-16 rounded-b-full opacity-70 bg-slate-200 hidden group-hover:block group-hover:bottom-0 duration-500 "
+                        htmlFor='photoAvatar'
+                        className='absolute -bottom-16 w-32 h-16 rounded-b-full opacity-70 bg-slate-200 hidden group-hover:block group-hover:bottom-0 duration-500 '
                       >
                         <input
-                          type="file"
-                          id="photoAvatar"
-                          name="photoAvatar"
-                          className="hidden"
+                          type='file'
+                          id='photoAvatar'
+                          name='photoAvatar'
+                          className='hidden'
                           onChange={handleImageSelect}
                         />
-                        <div className="flex items-center justify-center gap-x-2 text-black h-full">
-                          <span className="font-semibold">Tải ảnh</span>
+                        <div className='flex items-center justify-center gap-x-2 text-black h-full'>
+                          <span className='font-semibold'>Tải ảnh</span>
                           <FontAwesomeIcon icon={faFileUpload} />
                         </div>
                       </label>
                     )}
                   </div>
                 </div>
-                <div className="w-3/4 flex flex-col items-start">
+                <div className='w-3/4 flex flex-col items-start'>
                   {isEdit ? (
                     <input
-                      name="fullname"
-                      className="text-[32px] text-primary-bg font-semibold leading-[1.75em] border-none"
+                      name='fullname'
+                      className='text-[32px] text-primary-bg font-semibold leading-[1.75em] border-none'
                       value={formik.values.fullname}
                       onChange={formik.handleChange}
                     />
                   ) : formik.values.fullname ? (
-                    <p className="text-[32px] text-gray-submenu-font font-semibold leading-[1.75em]">
+                    <p className='text-[32px] text-gray-submenu-font font-semibold leading-[1.75em]'>
                       {formik.values.fullname}
                     </p>
                   ) : (
-                    <LineSkeleton className="h-14 w-1/2" />
+                    <LineSkeleton className='h-14 w-1/2' />
                   )}
-                  <p className="text-sm text-gray-submenu-font mt-2 mb-[20px]">
-                    Thành viên
-                  </p>
+                  <p className='text-sm text-gray-submenu-font mt-2 mb-[20px]'>Thành viên</p>
                   <BlogInput
-                    name="description"
-                    placeholder="Giới thiệu về bản thân"
+                    name='description'
+                    placeholder='Giới thiệu về bản thân'
                     disabled={isEdit ? false : true}
-                    className="min-h-[100px]"
+                    className='min-h-[100px]'
                   ></BlogInput>
                 </div>
               </div>
               {/* Change password */}
-              <TitleManage title="Đổi mật khẩu" className="mt-4" />
-              <div className="w-1/2">
+              <TitleManage title='Đổi mật khẩu' className='mt-4' />
+              <div className='w-1/2'>
                 <BlogInput
-                  name="oldPassword"
-                  type="password"
-                  placeholder="Mật khẩu cũ"
+                  name='oldPassword'
+                  type='password'
+                  placeholder='Mật khẩu cũ'
                   disabled={isEdit ? false : true}
-                  error={Boolean(
-                    formik?.errors?.oldPassword && formik.touched?.oldPassword
-                  )}
-                  autoComplete="off"
+                  error={Boolean(formik?.errors?.oldPassword && formik.touched?.oldPassword)}
+                  autoComplete='off'
                 />
                 <BlogInput
-                  name="newPassword"
-                  type="password"
-                  placeholder="Mật khẩu mới"
+                  name='newPassword'
+                  type='password'
+                  placeholder='Mật khẩu mới'
                   disabled={isEdit ? false : true}
-                  autoComplete="off"
-                  error={Boolean(
-                    formik?.errors?.newPassword && formik.touched?.newPassword
-                  )}
+                  autoComplete='off'
+                  error={Boolean(formik?.errors?.newPassword && formik.touched?.newPassword)}
                 />
                 <BlogInput
-                  name="confirmNewPassword"
-                  type="password"
-                  placeholder="Nhập lại mật khẩu mới"
+                  name='confirmNewPassword'
+                  type='password'
+                  placeholder='Nhập lại mật khẩu mới'
                   disabled={isEdit ? false : true}
-                  autoComplete="off"
-                  error={Boolean(
-                    formik?.errors?.confirmNewPassword &&
-                      formik.touched?.confirmNewPassword
-                  )}
+                  autoComplete='off'
+                  error={Boolean(formik?.errors?.confirmNewPassword && formik.touched?.confirmNewPassword)}
                 />
               </div>
             </form>
