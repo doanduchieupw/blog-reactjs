@@ -1,29 +1,33 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { Link, useNavigate, useParams } from 'react-router-dom';
 import { collection, getDocs, query, where } from 'firebase/firestore';
 import { db } from '../firebase-app/firebase-config';
 import { fromUnixTime, formatDistanceToNow } from 'date-fns';
 import { vi } from 'date-fns/locale';
 import { BlogHeader } from '../components/Header';
-import { BlogContent } from '../components/BlogModule';
+import { BlogContent, BlogAction } from '../components/BlogModule';
+import { CommentModal } from '../components/CommentModule';
 
 const FullBlog = ({ layoutRef }) => {
   const { slug } = useParams();
   const [blog, setBlog] = useState();
+  const [isOpenComment, setOpenComment] = useState(false);
   const [showBlogHeader, setShowBlogHeader] = useState({ state: false, position: 0 });
   const navigate = useNavigate();
+  const contentRef = useRef();
+  const [commentCount, setCommentCount] = useState(0);
   // const positionScroll = useReading();
   useEffect(() => {
     const handleScroll = (event) => {
       if (layoutRef.current.scrollTop > 500) {
         setShowBlogHeader({
           state: true,
-          position: Math.floor((layoutRef.current.scrollTop / (layoutRef.current.scrollHeight - 600)) * 100),
+          position: Math.floor((layoutRef.current.scrollTop / (contentRef.current.scrollHeight - 500)) * 100),
         });
       } else {
         setShowBlogHeader({
           state: false,
-          position: Math.floor((layoutRef.current.scrollTop / (layoutRef.current.scrollHeight - 600)) * 100),
+          position: Math.floor((layoutRef.current.scrollTop / (contentRef.current.scrollHeight - 500)) * 100),
         });
       }
     };
@@ -63,7 +67,7 @@ const FullBlog = ({ layoutRef }) => {
       {blog && (
         <div className='relative min-h-full pt-14'>
           {showBlogHeader.state && <BlogHeader title={blog.titleBlog} process={showBlogHeader.position} />}
-          <div className='max-w-6xl'>
+          <div ref={contentRef} className='max-w-6xl'>
             <div className=''>
               {/* First part of blog */}
               <div className=' w-[90%] max-w-6xl mx-auto '>
@@ -112,6 +116,21 @@ const FullBlog = ({ layoutRef }) => {
               <BlogContent content={blog.contentBlog} />
             </div>
           </div>
+          {showBlogHeader.state && (
+            <BlogAction
+              title={blog.titleBlog}
+              process={showBlogHeader.position}
+              setOpen={setOpenComment}
+              commentCount={commentCount}
+            />
+          )}
+          <CommentModal
+            open={isOpenComment}
+            setOpen={setOpenComment}
+            blog={blog}
+            commentCount={commentCount}
+            setCommentCount={setCommentCount}
+          />
         </div>
       )}
     </div>

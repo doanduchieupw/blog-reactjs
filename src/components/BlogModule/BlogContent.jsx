@@ -14,6 +14,14 @@ const BlogContentContainer = styled.div`
     :has(img) {
       padding: 0;
     }
+
+    strong {
+      color: #292929;
+      display: inline;
+      font-family: Merriweather;
+      font-weight: 600;
+      line-height: 22px;
+    }
   }
   a {
     color: #3172d8;
@@ -47,6 +55,12 @@ const BlogContentContainer = styled.div`
 
     figcaption {
       margin: 8px 16px 32px;
+      color: #757575;
+      font-family: Merriweather;
+      font-size: 14px;
+      font-style: normal;
+      font-weight: 300;
+      line-height: 24px;
     }
   }
 

@@ -5,24 +5,53 @@ import 'react-quill/dist/quill.snow.css';
 import styled from 'styled-components';
 
 const EditorContainer = styled.div`
+  flex: 1;
   #toolbar {
-    border-radius: 4px 4px 0 0;
+    border-radius: 0 0 4px 4px;
+    background-color: #fafafa;
   }
   .ql-container.ql-snow {
-    border: 1px solid #ccc;
-    border-radius: 0 0 4px 4px;
+    border: transparent;
+    border-radius: 4px 4px 0 0;
     .ql-editor {
-      height: 400px;
       border-radius: 0 0 4px 4px;
+      background-color: #fafafa;
     }
+    .ql-editor.ql-blank::before {
+      font-family: 'Inter';
+      font-style: normal;
+      font-size: 16px;
+    }
+  }
+  .ql-snow.ql-toolbar {
+    border: transparent;
+    border-top: 1px solid #ccc;
+    ::after {
+      content: none;
+    }
+  }
+
+  p {
+    color: #454647;
+    font-family: 'Inter';
+    font-size: 16px;
+  }
+  strong {
+    font-weight: bold;
+  }
+  blockquote {
+    color: #454647;
+    font-family: 'Inter';
+    font-size: 16px;
+  }
+  pre {
+    color: #454647;
   }
 `;
 
-export const Editor = ({ title, value, setValue, ...props }) => {
+export const Editor = ({ value, setValue, ...props }) => {
   return (
     <EditorContainer {...props}>
-      <h3 className='font-semibold mb-2'>{title}</h3>
-      <EditorToolbar />
       <ReactQuill
         theme='snow'
         value={value}
@@ -31,6 +60,7 @@ export const Editor = ({ title, value, setValue, ...props }) => {
         modules={modules}
         formats={formats}
       />
+      <EditorToolbar />
     </EditorContainer>
   );
 };

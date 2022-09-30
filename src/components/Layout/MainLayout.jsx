@@ -4,7 +4,7 @@ import { FullHeader } from '../Header';
 const MainLayout = ({ children }) => {
   const layoutRef = useRef();
   return (
-    <div ref={layoutRef} className='h-screen overflow-scroll'>
+    <div ref={layoutRef} className='h-screen overflow-scroll scroll-smooth'>
       <FullHeader />
       {React.cloneElement(children, { layoutRef: layoutRef })}
       <Footer />
