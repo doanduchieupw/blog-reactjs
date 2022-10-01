@@ -25,7 +25,10 @@ const initialBlog = {
   excerptBlog: '',
   topic: '',
   contentBlog: '',
-  likeCount: 0,
+  like: {
+    count: 0,
+    user: [],
+  },
   commentBlog: [],
   status: blogStatus.PENDING,
 };

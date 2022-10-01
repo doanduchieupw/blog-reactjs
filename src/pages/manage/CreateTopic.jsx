@@ -23,8 +23,10 @@ const initialTopic = {
 };
 const handleSubmit = async (values, actions) => {
   try {
+    const cloneTopic = { ...values };
+    cloneTopic.slug = slugify(values.slug || values.name, { lower: true });
     const topicRef = collection(db, 'topic');
-    await addDoc(topicRef, values);
+    await addDoc(topicRef, cloneTopic);
     notification['success']({
       message: 'Thêm chủ đề thành công',
       description: 'Xem các chủ đề tại bảng dưới!',

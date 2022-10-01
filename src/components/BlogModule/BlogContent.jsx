@@ -65,8 +65,43 @@ const BlogContentContainer = styled.div`
   }
 
   @media (min-width: 576px) {
+    max-width: 540px;
+    margin: 0 auto;
     p {
       padding: 0;
+    }
+    h2 {
+      padding: 0;
+    }
+  }
+  @media (min-width: 1000px) {
+    max-width: none;
+    p {
+      margin: 0 auto 20px;
+      max-width: 568px;
+      width: 100%;
+    }
+    h2 {
+      margin: 0 auto 16px;
+      max-width: 568px;
+      font-size: 32px;
+      font-weight: 600;
+      line-height: 44px;
+    }
+    ul {
+      margin: 0 auto 32px;
+      max-width: 568px;
+    }
+    figure {
+      img,
+      figcaption {
+        max-width: 768px;
+        width: 100%;
+        margin: auto;
+      }
+      figcaption {
+        margin: 8px auto 32px;
+      }
     }
   }
 `;

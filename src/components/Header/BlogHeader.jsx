@@ -9,7 +9,7 @@ const BlogHeader = ({ title, process }) => {
   return (
     <BlogHeaderContainer
       process={process}
-      className='flex sticky top-0 left-0 w-screen bg-white h-16 z-[60] animate-switchDown'
+      className='flex sticky top-0 left-0 w-screen bg-white h-16 z-[60] animate-switchDown lg:hidden'
     >
       <h1 className='flex items-center px-2 my-4 text-lg font-bold tracking-wider border-r-2'>TechEBlog</h1>
       <div className='flex-1 flex flex-col ml-2 justify-center'>

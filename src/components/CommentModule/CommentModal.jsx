@@ -1,4 +1,4 @@
-import { createElement, useEffect, useState } from 'react';
+import { createElement, useEffect, useState, memo } from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faCaretDown, faClose } from '@fortawesome/free-solid-svg-icons';
 import { Avatar, Comment, Dropdown, Menu, notification, Space, Tooltip } from 'antd';
@@ -10,6 +10,9 @@ import { addDoc, collection, getDocs, query, serverTimestamp, where } from 'fire
 import { db } from '../../firebase-app/firebase-config';
 import parse from 'html-react-parser';
 import { DislikeFilled, DislikeOutlined, LikeFilled, LikeOutlined } from '@ant-design/icons';
+import { fromUnixTime, formatDistanceToNow, format } from 'date-fns';
+import { vi } from 'date-fns/locale';
+import { Link } from 'react-router-dom';
 
 const CommentModalContainer = styled.div`
   .ant-comment-content-detail {
@@ -18,6 +21,14 @@ const CommentModalContainer = styled.div`
     }
   }
 `;
+
+const covertTimeFromNow = (time) => {
+  return formatDistanceToNow(fromUnixTime(time), { locale: vi });
+};
+
+const getTime = (time) => {
+  return format(fromUnixTime(time), 'PPpp', { locale: vi });
+};
 
 const CommentModal = ({ open, setOpen, blog, commentCount, setCommentCount }) => {
   const { userInfo } = useAuth();
@@ -55,7 +66,7 @@ const CommentModal = ({ open, setOpen, blog, commentCount, setCommentCount }) =>
           ...doc.data(),
         });
       });
-      setCommentBox(resultComment);
+      setCommentBox(resultComment.reverse());
       setCommentCount((prev) => prev + resultComment.length);
     };
     fetchData();
@@ -129,7 +140,7 @@ const CommentModal = ({ open, setOpen, blog, commentCount, setCommentCount }) =>
           createdAt: serverTimestamp(),
         };
         await addDoc(replyRef, replyData);
-        setReplyBox([replyData, ...replyBox]);
+        setReplyBox([...replyBox, replyData]);
         // const
         notification['success']({
           message: 'Thành công',
@@ -202,62 +213,62 @@ const CommentModal = ({ open, setOpen, blog, commentCount, setCommentCount }) =>
           {/* Comment box */}
           <div className='pb-8'>
             {commentBox.length > 1 &&
-              commentBox?.map((item, index) => (
+              commentBox?.map((commentItem, index) => (
                 <Comment
                   actions={[
-                    <span onClick={() => like(item.id)}>
-                      {createElement(action === 'liked' && likes.id === item.id ? LikeFilled : LikeOutlined)}
+                    <span onClick={() => like(commentItem.id)}>
+                      {createElement(action === 'liked' && likes.id === commentItem.id ? LikeFilled : LikeOutlined)}
                       <span className='comment-action'>{1}</span>
                     </span>,
-                    <span onClick={() => dislike(item.id)}>
+                    <span onClick={() => dislike(commentItem.id)}>
                       {createElement(
-                        action === 'disliked' && dislikes.id === item.id ? DislikeFilled : DislikeOutlined
+                        action === 'disliked' && dislikes.id === commentItem.id ? DislikeFilled : DislikeOutlined
                       )}
                       <span className='comment-action'>{1}</span>
                     </span>,
-                    <span key='comment-basic-reply-to' onClick={() => setIsReply({ state: true, id: item.id })}>
+                    <span key='comment-basic-reply-to' onClick={() => setIsReply({ state: true, id: commentItem.id })}>
                       Trả lời
                     </span>,
                   ]}
-                  key={item.id}
-                  author={<a>{item.user.name}</a>}
-                  avatar={<Avatar src={item.user.avatar} alt={item.user.name} />}
-                  content={parse(item.text)}
+                  key={commentItem.id}
+                  author={<Link to={`/user/${commentItem.user.id}`}>{commentItem.user.name}</Link>}
+                  avatar={<Avatar src={commentItem.user.avatar} alt={commentItem.user.name} />}
+                  content={parse(commentItem.text)}
                   datetime={
-                    <Tooltip title='2016-11-22 11:22:33'>
-                      <span>8 hours ago</span>
+                    <Tooltip title={getTime(commentItem.createdAt.seconds)}>
+                      <span>{covertTimeFromNow(commentItem.createdAt.seconds)}</span>
                     </Tooltip>
                   }
                 >
                   {replyBox?.map(
                     (replyItem, index) =>
-                      replyItem.userReply.commentID === item.id && (
+                      replyItem.userReply.commentID === commentItem.id && (
                         <Comment
                           key={replyItem.id}
-                          author={<a>{replyItem.user.name}</a>}
+                          author={<Link to={`/user/${replyItem.user.id}`}>{replyItem.user.name}</Link>}
                           avatar={<Avatar src={replyItem.user.avatar} alt={replyItem.user.name} />}
                           content={parse(replyItem.text)}
                           datetime={
-                            <Tooltip title='2016-11-22 11:22:33'>
-                              <span>8 hours ago</span>
+                            <Tooltip title={getTime(replyItem.createdAt.seconds)}>
+                              <span>{covertTimeFromNow(replyItem.createdAt.seconds)}</span>
                             </Tooltip>
                           }
                         />
                       )
                   )}
-                  {isReply.state && isReply.id === item.id && (
+                  {isReply.state && isReply.id === commentItem.id && (
                     <div className='w-full'>
                       <CommentEditor value={reply} setValue={setReply} placeholder='Phản hồi bình luận' />
                       <div className='flex gap-x-1 mt-3'>
                         <NormalButton
                           title='Hủy'
                           className='w-full bg-white text-black'
-                          onClick={() => setIsReply({ state: false, id: item.id })}
+                          onClick={() => setIsReply({ state: false, id: commentItem.id })}
                         />
                         <NormalButton
                           title='TRẢ LỜI'
                           className='w-full'
-                          onClick={() => handleReply(item.id, item.user.name)}
+                          onClick={() => handleReply(commentItem.id, commentItem.user.name)}
                         />
                       </div>
                     </div>
@@ -271,4 +282,4 @@ const CommentModal = ({ open, setOpen, blog, commentCount, setCommentCount }) =>
   );
 };
 
-export default CommentModal;
+export default memo(CommentModal);

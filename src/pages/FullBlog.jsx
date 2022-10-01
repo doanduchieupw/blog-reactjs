@@ -67,10 +67,10 @@ const FullBlog = ({ layoutRef }) => {
       {blog && (
         <div className='relative min-h-full pt-14'>
           {showBlogHeader.state && <BlogHeader title={blog.titleBlog} process={showBlogHeader.position} />}
-          <div ref={contentRef} className='max-w-6xl'>
+          <div ref={contentRef} className='max-w-6xl lg:mx-auto'>
             <div className=''>
               {/* First part of blog */}
-              <div className=' w-[90%] max-w-6xl mx-auto '>
+              <div className=' w-[90%] max-w-[540px] lg:max-w-3xl mx-auto '>
                 <div className='mt-6'>
                   {/* Time */}
                   <span className='text-xs text-lighter-gray-font'>{`${blog?.createdAtFormat.replace(
@@ -85,28 +85,39 @@ const FullBlog = ({ layoutRef }) => {
                     {blog.excerptBlog}
                   </div>
                   {/* Author */}
-                  <div className='flex gap-x-2 items-center'>
-                    <Link to={`/${blog.user.id}`} className='w-10 h-10 bg-transparent cursor-pointer'>
-                      <img
-                        src={blog.user.photoAvatar}
-                        alt={blog.user.displayName}
-                        className='w-10 h-10 object-cover rounded-full'
-                      />
-                    </Link>
-                    <div className='flex flex-col max-w-xl justify-center tracking-wider'>
-                      <span className='line-clamp-1 uppercase text-xs'>Tác giả</span>
-                      <Link
-                        to={`/${blog.user.id}`}
-                        className='text-sm font-semibold text-light-green-font cursor-pointer line-clamp-1'
-                      >
-                        {blog.user.displayName}
+                  <div className='flex justify-between'>
+                    <div className='flex gap-x-2 items-center lg:shrink-0'>
+                      <Link to={`/${blog.user.id}`} className='w-10 h-10 bg-transparent cursor-pointer'>
+                        <img
+                          src={blog.user.photoAvatar}
+                          alt={blog.user.displayName}
+                          className='w-10 h-10 object-cover rounded-full'
+                        />
                       </Link>
+                      <div className='flex flex-col max-w-xl justify-center tracking-wider'>
+                        <span className='line-clamp-1 uppercase text-xs lg:hidden'>Tác giả</span>
+                        <Link
+                          to={`/${blog.user.id}`}
+                          className='text-sm font-semibold text-light-green-font cursor-pointer line-clamp-1'
+                        >
+                          {blog.user.displayName}
+                        </Link>
+                      </div>
+                    </div>
+                    <div className='hidden lg:block'>
+                      <BlogAction
+                        title={blog.titleBlog}
+                        process={showBlogHeader.position}
+                        setOpen={setOpenComment}
+                        commentCount={commentCount}
+                        blog={blog}
+                      />
                     </div>
                   </div>
                 </div>
               </div>
               {/* Second part of blog */}
-              <div className='my-8 mx-auto'>
+              <div className='my-8 mx-auto max-w-[969px]'>
                 <img src={blog.imageBlog} alt={blog.titleBlog} className='w-full h-auto' />
                 <p className='mt-2 mb-8 px-4 font-merriweather font-light text-sm leading-[22px] text-light-gray-font'>
                   {blog.captionImageBlog}
@@ -116,14 +127,17 @@ const FullBlog = ({ layoutRef }) => {
               <BlogContent content={blog.contentBlog} />
             </div>
           </div>
-          {showBlogHeader.state && (
-            <BlogAction
-              title={blog.titleBlog}
-              process={showBlogHeader.position}
-              setOpen={setOpenComment}
-              commentCount={commentCount}
-            />
-          )}
+          <div className='block lg:hidden'>
+            {showBlogHeader.state && (
+              <BlogAction
+                title={blog.titleBlog}
+                process={showBlogHeader.position}
+                setOpen={setOpenComment}
+                commentCount={commentCount}
+                blog={blog}
+              />
+            )}
+          </div>
           <CommentModal
             open={isOpenComment}
             setOpen={setOpenComment}
