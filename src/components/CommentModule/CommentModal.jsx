@@ -6,7 +6,7 @@ import styled from 'styled-components';
 import { useAuth } from '../../contexts/auth-context';
 import { Editor as CommentEditor } from '../Editor';
 import { NormalButton } from '../Button';
-import { addDoc, collection, getDocs, query, serverTimestamp, where } from 'firebase/firestore';
+import { addDoc, collection, deleteDoc, doc, getDocs, query, serverTimestamp, where } from 'firebase/firestore';
 import { db } from '../../firebase-app/firebase-config';
 import parse from 'html-react-parser';
 import { DislikeFilled, DislikeOutlined, LikeFilled, LikeOutlined } from '@ant-design/icons';
@@ -90,7 +90,6 @@ const CommentModal = ({ open, setOpen, blog, commentCount, setCommentCount }) =>
     };
     fetchData();
   }, []);
-
   const handleComment = () => {
     const postData = async () => {
       try {
@@ -105,9 +104,10 @@ const CommentModal = ({ open, setOpen, blog, commentCount, setCommentCount }) =>
           },
           createdAt: serverTimestamp(),
         };
-        await addDoc(commentRef, commentData);
+        const commentSnapshot = await addDoc(commentRef, commentData);
+        commentData.id = commentSnapshot.id;
+        commentData.createdAt.seconds = Math.floor(Date.now() / 1000);
         setCommentBox([commentData, ...commentBox]);
-        // const
         notification['success']({
           message: 'Thành công',
           description: 'Bình luận thành công',
@@ -139,9 +139,10 @@ const CommentModal = ({ open, setOpen, blog, commentCount, setCommentCount }) =>
           },
           createdAt: serverTimestamp(),
         };
-        await addDoc(replyRef, replyData);
+        const replySnapshot = await addDoc(replyRef, replyData);
+        replyData.id = replySnapshot.id;
+        replyData.createdAt.seconds = Math.floor(Date.now() / 1000);
         setReplyBox([...replyBox, replyData]);
-        // const
         notification['success']({
           message: 'Thành công',
           description: 'Trả lời bình luận thành công',
@@ -154,6 +155,36 @@ const CommentModal = ({ open, setOpen, blog, commentCount, setCommentCount }) =>
     };
     postData();
   };
+  const handleDeleteComment = async (id) => {
+    try {
+      const commentRef = doc(db, 'comments', id);
+      await deleteDoc(commentRef);
+      notification['success']({
+        message: 'Thành công',
+        description: 'Xóa bình luận thành công',
+      });
+      const newCommentBox = commentBox.filter((item) => item.id !== id);
+      setCommentBox(newCommentBox);
+    } catch (err) {
+      console.log(err);
+    }
+  };
+
+  const handleDeleteReply = async (id) => {
+    try {
+      const replyRef = doc(db, 'replies', id);
+      await deleteDoc(replyRef);
+      notification['success']({
+        message: 'Thành công',
+        description: 'Xóa bình luận thành công',
+      });
+      const newReplyBox = replyBox.filter((item) => item.id !== id);
+      setReplyBox(newReplyBox);
+    } catch (err) {
+      console.log(err);
+    }
+  };
+
   const menu = (
     <Menu
       selectable
@@ -177,8 +208,8 @@ const CommentModal = ({ open, setOpen, blog, commentCount, setCommentCount }) =>
   );
   return (
     <CommentModalContainer
-      className={`transition-all ease-in-out duration-500 fixed h-screen p-6 top-0 w-screen bg-white z-[70] ${
-        open ? 'left-0' : 'left-full'
+      className={`bg-white transition-all ease-in-out duration-500 fixed h-screen p-6 top-0 w-screen lg:w-[50vw] z-[70]  ${
+        open ? 'left-0 lg:left-1/2' : 'left-full'
       }`}
     >
       {/* Comment header */}
@@ -198,85 +229,116 @@ const CommentModal = ({ open, setOpen, blog, commentCount, setCommentCount }) =>
             </a>
           </Dropdown>
         </div>
-        <div className=' p-[14px] h-screen overflow-scroll'>
-          {/* Comment input */}
-          <div className='flex items-center gap-x-2'>
-            <div className='max-w-[40px] min-w-[40px] h-10 '>
-              <img src={userInfo?.photoURL} className='w-full h-full object-cover rounded-full' />
+        {userInfo ? (
+          <div className=' p-[14px] h-screen overflow-scroll'>
+            {/* Comment input */}
+            <div className='flex items-center gap-x-2'>
+              <div className='max-w-[40px] min-w-[40px] h-10 '>
+                <img src={userInfo?.photoURL} className='w-full h-full object-cover rounded-full' />
+              </div>
+              <div className='w-full'>
+                <CommentEditor value={comment} setValue={setComment} placeholder='Bình luận tại đây' />
+                <NormalButton title='BÌNH LUẬN' className='w-full mt-3' onClick={handleComment} />
+              </div>
             </div>
-            <div className='w-full'>
-              <CommentEditor value={comment} setValue={setComment} placeholder='Bình luận tại đây' />
-              <NormalButton title='BÌNH LUẬN' className='w-full mt-3' onClick={handleComment} />
-            </div>
-          </div>
 
-          {/* Comment box */}
-          <div className='pb-8'>
-            {commentBox.length > 1 &&
-              commentBox?.map((commentItem, index) => (
-                <Comment
-                  actions={[
-                    <span onClick={() => like(commentItem.id)}>
-                      {createElement(action === 'liked' && likes.id === commentItem.id ? LikeFilled : LikeOutlined)}
-                      <span className='comment-action'>{1}</span>
-                    </span>,
-                    <span onClick={() => dislike(commentItem.id)}>
-                      {createElement(
-                        action === 'disliked' && dislikes.id === commentItem.id ? DislikeFilled : DislikeOutlined
-                      )}
-                      <span className='comment-action'>{1}</span>
-                    </span>,
-                    <span key='comment-basic-reply-to' onClick={() => setIsReply({ state: true, id: commentItem.id })}>
-                      Trả lời
-                    </span>,
-                  ]}
-                  key={commentItem.id}
-                  author={<Link to={`/user/${commentItem.user.id}`}>{commentItem.user.name}</Link>}
-                  avatar={<Avatar src={commentItem.user.avatar} alt={commentItem.user.name} />}
-                  content={parse(commentItem.text)}
-                  datetime={
-                    <Tooltip title={getTime(commentItem.createdAt.seconds)}>
-                      <span>{covertTimeFromNow(commentItem.createdAt.seconds)}</span>
-                    </Tooltip>
-                  }
-                >
-                  {replyBox?.map(
-                    (replyItem, index) =>
-                      replyItem.userReply.commentID === commentItem.id && (
-                        <Comment
-                          key={replyItem.id}
-                          author={<Link to={`/user/${replyItem.user.id}`}>{replyItem.user.name}</Link>}
-                          avatar={<Avatar src={replyItem.user.avatar} alt={replyItem.user.name} />}
-                          content={parse(replyItem.text)}
-                          datetime={
-                            <Tooltip title={getTime(replyItem.createdAt.seconds)}>
-                              <span>{covertTimeFromNow(replyItem.createdAt.seconds)}</span>
-                            </Tooltip>
-                          }
-                        />
-                      )
-                  )}
-                  {isReply.state && isReply.id === commentItem.id && (
-                    <div className='w-full'>
-                      <CommentEditor value={reply} setValue={setReply} placeholder='Phản hồi bình luận' />
-                      <div className='flex gap-x-1 mt-3'>
-                        <NormalButton
-                          title='Hủy'
-                          className='w-full bg-white text-black'
-                          onClick={() => setIsReply({ state: false, id: commentItem.id })}
-                        />
-                        <NormalButton
-                          title='TRẢ LỜI'
-                          className='w-full'
-                          onClick={() => handleReply(commentItem.id, commentItem.user.name)}
-                        />
+            {/* Comment box */}
+            <div className='pb-8'>
+              {commentBox.length > 1 &&
+                commentBox?.map((commentItem, index) => (
+                  <Comment
+                    actions={[
+                      <span onClick={() => like(commentItem.id)}>
+                        {createElement(action === 'liked' && likes.id === commentItem.id ? LikeFilled : LikeOutlined)}
+                        <span className='comment-action'>{1}</span>
+                      </span>,
+                      <span onClick={() => dislike(commentItem.id)}>
+                        {createElement(
+                          action === 'disliked' && dislikes.id === commentItem.id ? DislikeFilled : DislikeOutlined
+                        )}
+                        <span className='comment-action'>{1}</span>
+                      </span>,
+                      <span
+                        key='comment-basic-reply-to'
+                        onClick={() => setIsReply({ state: true, id: commentItem.id })}
+                      >
+                        Trả lời
+                      </span>,
+                      userInfo.uid === commentItem.user.id && (
+                        <span className='' onClick={() => handleDeleteComment(commentItem.id)}>
+                          Xóa
+                        </span>
+                      ),
+                    ]}
+                    key={commentItem.id}
+                    author={<Link to={`/user/${commentItem.user.id}`}>{commentItem.user.name}</Link>}
+                    avatar={<Avatar src={commentItem.user.avatar} alt={commentItem.user.name} />}
+                    content={parse(commentItem.text)}
+                    datetime={
+                      <Tooltip title={getTime(commentItem.createdAt.seconds)}>
+                        <span>{covertTimeFromNow(commentItem.createdAt.seconds)}</span>
+                      </Tooltip>
+                    }
+                  >
+                    {replyBox?.map(
+                      (replyItem, index) =>
+                        replyItem.userReply.commentID === commentItem.id && (
+                          <Comment
+                            actions={[
+                              userInfo.uid === replyItem.user.id && (
+                                <span className='' onClick={() => handleDeleteReply(replyItem.id)}>
+                                  Xóa
+                                </span>
+                              ),
+                            ]}
+                            key={replyItem.id}
+                            author={<Link to={`/user/${replyItem.user.id}`}>{replyItem.user.name}</Link>}
+                            avatar={<Avatar src={replyItem.user.avatar} alt={replyItem.user.name} />}
+                            content={parse(replyItem.text)}
+                            datetime={
+                              <Tooltip title={getTime(replyItem.createdAt.seconds)}>
+                                <span>{covertTimeFromNow(replyItem.createdAt.seconds)}</span>
+                              </Tooltip>
+                            }
+                          />
+                        )
+                    )}
+                    {isReply.state && isReply.id === commentItem.id && (
+                      <div className='w-full'>
+                        <CommentEditor value={reply} setValue={setReply} placeholder='Phản hồi bình luận' />
+                        <div className='flex gap-x-1 mt-3'>
+                          <NormalButton
+                            title='Hủy'
+                            className='w-full bg-white text-black'
+                            onClick={() => setIsReply({ state: false, id: commentItem.id })}
+                          />
+                          <NormalButton
+                            title='TRẢ LỜI'
+                            className='w-full'
+                            onClick={() => handleReply(commentItem.id, commentItem.user.name)}
+                          />
+                        </div>
                       </div>
-                    </div>
-                  )}
-                </Comment>
-              ))}
+                    )}
+                  </Comment>
+                ))}
+            </div>
           </div>
-        </div>
+        ) : (
+          <div className='p-[14px] flex items-center justify-center'>
+            <p>
+              Hãy{' '}
+              <Link className='text-light-green-font font-semibold' to='/dang-nhap'>
+                Đăng nhập
+              </Link>{' '}
+              hoặc{' '}
+              <Link className='text-light-green-font font-semibold' to='/dang-ki'>
+                Đăng ký
+              </Link>{' '}
+              để xem bình luận
+            </p>
+          </div>
+        )}
       </div>
     </CommentModalContainer>
   );

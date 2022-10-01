@@ -90,6 +90,7 @@ const CreateBlog = () => {
         description: 'Vui lòng đợi quản trị viên phê duyệt bài viết!',
       });
       actions.resetForm();
+      setContentEditor('');
     } catch (error) {
       setLoading(false);
       notification['error']({

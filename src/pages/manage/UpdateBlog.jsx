@@ -1,29 +1,36 @@
 import { useState, useEffect } from 'react';
 import { Formik } from 'formik';
-import { addDoc, collection, doc, getDoc, getDocs, query, serverTimestamp, updateDoc, where } from 'firebase/firestore';
+import { addDoc, collection, getDoc, getDocs, query, serverTimestamp, where, doc, updateDoc } from 'firebase/firestore';
 import slugify from 'slugify';
 import 'antd/dist/antd.css';
 import { notification } from 'antd';
 import * as yup from 'yup';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faSpinner } from '@fortawesome/free-solid-svg-icons';
-import { useParams } from 'react-router-dom';
 
 import { db } from '../../firebase-app/firebase-config';
 import { useAuth } from '../../contexts/auth-context';
 import { BlogInput } from '../../components/Input/';
-// import { Editor } from '../../components/Editor';
 import { DropdownButton, NormalButton } from '../../components/Button';
 import { TitleManage } from '../../components/ManageModule';
 import { blogStatus } from '../../utils/constants';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faSpinner } from '@fortawesome/free-solid-svg-icons';
+import { CKEditorCustom } from '../../components/Editor/';
+import { useParams } from 'react-router-dom';
 
 const initialBlog = {
   titleBlog: '',
   slugBlog: '',
   keywordBlog: '',
   imageBlog: '',
+  captionImageBlog: '',
+  excerptBlog: '',
   topic: '',
   contentBlog: '',
+  like: {
+    count: 0,
+    user: [],
+  },
+  commentBlog: [],
   status: blogStatus.PENDING,
 };
 
@@ -32,9 +39,11 @@ const blogSchema = yup.object().shape({
   keywordBlog: yup.string().required('Đây là thông tin bắt buộc.'),
   imageBlog: yup.string().required('Đây là thông tin bắt buộc.'),
   topic: yup.string().required('Đây là thông tin bắt buộc.'),
+  captionImageBlog: yup.string().required('Đây là thông tin bắt buộc.'),
+  excerptBlog: yup.string().required('Đây là thông tin bắt buộc.'),
 });
 
-const UpdateBlog = () => {
+const CreateBlog = () => {
   const { userInfo } = useAuth();
   const { blogID } = useParams();
   const [topic, setTopic] = useState([]);
@@ -68,23 +77,18 @@ const UpdateBlog = () => {
       const blogRef = doc(db, 'blogs', blogID);
       const test = await updateDoc(blogRef, {
         ...dataBlogClone,
+        contentBlog: contentEditor,
         updatedAt: serverTimestamp(),
-      });
-      actions.resetForm({
-        values: {
-          ...dataBlogClone,
-        },
       });
       notification['success']({
         message: 'Thành công',
         description: 'Cập nhật bài viết thành công!',
       });
     } catch (error) {
-      console.log('🚀 ~ file: UpdateBlog.jsx ~ line 91 ~ handleSubmit ~ error', error);
       setLoading(false);
       notification['error']({
-        message: 'Có lỗi',
-        description: 'Có lỗi xảy ra',
+        message: 'Có lỗi xảy ra',
+        description: 'Vui lòng thử lại sau vài phút',
       });
     } finally {
       setLoading(false);
@@ -97,14 +101,18 @@ const UpdateBlog = () => {
         {(formik) => {
           useEffect(() => {
             const fetchData = async () => {
-              const blogRef = doc(db, 'blogs', blogID);
-              const blogQuery = await getDoc(blogRef);
-              console.log('🚀 ~ file: UpdateBlog.jsx ~ line 122 ~ fetchData ~ blogQuery', blogQuery.data());
-              formik.resetForm({
-                values: {
-                  ...blogQuery.data(),
-                },
-              });
+              try {
+                const blogRef = doc(db, 'blogs', blogID);
+                const blogQuery = await getDoc(blogRef);
+                formik.resetForm({
+                  values: {
+                    ...blogQuery.data(),
+                  },
+                });
+                setContentEditor(blogQuery.data().contentBlog);
+              } catch (err) {
+                console.log(err);
+              }
             };
             fetchData();
           }, []);
@@ -114,7 +122,9 @@ const UpdateBlog = () => {
                 <BlogInput label='Tiêu đề' name='titleBlog' placeholder='Tạo tiêu đề bài viết' />
                 <BlogInput label='Đường dẫn' name='slugBlog' placeholder='VD: vi-du-ten-tieu-de' />
                 <BlogInput type='file' label='Ảnh bìa' name='imageBlog' placeholder='Lựa chọn một ảnh bìa.' />
+                <BlogInput label='Chú thích ảnh bìa' name='captionImageBlog' placeholder='VD: Nguồn của ảnh bìa' />
                 <BlogInput label='Từ khóa' name='keywordBlog' placeholder='Công nghệ, khoa học, ... .' />
+                <BlogInput label='Trích đoạn' name='excerptBlog' placeholder='Viết trích đoạn cho blog' />
                 <DropdownButton
                   title='Chủ đề'
                   submenu={topic}
@@ -122,24 +132,20 @@ const UpdateBlog = () => {
                   placeholder='Lựa chọn chủ đề'
                   type='click'
                   setValue={formik.setFieldValue}
-                  value={formik.values.topic}
                 />
               </div>
-              {/* <div className="mt-3 min-h-[200px] flex flex-col">
-                <Editor
-                  className="flex-1"
-                  title="Nội dung"
-                  placeholder="Soạn nội dung blog tại đây..."
+              <div className='mt-3 min-h-[200px] flex flex-col'>
+                <CKEditorCustom
+                  title='Nội dung'
+                  placeholder='Soạn nội dung blog tại đây...'
                   value={contentEditor}
                   setValue={setContentEditor}
                 />
-              </div> */}
+              </div>
               <NormalButton
                 type='submit'
                 title={loading ? <FontAwesomeIcon icon={faSpinner} className='animate-spin' /> : 'Cập nhật bài viết'}
-                className={`p-2 mx-auto block mt-4 ${!formik.isValid ? 'opacity-50' : 'opacity-100'} ${
-                  loading ? 'opacity-70' : ''
-                } `}
+                className={`p-2 mx-auto block mt-4 ${loading ? 'opacity-70' : ''} `}
               />
             </form>
           );
@@ -149,4 +155,4 @@ const UpdateBlog = () => {
   );
 };
 
-export default UpdateBlog;
+export default CreateBlog;

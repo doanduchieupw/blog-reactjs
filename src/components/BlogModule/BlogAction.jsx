@@ -23,7 +23,7 @@ const BlogAction = ({ setOpen, commentCount, blog }) => {
       try {
         const blogRef = doc(db, 'blogs', blog.blogID);
         await updateDoc(blogRef, {
-          like: { count: heartCount, user: isHearted.user },
+          like: { count: heartCount + 1, user: isHearted.user },
         });
       } catch (err) {
         console.log(err);
@@ -61,6 +61,10 @@ const BlogAction = ({ setOpen, commentCount, blog }) => {
           className='flex items-center py-1 gap-x-2 lg:px-4'
           onClick={() => {
             setHeartCount((prev) => prev + 1);
+            setIsHearted((prev) => ({
+              ...prev,
+              state: true,
+            }));
             handleReactionBlog(heartCount);
           }}
         >

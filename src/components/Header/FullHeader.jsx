@@ -125,7 +125,9 @@ const FullHeader = () => {
                 <Link to='/dang-nhap' className='hidden lg:block'>
                   Đăng nhập
                 </Link>
-                <FontAwesomeIcon icon={faUser} className='block lg:hidden w-5 h-5' />
+                <Link to='/dang-nhap'>
+                  <FontAwesomeIcon icon={faUser} className='block lg:hidden w-5 h-5' />
+                </Link>
               </button>
             )}
 

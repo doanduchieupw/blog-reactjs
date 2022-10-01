@@ -46,6 +46,7 @@ const CKEditorCustom = ({ title, placeholder, value, setValue }) => {
         editor={ClassicEditor}
         config={{
           placeholder,
+          mediaEmbed: { previewsInData: true },
         }}
         data={value}
         onReady={(editor) => {

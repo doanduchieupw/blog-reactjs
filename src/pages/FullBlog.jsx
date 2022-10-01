@@ -34,9 +34,9 @@ const FullBlog = ({ layoutRef }) => {
 
     layoutRef.current.addEventListener('scroll', handleScroll);
 
-    return () => {
-      layoutRef.current.removeEventListener('scroll', handleScroll);
-    };
+    // return () => {
+    //   layoutRef.current.removeEventListener('scroll', handleScroll);
+    // };
   }, []);
 
   useEffect(() => {
@@ -63,7 +63,7 @@ const FullBlog = ({ layoutRef }) => {
     fetchData();
   }, []);
   return (
-    <div>
+    <div className=''>
       {blog && (
         <div className='relative min-h-full pt-14'>
           {showBlogHeader.state && <BlogHeader title={blog.titleBlog} process={showBlogHeader.position} />}
