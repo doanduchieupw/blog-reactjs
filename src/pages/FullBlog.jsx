@@ -2,11 +2,10 @@ import { useEffect, useRef, useState } from 'react';
 import { Link, useNavigate, useParams } from 'react-router-dom';
 import { collection, getDocs, query, where } from 'firebase/firestore';
 import { db } from '../firebase-app/firebase-config';
-import { fromUnixTime, formatDistanceToNow } from 'date-fns';
-import { vi } from 'date-fns/locale';
 import { BlogHeader } from '../components/Header';
 import { BlogContent, BlogAction } from '../components/BlogModule';
 import { CommentModal } from '../components/CommentModule';
+import { fromNow } from '../utils/time';
 
 const FullBlog = ({ layoutRef }) => {
   const { slug } = useParams();
@@ -16,7 +15,6 @@ const FullBlog = ({ layoutRef }) => {
   const navigate = useNavigate();
   const contentRef = useRef();
   const [commentCount, setCommentCount] = useState(0);
-  // const positionScroll = useReading();
   useEffect(() => {
     const handleScroll = (event) => {
       if (layoutRef.current.scrollTop > 500) {
@@ -53,7 +51,7 @@ const FullBlog = ({ layoutRef }) => {
           setBlog({
             blogID: doc.id,
             ...doc.data(),
-            createdAtFormat: formatDistanceToNow(fromUnixTime(doc.data().createdAt.seconds), { locale: vi }),
+            createdAtFormat: fromNow(doc.data().createdAt.seconds),
           });
         });
       } catch (err) {

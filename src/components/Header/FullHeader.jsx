@@ -14,19 +14,27 @@ const navList = [
   {
     title: 'Dành cho bạn',
     type: 'normal',
+    to: '/danh-cho-ban',
   },
   {
     title: 'Xu hướng',
     type: 'hot',
+    to: '/xu-huong',
   },
   {
     title: 'Tạo bài viết',
     type: 'new',
+    to: '/quan-ly/tao-bai-viet',
   },
   {
     title: 'Khám phá',
     type: 'submenu',
-    children: ['Đánh giá', 'Hướng dẫn', 'Giải trí', 'Podcasts'],
+    children: [
+      { name: 'Đánh giá', to: '/dang-gia' },
+      { name: 'Hướng dẫn', to: '/huong-dan' },
+      { name: 'Giải trí', to: '/giai-tri' },
+      { name: 'Podcasts', to: '/podcasts' },
+    ],
   },
 ];
 
@@ -72,17 +80,20 @@ const FullHeader = () => {
           {/* Left Header */}
           <div className='flex items-center'>
             {/* Logo */}
-            <div className='w-16 lg:w-14 cursor-pointer hidden sm:block'>
+            <Link to='/' className='w-16 lg:w-14 cursor-pointer hidden sm:block'>
               <img src='/logo-blog-rm.png' alt='logo-header' />
-            </div>
-            <span className='ml-3 sm:ml-0 lg:hidden text-2xl text-white font-bold tracking-wider'>TechEBlog.</span>
+            </Link>
+            <Link to='/' className='ml-3 sm:ml-0 lg:hidden text-2xl text-white font-bold tracking-wider'>
+              TechEBlog.
+            </Link>
             {/* Navigation */}
             <div className='hidden lg:flex'>
               {navList.map((item, index) =>
                 item.type === 'submenu' ? (
                   <DropdownButton key={index} title={item.title} submenu={item.children} type='hover' />
                 ) : (
-                  <button
+                  <Link
+                    to={item?.to}
                     key={index}
                     className='p-3.5 text-white text-sm font-semibold uppercase hover:bg-gray-bg hover:text-gray-font duration-300'
                   >
@@ -92,7 +103,7 @@ const FullHeader = () => {
                     ) : (
                       <></>
                     )}
-                  </button>
+                  </Link>
                 )
               )}
             </div>

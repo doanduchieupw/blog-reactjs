@@ -16,8 +16,7 @@ const publicPath = [
   { path: '/quan-ly/them-chu-de', component: CreateTopic, layout: ManageLayout },
   { path: '/quan-ly/quan-ly-noi-dung', component: ManageBlog, layout: ManageLayout },
   { path: '/quan-ly/chinh-sua-bai-viet/:blogID', component: UpdateBlog, layout: ManageLayout },
-  { path: '/:slug', component: FullBlog, layout: MainLayout },
-  { path: '/khong-ton-tai', component: NotFound },
+  { path: '/vn/:slug', component: FullBlog, layout: MainLayout },
   { path: '/*', component: NotFound },
 ];
 const privatePath = [];

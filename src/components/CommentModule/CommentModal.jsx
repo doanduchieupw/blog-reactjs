@@ -244,7 +244,7 @@ const CommentModal = ({ open, setOpen, blog, commentCount, setCommentCount }) =>
 
             {/* Comment box */}
             <div className='pb-8'>
-              {commentBox.length > 1 &&
+              {commentBox.length >= 1 &&
                 commentBox?.map((commentItem, index) => (
                   <Comment
                     actions={[

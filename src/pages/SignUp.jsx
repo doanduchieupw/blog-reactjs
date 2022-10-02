@@ -38,7 +38,7 @@ const SignUp = () => {
       {/*========== Footer ==========*/}
       <div className='mt-8 flex items-center'>
         <span className='text-[14px] text-light-gray-font leading-7'>Bạn đã có tài khoản?</span>
-        <HoverButton to='/signup' title='ĐĂNG NHẬP' />
+        <HoverButton to='/dang-nhap' title='ĐĂNG NHẬP' />
       </div>
       <div className='text-xs text-light-gray-font flex flex-col items-center mt-6 leading-4'>
         <span>Bằng việc tạo tài khoản, bạn đã đồng ý với các</span>

@@ -1,12 +1,5 @@
 import { useEffect, useState, useRef } from 'react';
-import {
-  collection,
-  doc,
-  getDocs,
-  query,
-  updateDoc,
-  where,
-} from 'firebase/firestore';
+import { collection, doc, getDocs, query, updateDoc, where } from 'firebase/firestore';
 import { db } from '../../firebase-app/firebase-config';
 import { TitleManage } from '../../components/ManageModule';
 import 'antd/dist/antd.css';
@@ -64,12 +57,7 @@ const ManageBlog = () => {
   };
 
   const getColumnSearchProps = (dataIndex) => ({
-    filterDropdown: ({
-      setSelectedKeys,
-      selectedKeys,
-      confirm,
-      clearFilters,
-    }) => (
+    filterDropdown: ({ setSelectedKeys, selectedKeys, confirm, clearFilters }) => (
       <div
         style={{
           padding: 8,
@@ -79,9 +67,7 @@ const ManageBlog = () => {
           ref={searchInput}
           placeholder={`Tìm kiếm ${dataIndex}`}
           value={selectedKeys[0]}
-          onChange={(e) =>
-            setSelectedKeys(e.target.value ? [e.target.value] : [])
-          }
+          onChange={(e) => setSelectedKeys(e.target.value ? [e.target.value] : [])}
           onPressEnter={() => handleSearch(selectedKeys, confirm, dataIndex)}
           style={{
             marginBottom: 8,
@@ -90,10 +76,10 @@ const ManageBlog = () => {
         />
         <Space>
           <Button
-            type="primary"
+            type='primary'
             onClick={() => handleSearch(selectedKeys, confirm, dataIndex)}
             icon={<SearchOutlined />}
-            size="small"
+            size='small'
             style={{
               width: 100,
             }}
@@ -102,7 +88,7 @@ const ManageBlog = () => {
           </Button>
           <Button
             onClick={() => clearFilters && handleReset(clearFilters)}
-            size="small"
+            size='small'
             style={{
               width: 50,
             }}
@@ -110,8 +96,8 @@ const ManageBlog = () => {
             Xóa
           </Button>
           <Button
-            type="link"
-            size="small"
+            type='link'
+            size='small'
             onClick={() => {
               confirm({
                 closeDropdown: false,
@@ -132,8 +118,7 @@ const ManageBlog = () => {
         }}
       />
     ),
-    onFilter: (value, record) =>
-      record[dataIndex].toString().toLowerCase().includes(value.toLowerCase()),
+    onFilter: (value, record) => record[dataIndex].toString().toLowerCase().includes(value.toLowerCase()),
     onFilterDropdownOpenChange: (visible) => {
       if (visible) {
         setTimeout(() => searchInput.current?.select(), 100);
@@ -153,10 +138,7 @@ const ManageBlog = () => {
       ) : (
         <p>
           {dataIndex === 'titleBlog' ? (
-            <Link
-              to={`/${record.slug}`}
-              className="font-semibold text-blue-700"
-            >
+            <Link to={`/vn/${record.slug}`} className='font-semibold text-blue-700'>
               {text}
             </Link>
           ) : (
@@ -180,9 +162,7 @@ const ManageBlog = () => {
           authorBlog: doc.data().user.displayName,
           topicBlog: doc.data().topic,
           statusBlog: doc.data().status,
-          createdAtBlog: moment
-            .unix(doc.data().createdAt.seconds)
-            .format('DD-MM-YYYY hh:mm'),
+          createdAtBlog: moment.unix(doc.data().createdAt.seconds).format('DD-MM-YYYY hh:mm'),
           time: doc.data().createdAt.seconds,
           user: doc.data().user,
         });
@@ -240,7 +220,7 @@ const ManageBlog = () => {
               case 1:
                 statusBlog = (
                   <span>
-                    <Badge status="success" />
+                    <Badge status='success' />
                     Đã phê duyệt
                   </span>
                 );
@@ -248,7 +228,7 @@ const ManageBlog = () => {
               case 2:
                 statusBlog = (
                   <span>
-                    <Badge status="warning" />
+                    <Badge status='warning' />
                     Chưa phê duyệt
                   </span>
                 );
@@ -256,7 +236,7 @@ const ManageBlog = () => {
               case 3:
                 statusBlog = (
                   <span>
-                    <Badge status="error" />
+                    <Badge status='error' />
                     Bị từ chối
                   </span>
                 );
@@ -280,8 +260,7 @@ const ManageBlog = () => {
               value: 3,
             },
           ],
-          onFilter: (value, record) => record.statusBlog === value
-          
+          onFilter: (value, record) => record.statusBlog === value,
         },
         {
           title: 'Hành động',
@@ -289,11 +268,13 @@ const ManageBlog = () => {
           key: 'actionBlog',
           width: '20%',
           render: (_, record) => (
-            <div className="flex gap-x-1 text-white">
+            <div className='flex gap-x-1 text-white'>
               <button className='bg-blue-500 rounded-md p-1 -ml-1' onClick={() => handleAproved(record.key)}>
                 Phê duyệt
               </button>
-              <button className='bg-red-500 rounded-md p-1 -mr-1' onClick={() => handleReject(record.key)}>Từ chối</button>
+              <button className='bg-red-500 rounded-md p-1 -mr-1' onClick={() => handleReject(record.key)}>
+                Từ chối
+              </button>
             </div>
           ),
         },
@@ -310,7 +291,7 @@ const ManageBlog = () => {
   }, [refreshTable]);
   return (
     <div>
-      <TitleManage title="Quản lý nội dung" />
+      <TitleManage title='Quản lý nội dung' />
       {columns && blogs && (
         <Table
           columns={columns}

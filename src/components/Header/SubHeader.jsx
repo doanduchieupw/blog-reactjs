@@ -1,5 +1,6 @@
 import { faGlobe, faMagnifyingGlass, faXmark } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { GroupMenu, MiniForm } from '../Footer/SubcribeNews';
 
 const SubHeader = ({ isMobile, ...props }) => {
   return (
@@ -31,13 +32,9 @@ const SubHeader = ({ isMobile, ...props }) => {
           </div>
         </div>
       </div>
-      <div className='h-80 overflow-auto'>
-        <div className='h-24'>i am 1</div>
-        <div className='h-24'>i am 2</div>
-        <div className='h-24'>i am 3</div>
-        <div className='h-24'>i am 5</div>
-        <div className='h-24'>i am 6</div>
-        <div className='h-24'>i am 7</div>
+      <div className='h-80 overflow-auto px-4'>
+        <GroupMenu sub />
+        {/* <MiniForm sub /> */}
       </div>
     </div>
   );

@@ -3,6 +3,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faChevronDown, faChevronUp } from '@fortawesome/free-solid-svg-icons';
 import styled from 'styled-components';
 import { ErrorMessage } from 'formik';
+import { Link } from 'react-router-dom';
 const DropdownContainer = styled.div`
   .item-list {
     /* width */
@@ -53,12 +54,13 @@ const DropdownButton = ({ title, submenu, name, type, setValue, value, ...props 
               <div className='p-4 bg-white rounded-b-lg'>
                 <ul className='flex flex-col justify-start'>
                   {submenu.map((item, index) => (
-                    <li
+                    <Link
+                      to={item?.to}
                       key={index}
                       className='p-1 mb-1 rounded-md cursor-pointer hover:bg-gray-bg hover:text-gray-font text-sm font-medium text-gray-submenu-font leading-relaxed flex items-center '
                     >
-                      {item}
-                    </li>
+                      {item.name}
+                    </Link>
                   ))}
                 </ul>
               </div>
