@@ -71,15 +71,15 @@ const FullBlog = ({ layoutRef }) => {
               <div className=' w-[90%] max-w-[540px] lg:max-w-3xl mx-auto '>
                 <div className='mt-6'>
                   {/* Time */}
-                  <span className='text-xs text-lighter-gray-font'>{`${blog?.createdAtFormat.replace(
+                  <span className='text-xs xs:text-sm text-lighter-gray-font'>{`${blog?.createdAtFormat.replace(
                     'khoảng',
                     ''
                   )} trước.`}</span>
                   {/* Title */}
-                  <h1 className='text-[26px] leading-[34px] font-bold text-primary-bg tracking-normal my-4'>
+                  <h1 className='text-[26px] xs:text-[40px] leading-[34px] xs:leading-[54px] font-bold text-primary-bg tracking-normal my-4'>
                     {blog.titleBlog}
                   </h1>
-                  <div className='mb-4 text-sm leading-6 text-lighter-gray-font font-merriweather '>
+                  <div className='mb-4 text-sm xs:text-base leading-6 text-lighter-gray-font font-merriweather '>
                     {blog.excerptBlog}
                   </div>
                   {/* Author */}
@@ -136,6 +136,12 @@ const FullBlog = ({ layoutRef }) => {
               />
             )}
           </div>
+          {isOpenComment && (
+            <div
+              className='absolute top-0 bg-primary-bg opacity-20 z-[60] w-full h-full'
+              onClick={() => setOpenComment(false)}
+            ></div>
+          )}
           <CommentModal
             open={isOpenComment}
             setOpen={setOpenComment}

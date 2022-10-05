@@ -13,10 +13,7 @@ import { blogStatus } from '../../utils/constants';
 const ManageBlog = () => {
   const [blogs, setBlogs] = useState([]);
   const [columns, setColumns] = useState();
-  const [refreshTable, setRefreshTable] = useState(false);
-  // useEffect(() => {
-  //   console.log(blogs);
-  // }, [blogs]);
+  const [loading, setLoading] = useState(false);
   const [searchText, setSearchText] = useState('');
   const [searchedColumn, setSearchedColumn] = useState('');
   const searchInput = useRef(null);
@@ -30,7 +27,6 @@ const ManageBlog = () => {
     clearFilters();
     setSearchText('');
   };
-
   const handleAproved = async (key) => {
     try {
       const blogRef = doc(db, 'blogs', key);
@@ -38,10 +34,7 @@ const ManageBlog = () => {
         status: blogStatus.ACCEPTED,
       });
       const cloneBlogs = [...blogs];
-      const indexBlog = cloneBlogs.findIndex((blog) => {
-        console.log(blog.key, key);
-        return blog.key === key;
-      });
+      const indexBlog = cloneBlogs.findIndex((blog) => blog.key === key);
       cloneBlogs[indexBlog].statusBlog = blogStatus.ACCEPTED;
       setBlogs(cloneBlogs);
     } catch (err) {
@@ -56,13 +49,9 @@ const ManageBlog = () => {
         status: blogStatus.REJECTED,
       });
       const cloneBlogs = [...blogs];
-      const indexBlog = cloneBlogs.findIndex((blog) => {
-        console.log(blog.key);
-        return blog.key === key;
-      });
-      console.log('🚀 ~ file: ManageBlog.jsx ~ line 58 ~ handleReject ~ indexBlog', indexBlog);
-      // cloneBlogs[indexBlog].statusBlog = blogStatus.REJECTED;
-      //setBlogs(cloneBlogs);
+      const indexBlog = cloneBlogs.findIndex((blog) => blog.key === key);
+      cloneBlogs[indexBlog].statusBlog = blogStatus.REJECTED;
+      setBlogs(cloneBlogs);
     } catch (err) {
       console.log(err);
     }
@@ -162,6 +151,7 @@ const ManageBlog = () => {
 
   useEffect(() => {
     const fetchData = async () => {
+      setLoading(true);
       const blogRef = collection(db, 'blogs');
       const querySnapshot = await getDocs(blogRef);
       let blogList = [];
@@ -180,6 +170,7 @@ const ManageBlog = () => {
         });
       });
       setBlogs(blogList);
+      setLoading(false);
     };
     fetchData();
   }, []);
@@ -300,11 +291,11 @@ const ManageBlog = () => {
       ]);
     };
     fetchData();
-  }, [refreshTable]);
+  }, [blogs]);
   return (
     <div>
       <TitleManage title='Quản lý nội dung' />
-      {columns && blogs && <Table columns={columns} dataSource={blogs} />}
+      {<Table columns={columns} dataSource={blogs} loading={loading} />}
     </div>
   );
 };
