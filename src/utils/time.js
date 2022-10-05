@@ -5,6 +5,6 @@ export const fromNow = (time) => {
   return formatDistanceToNow(fromUnixTime(time), { locale: vi });
 };
 
-export const getTime = (time) => {
-  return format(fromUnixTime(time), 'PPpp', { locale: vi });
+export const getTime = (time, formatType = 'PPpp') => {
+  return format(fromUnixTime(time), formatType, { locale: vi });
 };

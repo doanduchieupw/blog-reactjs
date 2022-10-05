@@ -25,7 +25,7 @@ export const GroupMenu = ({ sub }) => {
   return (
     <div className={`flex lg:flex-1 items-start justify-start flex-wrap `}>
       {groupMenuList.map((item, index) => (
-        <div className={`${sub ? 'w-full mt-3 border-b border-slate-600 pb-2 mb-6' : 'w-1/2 lg:w-1/3 mb-10 '}`}>
+        <div className={`${sub ? 'w-full mt-3 border-b border-slate-600 pb-2 mb-6' : 'w-1/2 lg:w-1/3 mb-10 pr-4'}`}>
           <h3
             className={`uppercase mb-3 ${
               sub ? 'text-dark-gray-bg text-sm' : 'text-primary-bg font-semibold text-base '

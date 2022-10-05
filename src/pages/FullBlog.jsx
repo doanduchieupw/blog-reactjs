@@ -85,7 +85,10 @@ const FullBlog = ({ layoutRef }) => {
                   {/* Author */}
                   <div className='flex justify-between'>
                     <div className='flex gap-x-2 items-center lg:shrink-0'>
-                      <Link to={`/${blog.user.id}`} className='w-10 h-10 bg-transparent cursor-pointer'>
+                      <Link
+                        to={`/thong-tin-tai-khoan/${blog.user.id}`}
+                        className='w-10 h-10 bg-transparent cursor-pointer'
+                      >
                         <img
                           src={blog.user.photoAvatar}
                           alt={blog.user.displayName}

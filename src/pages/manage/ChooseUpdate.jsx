@@ -14,7 +14,6 @@ function ChooseUpdate() {
     if (!userInfo) return;
     const fetchData = async () => {
       try {
-        console.log(userInfo.uid);
         const blogRef = collection(db, 'blogs');
         const blogQuery = query(blogRef, where('user.id', '==', userInfo.uid));
         const blogSnapshot = await getDocs(blogQuery);
@@ -32,7 +31,6 @@ function ChooseUpdate() {
             title: 'Tiêu đề',
             dataIndex: 'titleBlog',
             render: (_, record) => {
-              console.log(record);
               return (
                 <Link
                   to={`/quan-ly/chinh-sua-bai-viet/${record.blogID}`}

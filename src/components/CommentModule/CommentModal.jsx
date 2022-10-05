@@ -271,7 +271,7 @@ const CommentModal = ({ open, setOpen, blog, commentCount, setCommentCount }) =>
                       ),
                     ]}
                     key={commentItem.id}
-                    author={<Link to={`/user/${commentItem.user.id}`}>{commentItem.user.name}</Link>}
+                    author={<Link to={`/thong-tin-tai-khoan/${commentItem.user.id}`}>{commentItem.user.name}</Link>}
                     avatar={<Avatar src={commentItem.user.avatar} alt={commentItem.user.name} />}
                     content={parse(commentItem.text)}
                     datetime={
