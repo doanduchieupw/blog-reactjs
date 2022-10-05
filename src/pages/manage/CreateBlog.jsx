@@ -46,7 +46,6 @@ const CreateBlog = () => {
   const { userInfo } = useAuth();
   const [topic, setTopic] = useState([]);
   const [contentEditor, setContentEditor] = useState('');
-  console.log('🚀 ~ file: CreateBlog.jsx ~ line 41 ~ CreateBlog ~ contentEditor', contentEditor);
   const [loading, setLoading] = useState(false);
 
   //get topic in db
@@ -69,7 +68,6 @@ const CreateBlog = () => {
   }, []);
 
   const handleSubmit = async (dataBlog, actions) => {
-    console.log(dataBlog);
     try {
       setLoading(true);
       const dataBlogClone = { ...dataBlog };

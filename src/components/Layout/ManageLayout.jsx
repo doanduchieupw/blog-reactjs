@@ -1,6 +1,6 @@
 import { useEffect } from 'react';
 import { useState, useRef } from 'react';
-import { Link, useNavigate } from 'react-router-dom';
+import { Link, useNavigate, useLocation } from 'react-router-dom';
 import { useAuth } from '../../contexts/auth-context';
 import Footer from '../Footer';
 import { FullHeader } from '../Header';
@@ -20,11 +20,24 @@ const ManageLayout = ({ children }) => {
   const [manageActive, setManageActive] = useState(0);
   const manageItemRef = useRef();
   const indicatorRef = useRef();
+  const locationCurrent = useLocation();
+  // render indicator in first time
+  useEffect(() => {
+    const checkPath = manageList.map((item, index) => {
+      return item.slug;
+    });
+    const indexOfCurrentPath = checkPath.indexOf(locationCurrent.pathname.split('/')[2]);
+    setManageActive(indexOfCurrentPath);
+  }, []);
+
+  // check user login
   useEffect(() => {
     if (!userInfo) {
       navigate('/dang-nhap');
     }
   }, [userInfo]);
+
+  // dynamic indicator
   useEffect(() => {
     const manageItemHeight = manageItemRef.current.clientHeight;
     indicatorRef.current.style.height = `${manageItemHeight}px`;
@@ -55,7 +68,6 @@ const ManageLayout = ({ children }) => {
         </div>
         <div className='w-3/4'>{children}</div>
       </div>
-
       <Footer />
     </div>
   );

@@ -14,13 +14,12 @@ const ManageBlog = () => {
   const [blogs, setBlogs] = useState([]);
   const [columns, setColumns] = useState();
   const [refreshTable, setRefreshTable] = useState(false);
-  useEffect(() => {
-    console.log(refreshTable);
-  }, [refreshTable]);
+  // useEffect(() => {
+  //   console.log(blogs);
+  // }, [blogs]);
   const [searchText, setSearchText] = useState('');
   const [searchedColumn, setSearchedColumn] = useState('');
   const searchInput = useRef(null);
-
   const handleSearch = (selectedKeys, confirm, dataIndex) => {
     confirm();
     setSearchText(selectedKeys[0]);
@@ -38,7 +37,13 @@ const ManageBlog = () => {
       await updateDoc(blogRef, {
         status: blogStatus.ACCEPTED,
       });
-      setTimeout(() => setRefreshTable(!refreshTable), 5000);
+      const cloneBlogs = [...blogs];
+      const indexBlog = cloneBlogs.findIndex((blog) => {
+        console.log(blog.key, key);
+        return blog.key === key;
+      });
+      cloneBlogs[indexBlog].statusBlog = blogStatus.ACCEPTED;
+      setBlogs(cloneBlogs);
     } catch (err) {
       console.log(err);
     }
@@ -50,7 +55,14 @@ const ManageBlog = () => {
       await updateDoc(blogRef, {
         status: blogStatus.REJECTED,
       });
-      setRefreshTable(!refreshTable);
+      const cloneBlogs = [...blogs];
+      const indexBlog = cloneBlogs.findIndex((blog) => {
+        console.log(blog.key);
+        return blog.key === key;
+      });
+      console.log('🚀 ~ file: ManageBlog.jsx ~ line 58 ~ handleReject ~ indexBlog', indexBlog);
+      // cloneBlogs[indexBlog].statusBlog = blogStatus.REJECTED;
+      //setBlogs(cloneBlogs);
     } catch (err) {
       console.log(err);
     }
@@ -292,17 +304,7 @@ const ManageBlog = () => {
   return (
     <div>
       <TitleManage title='Quản lý nội dung' />
-      {columns && blogs && (
-        <Table
-          columns={columns}
-          dataSource={blogs}
-          // onRow={(record, rowIndex) => {
-          //   return {
-          //     onClick: (event) => {console.log(event, record, rowIndex)},
-          //   };
-          // }}
-        />
-      )}
+      {columns && blogs && <Table columns={columns} dataSource={blogs} />}
     </div>
   );
 };

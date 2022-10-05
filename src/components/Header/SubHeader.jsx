@@ -32,7 +32,7 @@ const SubHeader = ({ isMobile, ...props }) => {
           </div>
         </div>
       </div>
-      <div className='h-80 overflow-auto px-4'>
+      <div className='h-4/5 overflow-auto px-4'>
         <GroupMenu sub />
         {/* <MiniForm sub /> */}
       </div>
