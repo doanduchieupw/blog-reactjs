@@ -58,6 +58,7 @@ const SignUpModal = ({ onCancel }) => {
         folowing: [],
         folower: [],
         topic: [],
+        bookmark: [],
         createdAt: serverTimestamp(),
       });
       notification['success']({

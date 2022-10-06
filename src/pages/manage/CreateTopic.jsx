@@ -19,6 +19,7 @@ import { db } from '../../firebase-app/firebase-config';
 const initialTopic = {
   name: '',
   status: 1,
+  relavite: [],
   slug: '',
 };
 const handleSubmit = async (values, actions) => {
