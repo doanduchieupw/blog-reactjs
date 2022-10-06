@@ -98,7 +98,7 @@ const FullBlog = ({ layoutRef }) => {
                       <div className='flex flex-col max-w-xl justify-center tracking-wider'>
                         <span className='line-clamp-1 uppercase text-xs lg:hidden'>Tác giả</span>
                         <Link
-                          to={`/${blog.user.id}`}
+                          to={`/thong-tin-tai-khoan/${blog.user.id}`}
                           className='text-sm font-semibold text-light-green-font cursor-pointer line-clamp-1'
                         >
                           {blog.user.displayName}

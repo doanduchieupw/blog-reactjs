@@ -115,11 +115,12 @@ const SettingUser = () => {
                 formik.setFieldValue('fullname', userSnapshot.data().fullname);
                 formik.setFieldValue('photoAvatar', userSnapshot.data().photoAvatar);
               } catch (err) {
-                console.log('🚀 ~ file: SettingUser.jsx ~ line 46 ~ fetchData ~ r', err);
+                console.log(err);
               }
             };
-            const fetchDataTimeoutID = setTimeout(() => fetchData(), 2000);
-            return () => clearTimeout(fetchDataTimeoutID);
+            fetchData();
+            // const fetchDataTimeoutID = setTimeout(() => fetchData(), 2000);
+            // return () => clearTimeout(fetchDataTimeoutID);
           }, [userInfo]);
 
           const handleImageSelect = (e) => {

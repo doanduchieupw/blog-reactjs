@@ -2,6 +2,7 @@ import { Badge, Table } from 'antd';
 import { collection, getDocs, query, where } from 'firebase/firestore';
 import { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
+import { TitleManage } from '../../components/ManageModule';
 import { useAuth } from '../../contexts/auth-context';
 import { db } from '../../firebase-app/firebase-config';
 import { getTime } from '../../utils/time';
@@ -88,7 +89,12 @@ function ChooseUpdate() {
     };
     fetchData();
   }, [userInfo]);
-  return <Table columns={columns} dataSource={myBlogs} />;
+  return (
+    <div className='min-h-[75vh]'>
+      <TitleManage title='Cập nhật bài viết' />
+      <Table columns={columns} dataSource={myBlogs} className='mt-6' />
+    </div>
+  );
 }
 
 export default ChooseUpdate;

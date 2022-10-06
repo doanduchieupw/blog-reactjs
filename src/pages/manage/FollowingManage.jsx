@@ -1,26 +1,13 @@
 import { doc, getDoc } from 'firebase/firestore';
 import React, { useEffect, useState } from 'react';
 import { TitleManage, UserFollowCard } from '../../components/ManageModule';
-import { useAuth } from '../../contexts/auth-context';
 import { db } from '../../firebase-app/firebase-config';
+import getUserInfo from '../../hooks/getUserInfo';
 
 function FollowingManage() {
-  const { userInfo } = useAuth();
-  const [user, setUser] = useState();
   const [following, setFollowing] = useState([]);
+  const [user, setUser] = getUserInfo();
 
-  useEffect(() => {
-    if (!userInfo) return;
-    const fetchData = async () => {
-      const userRef = doc(db, 'users', userInfo.uid);
-      const userSnapshot = await getDoc(userRef);
-      setUser({
-        userID: userSnapshot.id,
-        ...userSnapshot.data(),
-      });
-    };
-    fetchData();
-  }, [userInfo]);
   useEffect(() => {
     if (!user) return;
     let ids = [...user.folowing];
@@ -28,7 +15,6 @@ function FollowingManage() {
     const fetchData = async (ids) => {
       try {
         for (let id of ids) {
-          console.log('🚀 ~ file: FollowingManage.jsx ~ line 30 ~ fetchData ~ id', id);
           const userRef = doc(db, 'users', id);
           const userSnapshot = await getDoc(userRef);
           newFollowingList.push({ userID: userSnapshot.id, ...userSnapshot.data() });
@@ -41,9 +27,18 @@ function FollowingManage() {
     fetchData(ids);
   }, [user]);
   return (
-    <div>
+    <div className='min-h-[75vh]'>
       <TitleManage title='Tác giả đang theo dõi' />
       {following && following.map((item, index) => <UserFollowCard image={item.photoAvatar} name={item.fullname} />)}
+      {JSON.stringify(following) === JSON.stringify([]) && (
+        <div className='min-h-[600px] bg-[#f7f7f7] px-8 py-6 mt-6'>
+          <h1 className='text-xl font-semibold mb-2'>Bạn chưa theo dõi tác giả nào</h1>
+          <p className='text-base'>
+            Hãy theo dõi để ủng hộ tác giả và cập nhật nhanh chóng những nội dung mới nhất từ những tác giả mà bạn yêu
+            thích.
+          </p>
+        </div>
+      )}
     </div>
   );
 }

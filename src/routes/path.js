@@ -7,6 +7,8 @@ import {
   UpdateBlog,
   ChooseUpdate,
   FollowingManage,
+  LikeManage,
+  TopicManage,
 } from '../pages/manage';
 import { AuthLayout, MainLayout, ManageLayout } from '../components/Layout';
 
@@ -19,8 +21,8 @@ const publicPath = [
   { path: '/quan-ly', component: CreateBlog, layout: ManageLayout },
   { path: '/quan-ly/tao-bai-viet', component: CreateBlog, layout: ManageLayout },
   { path: '/quan-ly/cai-dat', component: SettingUser, layout: ManageLayout },
-  { path: '/quan-ly/bai-viet-da-thich', component: CreateBlog, layout: ManageLayout },
-  { path: '/quan-ly/chu-de-theo-doi', component: CreateBlog, layout: ManageLayout },
+  { path: '/quan-ly/bai-viet-da-thich', component: LikeManage, layout: ManageLayout },
+  { path: '/quan-ly/chu-de-theo-doi', component: TopicManage, layout: ManageLayout },
   { path: '/quan-ly/tac-gia-dang-theo-doi', component: FollowingManage, layout: ManageLayout },
   { path: '/quan-ly/them-chu-de', component: CreateTopic, layout: ManageLayout },
   { path: '/quan-ly/quan-ly-noi-dung', component: ManageBlog, layout: ManageLayout },

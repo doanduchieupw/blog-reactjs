@@ -3,7 +3,6 @@ import { PostWithImgBg, TitleSection } from '../NewsModule';
 import { useEffect, useState } from 'react';
 import { collection, getDocs, query } from 'firebase/firestore';
 import { db } from '../../firebase-app/firebase-config';
-import { fromNow } from '../../utils/time';
 
 const random = (number) => Math.floor(Math.random() * number);
 
@@ -25,7 +24,7 @@ const ExploreBlog = () => {
         const length = blogResult.length;
         const newExploreBlog = () => {
           const first = random(length);
-          const second = random(length);
+          let second = random(length);
           while (first === second) {
             second = random(length);
           }

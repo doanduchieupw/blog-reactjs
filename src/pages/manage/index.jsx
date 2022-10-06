@@ -5,3 +5,5 @@ export { default as ManageBlog } from './ManageBlog';
 export { default as UpdateBlog } from './UpdateBlog';
 export { default as ChooseUpdate } from './ChooseUpdate';
 export { default as FollowingManage } from './FollowingManage';
+export { default as LikeManage } from './LikeManage';
+export { default as TopicManage } from './TopicManage';
