@@ -19,8 +19,9 @@ import { db } from '../../firebase-app/firebase-config';
 const initialTopic = {
   name: '',
   status: 1,
-  relavite: [],
+  relative: [],
   slug: '',
+  desc: '',
 };
 const handleSubmit = async (values, actions) => {
   try {
@@ -233,6 +234,14 @@ const CreateTopic = () => {
             <div className='grid grid-cols-2 gap-x-2'>
               <TopicInput label='Tên chủ đề' name='name' placeholder='Thêm chủ đề mới' />
               <TopicInput label='Đường dẫn' name='slug' placeholder='VD: vi-du-ten-tieu-de' />
+              <TopicInput label='Chú thích' name='desc' placeholder='Giới thiệu về chủ đề' />
+              <TopicInput
+                type='checkbox'
+                label='Liên quan'
+                name='relative'
+                choice={topic.map((item, index) => item.name)}
+                className='flex flex-col'
+              />
             </div>
             <div className='flex justify-end'>
               <NormalButton type='submit' title='Thêm chủ đề' className='py-2' />

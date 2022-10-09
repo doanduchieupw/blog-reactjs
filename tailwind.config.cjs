@@ -38,6 +38,7 @@ module.exports = {
         'gray-submenu-font': '#555555',
         'green-font': '#428F5E',
         'light-green-font': '#00773e',
+        'blue-font': '#0c5dff',
         'gray-border': '#757575',
         'gray-bg-btn': '#F2F3F5',
         'green-bg-btn': '#12D8B2',
@@ -67,6 +68,7 @@ module.exports = {
         switchRight: 'leftToRight 0.3s ease-in-out',
         switchDown: 'upToDown 0.2s linear',
         switchUp: 'downToUp 0.1s linear',
+        scrollTitle: 'scrollTitle 12s linear infinite',
       },
       keyframes: {
         rightToLeft: {
@@ -84,6 +86,10 @@ module.exports = {
         upToDown: {
           '0%': { transform: 'translateY(-100%)', opacity: 0 },
           '100%': { transform: 'translateY(0%)', opacity: 1 },
+        },
+        scrollTitle: {
+          '0%': { transform: 'translateX(100%)' },
+          '100%': { transform: 'translateX(-100%)' },
         },
       },
     },

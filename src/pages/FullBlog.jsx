@@ -16,7 +16,6 @@ const FullBlog = ({ layoutRef }) => {
   const contentRef = useRef();
   const [commentCount, setCommentCount] = useState(0);
   useEffect(() => {
-    console.log(layoutRef.current);
     const handleScroll = (event) => {
       if (layoutRef.current.scrollTop > 500) {
         setShowBlogHeader({

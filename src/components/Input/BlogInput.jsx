@@ -49,7 +49,7 @@ const BlogInput = ({ label, name, error, icon, ...props }) => {
         // Upload completed successfully, now we can get the download URL
         getDownloadURL(uploadTask.snapshot.ref).then((downloadURL) => {
           console.log('File available at', downloadURL);
-          setFieldValue('imageBlog', downloadURL);
+          setFieldValue(name, downloadURL);
         });
       }
     );
@@ -60,6 +60,7 @@ const BlogInput = ({ label, name, error, icon, ...props }) => {
     const imageRef = ref(storage, 'images/' + fileName);
     deleteObject(imageRef)
       .then(() => {
+        setFieldValue(name, '');
         console.log('File deleted successfully');
       })
       .catch((error) => {
@@ -75,9 +76,9 @@ const BlogInput = ({ label, name, error, icon, ...props }) => {
           <label htmlFor={name} className='cursor-pointer mt-4'>
             <input id={name} type='file' onChange={handleImageSelect} className='hidden' />
             <span className='font-semibold mb-2'>{label}</span>
-            {values.imageBlog ? (
+            {values[name] ? (
               <div className='group relative mt-1'>
-                <img src={values.imageBlog} className='object-cover w-full h-full rounded-md' />
+                <img src={values[name]} className='object-cover w-full h-full rounded-md' />
                 {/* Loading image */}
                 <div className='absolute bottom-0 w-full h-full flex flex-col'>
                   <div
@@ -105,6 +106,7 @@ const BlogInput = ({ label, name, error, icon, ...props }) => {
                   ></div>
                 </div>
                 <button
+                  type='button'
                   className='absolute p-0.5 bg-orange-bg-btn rounded-full top-[-8px] right-[-8px] opacity-0 group-hover:opacity-100 transition-all'
                   onClick={() => {
                     handleDeleteImage();
@@ -121,6 +123,32 @@ const BlogInput = ({ label, name, error, icon, ...props }) => {
             )}
           </label>
           <div className='text-xs text-error-font leading-snugs mt-1.5'>
+            <ErrorMessage name={name} />
+          </div>
+        </div>
+      ) : props.type === 'radio' ? (
+        <div className='py-3'>
+          <h3 className='font-semibold mb-2'>{label}</h3>
+          <div className='flex gap-x-4 px-3'>
+            {props?.choice.map((item, index) => (
+              <label key={index} className='flex gap-x-1'>
+                <input type='radio' name={name} {...field} value={item} />
+                {item}
+              </label>
+            ))}
+            <ErrorMessage name={name} />
+          </div>
+        </div>
+      ) : props.type === 'checkbox' ? (
+        <div className='py-3'>
+          <h3 className='font-semibold mb-2'>{label}</h3>
+          <div className='flex gap-x-4 px-3' {...props}>
+            {props?.choice.map((item, index) => (
+              <label key={index} className='flex gap-x-1'>
+                <input type='checkbox' name={name} {...field} value={item} />
+                {item}
+              </label>
+            ))}
             <ErrorMessage name={name} />
           </div>
         </div>

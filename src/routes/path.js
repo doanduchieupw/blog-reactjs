@@ -1,4 +1,4 @@
-import { Login, Home, SignUp, NotFound, FullBlog, UserProfile } from '../pages';
+import { Login, Home, SignUp, NotFound, FullBlog, UserProfile, FullPodcast } from '../pages';
 import {
   CreateBlog,
   CreateTopic,
@@ -33,6 +33,7 @@ const publicPath = [
   { path: '/quan-ly/chinh-sua-bai-viet', component: ChooseUpdate, layout: ManageLayout },
   { path: '/quan-ly/chinh-sua-bai-viet/:blogID', component: UpdateBlog, layout: ManageLayout },
   { path: '/vn/:slug', component: FullBlog, layout: MainLayout },
+  { path: '/podcast/:slug', component: FullPodcast, layout: MainLayout },
   { path: '/*', component: NotFound },
 ];
 const privatePath = [];
