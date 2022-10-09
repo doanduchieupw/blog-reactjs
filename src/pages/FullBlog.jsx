@@ -16,25 +16,26 @@ const FullBlog = ({ layoutRef }) => {
   const contentRef = useRef();
   const [commentCount, setCommentCount] = useState(0);
   useEffect(() => {
+    console.log(layoutRef.current);
     const handleScroll = (event) => {
       if (layoutRef.current.scrollTop > 500) {
         setShowBlogHeader({
           state: true,
-          position: Math.floor((layoutRef.current.scrollTop / (contentRef.current.scrollHeight - 500)) * 100),
+          position: Math.floor((layoutRef.current.scrollTop / (layoutRef.current.scrollHeight - 500)) * 100),
         });
       } else {
         setShowBlogHeader({
           state: false,
-          position: Math.floor((layoutRef.current.scrollTop / (contentRef.current.scrollHeight - 500)) * 100),
+          position: Math.floor((layoutRef.current.scrollTop / (layoutRef.current.scrollHeight - 500)) * 100),
         });
       }
     };
 
     layoutRef.current.addEventListener('scroll', handleScroll);
 
-    // return () => {
-    //   layoutRef.current.removeEventListener('scroll', handleScroll);
-    // };
+    return () => {
+      layoutRef.current.removeEventListener('scroll', handleScroll);
+    };
   }, []);
 
   useEffect(() => {

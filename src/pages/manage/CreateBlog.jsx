@@ -29,6 +29,7 @@ const initialBlog = {
     count: 0,
     user: [],
   },
+  bookmark: [],
   commentBlog: [],
   status: blogStatus.PENDING,
 };
@@ -122,13 +123,6 @@ const CreateBlog = () => {
               />
             </div>
             <div className='mt-3 min-h-[200px] flex flex-col'>
-              {/* <Editor
-                className='flex-1'
-                title='Nội dung'
-                placeholder='Soạn nội dung blog tại đây...'
-                value={contentEditor}
-                setValue={setContentEditor}
-              /> */}
               <CKEditorCustom
                 title='Nội dung'
                 placeholder='Soạn nội dung blog tại đây...'

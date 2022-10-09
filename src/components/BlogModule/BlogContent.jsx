@@ -1,7 +1,7 @@
 import parse from 'html-react-parser';
 import styled from 'styled-components';
 
-const BlogContentContainer = styled.div`
+export const BlogContentContainer = styled.div`
   p,
   li,
   h2,

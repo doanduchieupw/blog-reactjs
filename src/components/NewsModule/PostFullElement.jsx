@@ -1,18 +1,25 @@
 import { Link } from 'react-router-dom';
-import { Bookmark } from '../../assets/icons';
+import { useBookmark } from '../../hooks';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faBookmark as fasBookmark } from '@fortawesome/free-solid-svg-icons';
+import { faBookmark as farBookmark } from '@fortawesome/free-regular-svg-icons';
 
-const PostFullElement = ({ topic, title, image, authorName, createdAt, avatar, slug }) => {
+const PostFullElement = ({ blogID, topic, title, image, authorName, createdAt, avatar, slug }) => {
+  const [isBookMark, setIsBookMark, handleBookmark] = useBookmark(blogID);
   return (
-    <div className='w-full md:w-[calc(50%-32px)] xl:w-[calc(25%-32px)] mt-6 md:mx-4'>
+    <div className='w-full md:w-[calc(50%-32px)] xl:w-[calc(25%-32px)] mt-6 md:mx-4 md:flex md:flex-col md:justify-between'>
       <div className='flex flex-row-reverse lg:flex-col items-center justify-between'>
-        <Link to={`/vn/${slug}`} className='w-full h-full flex-[0_0_40%] xs:flex-[0_0_30%] ml-3 xs:ml-6 lg:ml-0'>
-          <img src={image} className='w-full h-full aspect-video rounded-lg' />
+        <Link
+          to={`/vn/${slug}`}
+          className='w-full h-full flex-[0_0_40%] xs:flex-[0_0_30%] ml-3 xs:ml-6 lg:ml-0 md:flex md:items-center'
+        >
+          <img src={image} className='w-full h-auto aspect-video rounded-lg' />
         </Link>
         <div className='w-full'>
           <p className='mb-1.5 lg:mt-6 lg:mb-2 text-xs uppercase font-semibold text-[#0c5dff]'>{topic}</p>
           <Link
             to={`/vn/${slug}`}
-            className='mb-2 lg:mb-4 lg:min-h-[84px] text-base xs:text-xl text-gray-font line-clamp-3 font-semibold'
+            className='mb-2 lg:mb-4 md:min-h-[84px] text-base xs:text-xl text-gray-font line-clamp-3 font-semibold'
           >
             {title}
           </Link>
@@ -28,8 +35,17 @@ const PostFullElement = ({ topic, title, image, authorName, createdAt, avatar, s
             </p>
           </div>
         </div>
-        <button>
-          <Bookmark />
+        <button
+          onClick={(e) => {
+            handleBookmark();
+            e.preventDefault();
+          }}
+        >
+          {isBookMark ? (
+            <FontAwesomeIcon icon={fasBookmark} className='block w-5 h-5 text-green-font' />
+          ) : (
+            <FontAwesomeIcon icon={farBookmark} className='block w-5 h-5 ' />
+          )}
         </button>
       </div>
     </div>

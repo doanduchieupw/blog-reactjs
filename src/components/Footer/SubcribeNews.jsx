@@ -25,7 +25,10 @@ export const GroupMenu = ({ sub }) => {
   return (
     <div className={`flex lg:flex-1 items-start justify-start flex-wrap `}>
       {groupMenuList.map((item, index) => (
-        <div className={`${sub ? 'w-full mt-3 border-b border-slate-600 pb-2 mb-6' : 'w-1/2 lg:w-1/3 mb-10 pr-4'}`}>
+        <div
+          key={index}
+          className={`${sub ? 'w-full mt-3 border-b border-slate-600 pb-2 mb-6' : 'w-1/2 lg:w-1/3 mb-10 pr-4'}`}
+        >
           <h3
             className={`uppercase mb-3 ${
               sub ? 'text-dark-gray-bg text-sm' : 'text-primary-bg font-semibold text-base '
@@ -35,7 +38,10 @@ export const GroupMenu = ({ sub }) => {
           </h3>
           <ul>
             {item.list.map((itemList, indexList) => (
-              <li className={`${sub ? 'text-xl font-semibold text-white pb-4' : 'text-sm  pb-2'} leading-[1.7]`}>
+              <li
+                key={indexList}
+                className={`${sub ? 'text-xl font-semibold text-white pb-4' : 'text-sm  pb-2'} leading-[1.7]`}
+              >
                 {itemList}
               </li>
             ))}

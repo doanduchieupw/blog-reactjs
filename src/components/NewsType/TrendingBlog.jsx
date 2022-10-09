@@ -1,7 +1,6 @@
 import { useEffect, useState } from 'react';
 import { collection, getDocs, limit, orderBy, query } from 'firebase/firestore';
 import { db } from '../../firebase-app/firebase-config';
-import { fromNow } from '../../utils/time';
 import { PostWithTitle, TitleSection } from '../NewsModule';
 
 const TrendingBlog = () => {
@@ -33,7 +32,7 @@ const TrendingBlog = () => {
         {trendingBlog && (
           <div className='w-full'>
             {trendingBlog.map((item, index) => (
-              <PostWithTitle index={index + 1} title={item.titleBlog} image={item.imageBlog} />
+              <PostWithTitle index={index + 1} title={item.titleBlog} image={item.imageBlog} slug={item.slugBlog} />
             ))}
           </div>
         )}

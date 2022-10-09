@@ -1,15 +1,16 @@
 import { collection, getDocs, limit, query, where } from 'firebase/firestore';
 import React, { useEffect, useState } from 'react';
-import { NoDataManage, TitleManage } from '../../components/ManageModule';
 import { BlogCard } from '../../components/BlogModule';
-import { db } from '../../firebase-app/firebase-config';
-import { getUserInfo } from '../../hooks';
-import { fromNow } from '../../utils/time';
 import { CircleLoading } from '../../components/LoadingSkeleton';
+import { NoDataManage, TitleManage } from '../../components/ManageModule';
+import { db } from '../../firebase-app/firebase-config';
+import { getUserInfo, useBookmark } from '../../hooks';
+import { fromNow } from '../../utils/time';
 
-function LikeManage() {
+function BookmarkManage() {
+  // const [isBookMark, setIsBookMark, handleBookmark] = useBookmark(blogID);
   const [user, setUser] = getUserInfo();
-  const [likeBlog, setLikeBlog] = useState();
+  const [bookmarkBlog, setBookmarkBlog] = useState();
   const [loading, setLoading] = useState(false);
 
   useEffect(() => {
@@ -18,7 +19,7 @@ function LikeManage() {
       try {
         setLoading(true);
         const blogRef = collection(db, 'blogs');
-        const blogQuery = query(blogRef, where('like.user', 'array-contains', user.userID), limit(10));
+        const blogQuery = query(blogRef, where('bookmark', 'array-contains', user.userID), limit(10));
         const blogSnapshot = await getDocs(blogQuery);
         const blogResult = [];
         blogSnapshot.forEach((doc) => {
@@ -28,7 +29,7 @@ function LikeManage() {
             createdAt: fromNow(doc.data().createdAt.seconds),
           });
         });
-        setLikeBlog(blogResult);
+        setBookmarkBlog(blogResult);
       } catch (err) {
         console.log(err);
       } finally {
@@ -39,10 +40,10 @@ function LikeManage() {
   }, [user]);
   return (
     <div className='min-h-[75vh]'>
-      <TitleManage title='Bài viết đã thích' />
-      {likeBlog &&
+      <TitleManage title='Bài viết đã lưu' />
+      {bookmarkBlog &&
         !loading &&
-        likeBlog.map((item, index) => (
+        bookmarkBlog.map((item, index) => (
           <BlogCard
             image={item.imageBlog}
             title={item.titleBlog}
@@ -52,13 +53,13 @@ function LikeManage() {
             authorName={item.user.displayName}
             authorAvatar={item.user.photoAvatar}
             isManage
-            like
+            bookmark
           />
         ))}
-      {JSON.stringify(likeBlog) === JSON.stringify([]) && (
+      {JSON.stringify(bookmarkBlog) === JSON.stringify([]) && (
         <NoDataManage
-          title='Bạn chưa lưu bài viết nào'
-          desc='Lưu lại những bài viết bạn cảm thấy tâm đắc và muốn đọc lại trong một ngày không xa.'
+          title='Bạn chưa thích bài viết nào'
+          desc='Hãy thả tim bài viết để động viên tác giả cũng như dễ dàng tìm lại nội dung yêu thích.'
         />
       )}
       {loading && <CircleLoading />}
@@ -66,4 +67,4 @@ function LikeManage() {
   );
 }
 
-export default LikeManage;
+export default BookmarkManage;

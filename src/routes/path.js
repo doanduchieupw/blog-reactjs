@@ -9,6 +9,8 @@ import {
   FollowingManage,
   LikeManage,
   TopicManage,
+  BookmarkManage,
+  CreateMedia,
 } from '../pages/manage';
 import { AuthLayout, MainLayout, ManageLayout } from '../components/Layout';
 
@@ -20,7 +22,9 @@ const publicPath = [
   { path: '/thong-tin-tai-khoan/:userID', component: UserProfile, layout: MainLayout },
   { path: '/quan-ly', component: CreateBlog, layout: ManageLayout },
   { path: '/quan-ly/tao-bai-viet', component: CreateBlog, layout: ManageLayout },
+  { path: '/quan-ly/tao-podcast', component: CreateMedia, layout: ManageLayout },
   { path: '/quan-ly/cai-dat', component: SettingUser, layout: ManageLayout },
+  { path: '/quan-ly/bai-viet-da-luu', component: BookmarkManage, layout: ManageLayout },
   { path: '/quan-ly/bai-viet-da-thich', component: LikeManage, layout: ManageLayout },
   { path: '/quan-ly/chu-de-theo-doi', component: TopicManage, layout: ManageLayout },
   { path: '/quan-ly/tac-gia-dang-theo-doi', component: FollowingManage, layout: ManageLayout },

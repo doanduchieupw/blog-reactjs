@@ -9,7 +9,9 @@ import Footer from '../Footer';
 import { FullHeader } from '../Header';
 const manageList = [
   { name: 'Tạo bài viết', slug: 'tao-bai-viet' },
+  { name: 'Tạo podcast', slug: 'tao-podcast' },
   { name: 'Cài đặt', slug: 'cai-dat' },
+  { name: 'Bài viết đã lưu', slug: 'bai-viet-da-luu' },
   { name: 'Bài viết đã thích', slug: 'bai-viet-da-thich' },
   { name: 'Chủ đề theo dõi', slug: 'chu-de-theo-doi' },
   { name: 'Tác giả đang theo dõi', slug: 'tac-gia-dang-theo-doi' },

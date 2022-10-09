@@ -15,7 +15,7 @@ const NewestBlog = () => {
         const blogResult = [];
         blogSnapshot.forEach((doc) => {
           blogResult.push({
-            id: doc.id,
+            blogID: doc.id,
             ...doc.data(),
           });
         });
@@ -35,7 +35,13 @@ const NewestBlog = () => {
             {newestBlog.map((item, index) => {
               if (index >= 2) return;
               return (
-                <PostWithImgBg topic={item.topic} title={item.titleBlog} image={item.imageBlog} slug={item.slugBlog} />
+                <PostWithImgBg
+                  blogID={item.blogID}
+                  topic={item.topic}
+                  title={item.titleBlog}
+                  image={item.imageBlog}
+                  slug={item.slugBlog}
+                />
               );
             })}
           </div>
@@ -45,6 +51,7 @@ const NewestBlog = () => {
               if (index < 2) return;
               return (
                 <PostFullElement
+                  blogID={item.blogID}
                   topic={item.topic}
                   title={item.titleBlog}
                   image={item.imageBlog}

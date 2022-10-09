@@ -1,10 +1,14 @@
 import { doc, getDoc, updateDoc } from 'firebase/firestore';
-import { useCallback, useEffect, useState, memo, useRef } from 'react';
+import { useEffect, useState, memo } from 'react';
 import _debounce from 'lodash/debounce';
-import { BookmarkIcon, CommentIcon, FacebookBlackIcon, GetLinkIcon, HeartIcon, UnHeartIcon } from '../../assets/icons';
+import { CommentIcon, FacebookBlackIcon, GetLinkIcon, HeartIcon, UnHeartIcon } from '../../assets/icons';
 import { db } from '../../firebase-app/firebase-config';
 import { useAuth } from '../../contexts/auth-context';
 import styled from 'styled-components';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faBookmark as fasBookmark } from '@fortawesome/free-solid-svg-icons';
+import { faBookmark as farBookmark } from '@fortawesome/free-regular-svg-icons';
+import { useBookmark } from '../../hooks';
 
 const BlogActionContainer = styled.div`
   @keyframes pulse {
@@ -18,6 +22,7 @@ const BlogAction = ({ setOpen, commentCount, blog }) => {
   const { userInfo } = useAuth();
   const [heartCount, setHeartCount] = useState(0);
   const [isHearted, setIsHearted] = useState({ state: false, user: [] });
+  const [isBookMark, setIsBookMark, handleBookmark] = useBookmark(blog.blogID);
   const handleReactionBlog = (heartCount) => {
     const postData = async () => {
       try {
@@ -31,7 +36,7 @@ const BlogAction = ({ setOpen, commentCount, blog }) => {
     };
     postData();
   };
-  // const debounceHeartCountFn = useCallback(_debounce(handleReactionBlog, 2000), [isHearted]);
+
   useEffect(() => {
     const fetchData = async () => {
       try {
@@ -74,8 +79,8 @@ const BlogAction = ({ setOpen, commentCount, blog }) => {
 
         <div className='h-8 w-px bg-slate-200'></div>
 
-        <button className='px-1 flex items-center gap-x-2 lg:px-4'>
-          <BookmarkIcon />
+        <button className='px-1 flex items-center gap-x-2 lg:px-4' onClick={handleBookmark}>
+          {isBookMark ? <FontAwesomeIcon icon={fasBookmark} /> : <FontAwesomeIcon icon={farBookmark} />}
           <span className='hidden lg:inline-block uppercase text-xs font-semibold'>Bookmark</span>
         </button>
 
