@@ -27,7 +27,7 @@ const PodcastContent = styled.div`
 function FullPodcast() {
   const { slug } = useParams();
   const [podcast, setPodcast] = useState();
-  const [isPlay, setPlay] = useState(false);
+  const [play, setPlay] = useState(false);
   const [isShowController, setShowController] = useState(false);
 
   useEffect(() => {
@@ -74,10 +74,10 @@ function FullPodcast() {
                 className='w-full h-14 px-6 py-4 bg-primary-bg rounded-full'
                 onClick={() => {
                   setShowController(true);
-                  setPlay(!isPlay);
+                  setPlay(!play);
                 }}
               >
-                {isPlay ? (
+                {play ? (
                   <div className='flex items-center justify-center gap-x-3 '>
                     <FontAwesomeIcon icon={faPause} className='text-white text-xl' />
                     <span className='text-white text-base font-semibold uppercase leading-4 '>Tạm dừng</span>
@@ -97,24 +97,29 @@ function FullPodcast() {
             </div>
             {podcast.keyword.map((item, index) => {
               if (index === 0) return;
-              return <Hashtag content={item} />;
+              return <Hashtag key={index} content={item} />;
             })}
           </div>
           {isShowController && (
             <div className='fixed bottom-0 h-[132px] bg-white z-30 w-full border-t border-t-lightest-gray'>
               <div className='my-6 mx-auto pl-4 max-w-6xl flex items-start justify-center'>
+                {/* Info podcast */}
                 <div className='w-2/3 flex'>
-                  <div className='flex'>
+                  {/* Image & Title */}
+                  <div className='flex w-1/2'>
                     <img src={podcast.image} className='w-20 h-20 block object-cover rounded-lg mr-2' />
                     <div className='w-[calc(100%-88px)] text-xs font-semibold overflow-clip my-auto'>
                       <span className='uppercase text-blue-font line-clamp-1 mb-1'>{podcast.topic}</span>
                       <h1 className='animate-scrollTitle whitespace-nowrap inline-block '>{podcast.title}</h1>
                     </div>
                   </div>
-                  <PodcastPlayerControl url={podcast.link} />
+                  {/* Controller */}
+                  <PodcastPlayerControl url={podcast.link} play={play} setPlay={setPlay} />
                 </div>
+                {/* Close and minium */}
                 <div className='w-1/3 flex justify-end'>
                   <button
+                    className='w-12 h-12 flex items-start justify-center'
                     onClick={() => {
                       setShowController(false);
                       setPlay(false);

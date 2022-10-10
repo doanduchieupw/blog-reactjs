@@ -4,6 +4,7 @@ import moment from 'moment';
 import { faPause, faPlay } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import styled from 'styled-components';
+import { BackwardIcon, ForwardIcon } from '../../assets/icons';
 
 const PlayerContainer = styled.div`
   .player-slider {
@@ -40,10 +41,11 @@ const PlayerContainer = styled.div`
   }
 `;
 
-function PodcastPlayerControl({ url }) {
-  const [play, setPlay] = useState(false);
+function PodcastPlayerControl({ url, play, setPlay }) {
   const [process, setProcess] = useState(0);
   const [time, setTime] = useState('00:00:00');
+  const [timeSecond, setTimeSecond] = useState(0);
+  console.log('🚀 ~ file: PodcastPlayerControl.jsx ~ line 48 ~ PodcastPlayerControl ~ timeSecond', timeSecond);
   const [timePlayed, setTimePlayed] = useState(0);
   const [durationTime, setDurationTime] = useState('00:00:00');
   const player = useRef();
@@ -54,6 +56,7 @@ function PodcastPlayerControl({ url }) {
 
   const handleProgress = (state) => {
     setTime(moment.utc(state.playedSeconds * 1000).format('H:mm:ss'));
+    setTimeSecond(Math.floor(state.playedSeconds));
     setDurationTime(moment.utc(player.current.getDuration() * 1000).format('H:mm:ss'));
     setTimePlayed(state.played);
     setProcess(state.loaded);
@@ -62,6 +65,15 @@ function PodcastPlayerControl({ url }) {
   const handleSeekChange = (e) => {
     setTimePlayed(e.target.value);
     player.current.seekTo(parseFloat(e.target.value));
+  };
+
+  const handleBackward = () => {
+    setTimeSecond((prev) => prev - 15);
+    player.current.seekTo(timeSecond - 15, 'seconds');
+  };
+  const handleForward = () => {
+    setTimeSecond((prev) => prev + 15);
+    player.current.seekTo(timeSecond + 15, 'seconds');
   };
   return (
     <PlayerContainer timePlayed={timePlayed} process={process}>
@@ -77,14 +89,24 @@ function PodcastPlayerControl({ url }) {
         onProgress={handleProgress}
         style={{ display: 'none' }}
       />
-      <div>
-        <div className='p-4 bg-gray-bg rounded-full hover:bg-dark-gray-bg block'>
-          {play ? (
-            <FontAwesomeIcon icon={faPause} onClick={handlePlay} className='w-4 h-4 block' />
-          ) : (
-            <FontAwesomeIcon icon={faPlay} onClick={handlePlay} className='w-4 h-4 block' />
-          )}
+      <div className='flex flex-col'>
+        {/* Controller */}
+        <div className='flex items-center justify-center mb-3'>
+          <div className='w-12 h-12 flex items-center justify-center' onClick={handleBackward}>
+            <BackwardIcon />
+          </div>
+          <div className='w-12 h-12 bg-primary-bg rounded-full flex items-center justify-center'>
+            {play ? (
+              <FontAwesomeIcon icon={faPause} onClick={handlePlay} className='w-4 h-4 inline-block text-white' />
+            ) : (
+              <FontAwesomeIcon icon={faPlay} onClick={handlePlay} className='w-4 h-4 inline-block text-white' />
+            )}
+          </div>
+          <div className='w-12 h-12 flex items-center justify-center' onClick={handleForward}>
+            <ForwardIcon />
+          </div>
         </div>
+        {/* Timeline */}
         <div className='flex items-center gap-x-3'>
           <time className='text-sm text-light-gray-font'>{time}</time>
           <input
