@@ -68,8 +68,8 @@ const ManageLayout = ({ children }) => {
   return (
     <div className='h-screen overflow-y-scroll'>
       <FullHeader />
-      <div className='flex w-[90%] max-w-6xl mx-auto pt-28 pb-14 '>
-        <div className='relative w-1/4 pr-8 flex flex-col items-start'>
+      <div className='flex w-[90%] max-w-6xl mx-auto pt-28 pb-14 flex-wrap'>
+        <div className='relative w-full md:w-1/4 pr-8 flex flex-col items-start mb-8'>
           <div
             ref={indicatorRef}
             className='absolute -z-10 left-0 w-[calc(100%-32px)] bg-gray-bg before:content-[""] before:left-0 before:h-full before:block before:w-0.5 before:bg-primary-bg duration-300'
@@ -109,7 +109,7 @@ const ManageLayout = ({ children }) => {
               }
             })}
         </div>
-        <div className='w-3/4'>{children}</div>
+        <div className='w-full md:w-3/4 '>{children}</div>
       </div>
       <Footer />
     </div>

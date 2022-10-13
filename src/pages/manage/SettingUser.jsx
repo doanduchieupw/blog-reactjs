@@ -180,8 +180,8 @@ const SettingUser = () => {
                 className='absolute -top-20 right-0 '
                 primary={isEdit}
               />
-              <div className='flex w-full mt-8'>
-                <div className='w-1/4 flex justify-center'>
+              <div className='flex w-full mt-8 flex-col md:flex-row'>
+                <div className='w-full md:w-1/4 flex justify-center '>
                   <div className='relative group w-32 h-32'>
                     {formik.values.photoAvatar ? (
                       <div className='w-full h-full'>
@@ -217,7 +217,7 @@ const SettingUser = () => {
                     )}
                   </div>
                 </div>
-                <div className='w-3/4 flex flex-col items-start'>
+                <div className='w-full md:w-3/4 flex flex-col items-start'>
                   {isEdit ? (
                     <input
                       name='fullname'
@@ -243,7 +243,7 @@ const SettingUser = () => {
               </div>
               {/* Change password */}
               <TitleManage title='Đổi mật khẩu' className='mt-4' />
-              <div className='w-1/2'>
+              <div className='w-full md:w-1/2'>
                 <BlogInput
                   name='oldPassword'
                   type='password'

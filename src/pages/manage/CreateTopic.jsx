@@ -233,7 +233,7 @@ const CreateTopic = () => {
       <Formik initialValues={initialTopic} onSubmit={handleSubmit}>
         {(formik) => (
           <form onSubmit={formik.handleSubmit}>
-            <div className='grid grid-cols-2 gap-x-2'>
+            <div className='grid grid-cols-1 md:grid-cols-2 gap-x-2'>
               <TopicInput label='Tên chủ đề' name='name' placeholder='Thêm chủ đề mới' />
               <TopicInput label='Đường dẫn' name='slug' placeholder='VD: vi-du-ten-tieu-de' />
               <TopicInput label='Chú thích' name='desc' placeholder='Giới thiệu về chủ đề' />

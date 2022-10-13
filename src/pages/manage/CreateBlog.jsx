@@ -119,7 +119,7 @@ const CreateBlog = () => {
       <Formik initialValues={initialBlog} onSubmit={handleSubmit} validationSchema={blogSchema}>
         {(formik) => (
           <form className='' onSubmit={formik.handleSubmit}>
-            <div className='grid grid-cols-2 gap-x-2'>
+            <div className='grid grid-cols-1 md:grid-cols-2 gap-x-2'>
               <BlogInput label='Tiêu đề' name='titleBlog' placeholder='Tạo tiêu đề bài viết' />
               <BlogInput label='Đường dẫn' name='slugBlog' placeholder='VD: vi-du-ten-tieu-de' />
               <BlogInput type='file' label='Ảnh bìa' name='imageBlog' placeholder='Lựa chọn một ảnh bìa.' />

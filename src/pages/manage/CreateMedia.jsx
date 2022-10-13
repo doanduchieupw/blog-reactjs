@@ -107,7 +107,7 @@ function CreateMedia() {
       <Formik initialValues={initialMedia} onSubmit={handleSubmit} validationSchema={podcastSchema}>
         {(formik) => (
           <form onSubmit={formik.handleSubmit}>
-            <div className='grid grid-cols-2 gap-x-2'>
+            <div className='grid grid-cols-1 md:grid-cols-2 gap-x-2'>
               <MediaInput label='Tên chủ đề' name='title' placeholder='Thêm chủ đề mới' />
               <MediaInput label='Đường dẫn' name='slug' placeholder='VD: vi-du-ten-tieu-de' />
               <MediaInput type='file' label='Ảnh bìa' name='image' placeholder='Lựa chọn một ảnh bìa.' />
