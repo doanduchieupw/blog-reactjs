@@ -31,7 +31,10 @@ const FullBlog = ({ layoutRef }) => {
     };
 
     layoutRef.current.addEventListener('scroll', handleScroll);
-
+    layoutRef.current.scroll({
+      top: 0,
+      scroll: 'smooth',
+    });
     return () => {
       layoutRef?.current?.removeEventListener('scroll', handleScroll);
     };
@@ -61,6 +64,7 @@ const FullBlog = ({ layoutRef }) => {
     };
     fetchData();
   }, []);
+
   useEffect(() => {
     if (!blog) return;
     document.title = blog.titleBlog;

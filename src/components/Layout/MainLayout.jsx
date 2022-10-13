@@ -15,6 +15,10 @@ const MainLayout = ({ children }) => {
       }
     };
     layoutRef.current.addEventListener('scroll', handleScroll);
+    layoutRef.current.scroll({
+      top: 0,
+      behavior: 'smooth',
+    });
   }, []);
   const handleScrollToTop = () => {
     layoutRef.current.scroll({
