@@ -42,7 +42,7 @@ const PlayerContainer = styled.div`
   }
 `;
 
-const PodcastPlayer = ({sub}) => {
+const PodcastPlayer = ({ sub, url }) => {
   const [play, setPlay] = useState(false);
   const [process, setProcess] = useState(0);
   const [time, setTime] = useState('00:00:00');
@@ -67,7 +67,7 @@ const PodcastPlayer = ({sub}) => {
   return (
     <PlayerContainer timePlayed={timePlayed} process={process}>
       <ReactPlayer
-        url="https://www.buzzsprout.com/1667218/11317373-s3-15-alex-ph-m-ceo-co-founder-realbox-b-t-d-ng-s-n-phan-m-nh-c-h-i-d-u-t-cho-s-dong.mp3"
+        url={url}
         ref={player}
         config={{
           file: {
@@ -79,33 +79,29 @@ const PodcastPlayer = ({sub}) => {
         style={{ display: 'none' }}
       />
 
-      <div className="flex items-center justify-between">
+      <div className='flex items-center justify-between'>
         <div className={`flex items-center ${sub ? 'flex-row-reverse basis-3/5 md:flex-1' : 'flex-1'}`}>
-          <time className={`text-sm text-light-gray-font ${sub ? 'basis-1/3 flex justify-center md:basis-auto md:ml-4':'mr-4'}`}>
+          <time
+            className={`text-sm text-light-gray-font ${
+              sub ? 'basis-1/3 flex justify-center md:basis-auto md:ml-4' : 'mr-4'
+            }`}
+          >
             {time}
           </time>
           <input
-            type="range"
-            max="1"
+            type='range'
+            max='1'
             value={timePlayed}
-            step="any"
-            className={`player-slider ${sub ? 'basis-2/3 md:basis-auto' : ''}`}
+            step='any'
+            className={`player-slider cursor-pointer ${sub ? 'basis-2/3 md:basis-auto' : ''}`}
             onChange={handleSeekChange}
           />
         </div>
-        <div className="ml-4 p-4 bg-gray-bg rounded-full hover:bg-dark-gray-bg ">
+        <div className='ml-4 p-4 bg-gray-bg rounded-full hover:bg-dark-gray-bg cursor-pointer' onClick={handlePlay}>
           {play ? (
-            <FontAwesomeIcon
-              icon={faPause}
-              onClick={handlePlay}
-              className="w-4 h-4 block"
-            />
+            <FontAwesomeIcon icon={faPause} className='w-4 h-4 block' />
           ) : (
-            <FontAwesomeIcon
-              icon={faPlay}
-              onClick={handlePlay}
-              className="w-4 h-4 block"
-            />
+            <FontAwesomeIcon icon={faPlay} className='w-4 h-4 block' />
           )}
         </div>
       </div>

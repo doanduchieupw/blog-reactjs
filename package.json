@@ -9,6 +9,7 @@
     "preview": "vite preview"
   },
   "dependencies": {
+    "@babel/runtime": "^7.19.4",
     "@ckeditor/ckeditor5-build-classic": "^35.1.0",
     "@ckeditor/ckeditor5-react": "^5.0.2",
     "@ckeditor/ckeditor5-upload": "^35.1.0",
@@ -26,6 +27,7 @@
     "formik": "^2.2.9",
     "highlight.js": "^11.6.0",
     "html-react-parser": "^3.0.4",
+    "html-to-text": "^8.2.1",
     "lodash": "^4.17.21",
     "moment": "^2.29.4",
     "quill-image-uploader": "^1.2.3",
@@ -41,6 +43,7 @@
     "sass": "^1.54.8",
     "slugify": "^1.6.5",
     "styled-components": "^5.3.5",
+    "typesense": "^1.4.1",
     "yup": "^0.32.11"
   },
   "devDependencies": {

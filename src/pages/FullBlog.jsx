@@ -3,7 +3,7 @@ import { Link, useNavigate, useParams } from 'react-router-dom';
 import { collection, getDocs, query, where } from 'firebase/firestore';
 import { db } from '../firebase-app/firebase-config';
 import { BlogHeader } from '../components/Header';
-import { BlogContent, BlogAction } from '../components/BlogModule';
+import { BlogContent, BlogAction, Hashtag } from '../components/BlogModule';
 import { CommentModal } from '../components/CommentModule';
 import { fromNow } from '../utils/time';
 
@@ -33,7 +33,7 @@ const FullBlog = ({ layoutRef }) => {
     layoutRef.current.addEventListener('scroll', handleScroll);
 
     return () => {
-      layoutRef.current.removeEventListener('scroll', handleScroll);
+      layoutRef?.current?.removeEventListener('scroll', handleScroll);
     };
   }, []);
 
@@ -52,6 +52,7 @@ const FullBlog = ({ layoutRef }) => {
             blogID: doc.id,
             ...doc.data(),
             createdAtFormat: fromNow(doc.data().createdAt.seconds),
+            keywordBlog: doc.data().keywordBlog.split('#'),
           });
         });
       } catch (err) {
@@ -126,6 +127,12 @@ const FullBlog = ({ layoutRef }) => {
               </div>
               {/* Content of blog */}
               <BlogContent content={blog.contentBlog} />
+              <div className='px-4 xs:px-0 max-w-[540px] md:max-w-[568px] mx-auto mb-6'>
+                {blog.keywordBlog.map((item, index) => {
+                  if (index === 0) return;
+                  return <Hashtag key={index} content={item} />;
+                })}
+              </div>
             </div>
           </div>
           <div className='block lg:hidden'>

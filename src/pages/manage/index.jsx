@@ -9,3 +9,4 @@ export { default as LikeManage } from './LikeManage';
 export { default as TopicManage } from './TopicManage';
 export { default as BookmarkManage } from './BookmarkManage';
 export { default as CreateMedia } from './CreateMedia';
+export { default as UpdateFirebase } from './UpdateFirebase';

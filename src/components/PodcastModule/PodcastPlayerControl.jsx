@@ -7,6 +7,7 @@ import styled from 'styled-components';
 import { BackwardIcon, ForwardIcon } from '../../assets/icons';
 
 const PlayerContainer = styled.div`
+  width: 100%;
   .player-slider {
     position: relative;
     -webkit-appearance: none;
@@ -45,7 +46,6 @@ function PodcastPlayerControl({ url, play, setPlay }) {
   const [process, setProcess] = useState(0);
   const [time, setTime] = useState('00:00:00');
   const [timeSecond, setTimeSecond] = useState(0);
-  console.log('🚀 ~ file: PodcastPlayerControl.jsx ~ line 48 ~ PodcastPlayerControl ~ timeSecond', timeSecond);
   const [timePlayed, setTimePlayed] = useState(0);
   const [durationTime, setDurationTime] = useState('00:00:00');
   const player = useRef();
@@ -89,35 +89,38 @@ function PodcastPlayerControl({ url, play, setPlay }) {
         onProgress={handleProgress}
         style={{ display: 'none' }}
       />
-      <div className='flex flex-col'>
+      <div className='flex flex-col ml-2'>
         {/* Controller */}
         <div className='flex items-center justify-center mb-3'>
-          <div className='w-12 h-12 flex items-center justify-center' onClick={handleBackward}>
+          <div className='w-12 h-12 flex items-center justify-center cursor-pointer' onClick={handleBackward}>
             <BackwardIcon />
           </div>
-          <div className='w-12 h-12 bg-primary-bg rounded-full flex items-center justify-center'>
+          <div
+            className='w-12 h-12 bg-primary-bg rounded-full flex items-center justify-center cursor-pointer'
+            onClick={handlePlay}
+          >
             {play ? (
-              <FontAwesomeIcon icon={faPause} onClick={handlePlay} className='w-4 h-4 inline-block text-white' />
+              <FontAwesomeIcon icon={faPause} className='w-4 h-4 inline-block text-white' />
             ) : (
-              <FontAwesomeIcon icon={faPlay} onClick={handlePlay} className='w-4 h-4 inline-block text-white' />
+              <FontAwesomeIcon icon={faPlay} className='w-4 h-4 inline-block text-white' />
             )}
           </div>
-          <div className='w-12 h-12 flex items-center justify-center' onClick={handleForward}>
+          <div className='w-12 h-12 flex items-center justify-center cursor-pointer' onClick={handleForward}>
             <ForwardIcon />
           </div>
         </div>
         {/* Timeline */}
         <div className='flex items-center gap-x-3'>
-          <time className='text-sm text-light-gray-font'>{time}</time>
+          <time className='min-w-[45px] text-sm text-light-gray-font'>{time}</time>
           <input
             type='range'
             max='1'
             value={timePlayed}
             step='any'
-            className='player-slider'
+            className='player-slider cursor-pointer'
             onChange={handleSeekChange}
           />
-          <time className='text-sm text-light-gray-font'>{durationTime}</time>
+          <time className='min-w-[45px] text-sm text-light-gray-font'>{durationTime}</time>
         </div>
       </div>
     </PlayerContainer>

@@ -15,7 +15,7 @@ import { blogStatus } from '../../utils/constants';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faSpinner } from '@fortawesome/free-solid-svg-icons';
 import { CKEditorCustom } from '../../components/Editor/';
-
+import { client } from '../../utils/typesense-client';
 const initialBlog = {
   titleBlog: '',
   slugBlog: '',
@@ -49,6 +49,9 @@ const CreateBlog = () => {
   const [contentEditor, setContentEditor] = useState('');
   const [loading, setLoading] = useState(false);
 
+  useEffect(() => {
+    document.title = 'TechEBlog | Tạo bài viết';
+  }, []);
   //get topic in db
   useEffect(() => {
     const fetchData = async () => {
@@ -74,7 +77,7 @@ const CreateBlog = () => {
       const dataBlogClone = { ...dataBlog };
       dataBlogClone.slugBlog = slugify(dataBlog.slugBlog || dataBlog.titleBlog, { lower: true });
       const blogRef = collection(db, 'blogs');
-      const test = await addDoc(blogRef, {
+      const blogDoc = await addDoc(blogRef, {
         ...dataBlogClone,
         contentBlog: contentEditor,
         user: {
@@ -84,6 +87,16 @@ const CreateBlog = () => {
         },
         createdAt: serverTimestamp(),
       });
+      const blogTypesence = {
+        id: blogDoc.id,
+        contentBlog: contentEditor,
+        imageBlog: dataBlogClone.imageBlog,
+        keywordBlog: dataBlogClone.keywordBlog,
+        slugBlog: dataBlogClone.slugBlog,
+        titleBlog: dataBlogClone.titleBlog,
+        topic: dataBlogClone.topic,
+      };
+      client.collections('blogs').documents().create(blogTypesence);
       notification['success']({
         message: 'Tạo bài viết mới thành công',
         description: 'Vui lòng đợi quản trị viên phê duyệt bài viết!',

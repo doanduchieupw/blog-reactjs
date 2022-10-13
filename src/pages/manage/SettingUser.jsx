@@ -44,6 +44,9 @@ const SettingUser = () => {
   const { userInfo } = useAuth();
   const [isEdit, setEdit] = useState(false);
   const [uploadPercent, setUploadPercent] = useState(0);
+  useEffect(() => {
+    document.title = 'TechEBlog | Cài đặt tài khoản';
+  }, []);
   const handleSubmit = async (values, actions) => {
     console.log(values);
     try {

@@ -10,6 +10,7 @@ import { DropdownButton, NormalButton } from '../../components/Button';
 import { CKEditorCustom } from '../../components/Editor';
 import { BlogInput as MediaInput } from '../../components/Input';
 import { TitleManage } from '../../components/ManageModule';
+import { client } from '../../utils/typesense-client';
 
 const initialMedia = {
   title: '',
@@ -58,13 +59,15 @@ function CreateMedia() {
     };
     fetchData();
   }, []);
-
+  useEffect(() => {
+    document.title = 'TechEBlog | Tạo podcast';
+  }, []);
   const handleSubmit = async (values, actions) => {
     try {
       const clonePodcast = { ...values };
       clonePodcast.slug = slugify(values.slug || values.title, { lower: true });
       const podcastRef = collection(db, 'podcasts');
-      await addDoc(podcastRef, {
+      const podcastDoc = await addDoc(podcastRef, {
         ...clonePodcast,
         desc: contentEditor,
         user: {
@@ -74,6 +77,16 @@ function CreateMedia() {
         },
         createdAt: serverTimestamp(),
       });
+      const podcastTypesence = {
+        id: podcastDoc.id,
+        desc: contentEditor,
+        image: clonePodcast.image,
+        keyword: clonePodcast.keyword,
+        slug: clonePodcast.slug,
+        title: clonePodcast.title,
+        topic: clonePodcast.topic,
+      };
+      client.collections('podcasts').documents().create(podcastTypesence);
       notification['success']({
         message: 'Tạo podcast mới thành công',
         description: 'Vui lòng đợi quản trị viên phê duyệt bài viết!',
@@ -84,7 +97,7 @@ function CreateMedia() {
     } catch (err) {
       notification['error']({
         message: 'Có lỗi xảy ra',
-        description: 'Vui lòng thử lại sau vài phút',
+        description: err.message,
       });
     }
   };
