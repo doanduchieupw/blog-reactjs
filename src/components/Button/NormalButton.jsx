@@ -1,8 +1,10 @@
-const NormalButton = ({ title, icon, type = 'button', className = '', ...props }) => {
+const NormalButton = ({ title, icon, type = 'button', className = '', primary, ...props }) => {
   return (
     <button
       type={type}
-      className={`bg-[#00773e] px-3 rounded-md text-white leading-8 font-medium ${className}`}
+      className={`${
+        primary ? 'bg-[#00773e] text-white' : ' border border-[#00773e] text-[#00773e] bg-white'
+      }  px-3 rounded-md  leading-8 font-medium ${className}}`}
       {...props}
     >
       {icon}

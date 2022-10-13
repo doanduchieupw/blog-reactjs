@@ -238,7 +238,7 @@ const CommentModal = ({ open, setOpen, blog, commentCount, setCommentCount }) =>
               </div>
               <div className='w-full'>
                 <CommentEditor value={comment} setValue={setComment} placeholder='Bình luận tại đây' />
-                <NormalButton title='BÌNH LUẬN' className='w-full mt-3' onClick={handleComment} />
+                <NormalButton title='BÌNH LUẬN' className='w-full mt-3 block' primary onClick={handleComment} />
               </div>
             </div>
 

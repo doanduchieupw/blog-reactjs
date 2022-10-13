@@ -90,11 +90,7 @@ function UserProfile() {
             />
             <div className='flex flex-col items-start gap-y-3'>
               <h1 className='text-2xl font-semibold text-primary-bg leading-snug'>{user.fullname}</h1>
-              <NormalButton
-                title={isFollow.title}
-                onClick={() => handleFollow()}
-                className={`${isFollow.state ? '' : 'bg-white border border-slate-500 text-black'}`}
-              />
+              <NormalButton title={isFollow.title} onClick={() => handleFollow()} primary={isFollow.state} />
             </div>
           </div>
           {/* Blogs of user */}

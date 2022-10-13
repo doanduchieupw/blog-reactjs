@@ -177,9 +177,8 @@ const SettingUser = () => {
                 title={`${isEdit ? 'OK' : 'Sửa'}`}
                 type={`${isEdit ? 'button' : 'submit'}`}
                 onClick={() => setEdit(!isEdit)}
-                className={`absolute -top-20 right-0 ${
-                  isEdit ? 'bg-white text-[#00773e] border border-[#00773e]' : ''
-                }`}
+                className='absolute -top-20 right-0 '
+                primary={isEdit}
               />
               <div className='flex w-full mt-8'>
                 <div className='w-1/4 flex justify-center'>

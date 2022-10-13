@@ -4,7 +4,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faBookmark as fasBookmark } from '@fortawesome/free-solid-svg-icons';
 import { faBookmark as farBookmark } from '@fortawesome/free-regular-svg-icons';
 
-const PostFullElement = ({ blogID, topic, title, image, authorName, createdAt, avatar, slug }) => {
+const PostFullElement = ({ blogID, topic, title, image, authorName, createdAt, avatar, slug, userID }) => {
   const [isBookMark, setIsBookMark, handleBookmark] = useBookmark(blogID);
   const [topicField, setTopicField] = useTopic(topic);
   return (
@@ -35,9 +35,13 @@ const PostFullElement = ({ blogID, topic, title, image, authorName, createdAt, a
       )}
       <div className='flex items-center justify-between'>
         <div className='flex justify-start'>
-          <img src={avatar} className='w-8 h-8 rounded-full object-cover mr-3' />
+          <Link to={`/thong-tin-tai-khoan/${userID}`}>
+            <img src={avatar} className='w-8 h-8 rounded-full object-cover mr-3' />
+          </Link>
           <div className='flex flex-row-reverse lg:flex-col items-center lg:items-start justify-start lg:justify-center'>
-            <span className='text-xs font-semibold track-[0.01em] text-[#555]'>{authorName}</span>
+            <Link to={`/thong-tin-tai-khoan/${userID}`} className='text-xs font-semibold track-[0.01em] text-[#555]'>
+              {authorName}
+            </Link>
             <p className='flex justify-start items-center after:content-[""] after:block after:w-0.5 after:h-0.5 after:mx-2 after:bg-light-gray-font lg:after:hidden text-xs text-light-gray-font whitespace-nowrap tracking-[0.005em]'>
               {`${createdAt.replace('khoảng', '')} trước`}
             </p>

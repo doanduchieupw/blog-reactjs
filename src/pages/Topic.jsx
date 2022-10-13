@@ -16,6 +16,7 @@ const Topic = () => {
   const { slug } = useParams();
   const [isSubTopic, setSubTopic] = useState(false);
   useEffect(() => {
+    if (!topic) return;
     document.title = `TechEBlog | ${topic.name}`;
   }, [topic]);
   useEffect(() => {

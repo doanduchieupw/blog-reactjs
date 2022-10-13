@@ -59,6 +59,7 @@ const NewestBlog = () => {
                   createdAt={fromNow(item.createdAt.seconds)}
                   avatar={item.user.photoAvatar}
                   slug={item.slugBlog}
+                  userID={item.user.id}
                 />
               );
             })}

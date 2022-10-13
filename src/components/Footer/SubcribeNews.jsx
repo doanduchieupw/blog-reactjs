@@ -73,7 +73,8 @@ export const MiniForm = ({ sub }) => {
         </div>
         <NormalButton
           title='Đăng ký!'
-          className='w-full xs:max-w-[96px] xs:h-full xs:py-1 px-4 py-2 uppercase bg-[#B72727] cursor-pointer'
+          className='w-full xs:max-w-[96px] xs:h-full xs:py-1 px-4 py-2 uppercase bg-[#B72727] text-white cursor-pointer'
+          primary
         />
       </div>
       <div className='mt-12'>
