@@ -204,7 +204,9 @@ const CreateTopic = () => {
     setTopic(newTopic);
     await deleteDoc(doc(db, 'topic', key));
   };
-
+  useEffect(() => {
+    document.title = 'TechEBlog | Quản lý chủ đề';
+  }, []);
   //get topic in db
   useEffect(() => {
     const fetchData = async () => {

@@ -148,7 +148,9 @@ const ManageBlog = () => {
         </p>
       ),
   });
-
+  useEffect(() => {
+    document.title = 'TechEBlog | Quản lý bài viết';
+  }, []);
   useEffect(() => {
     const fetchData = async () => {
       setLoading(true);

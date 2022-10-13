@@ -12,7 +12,9 @@ function BookmarkManage() {
   const [user, setUser] = getUserInfo();
   const [bookmarkBlog, setBookmarkBlog] = useState();
   const [loading, setLoading] = useState(false);
-
+  useEffect(() => {
+    document.title = 'TechEBlog | Bài viết đã lưu';
+  }, []);
   useEffect(() => {
     if (!user) return;
     const fetchData = async () => {

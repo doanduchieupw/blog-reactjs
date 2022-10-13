@@ -68,6 +68,10 @@ function FullPodcast() {
     };
     fetchData();
   }, []);
+  useEffect(() => {
+    if (!podcast) return;
+    document.title = podcast.title;
+  }, [podcast]);
   return (
     <div className=''>
       {podcast && (

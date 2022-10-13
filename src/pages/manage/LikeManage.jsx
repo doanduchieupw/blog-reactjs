@@ -13,6 +13,9 @@ function LikeManage() {
   const [loading, setLoading] = useState(false);
 
   useEffect(() => {
+    document.title = 'TechEBlog | Quản lý bài viết đã thích';
+  }, []);
+  useEffect(() => {
     if (!user) return;
     const fetchData = async () => {
       try {

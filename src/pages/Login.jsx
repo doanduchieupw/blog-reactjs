@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { Modal } from 'antd';
 import 'antd/dist/antd.css';
 import { faEnvelope } from '@fortawesome/free-solid-svg-icons';
@@ -12,6 +12,9 @@ const Login = () => {
   const handleCancel = () => {
     setShowLoginModal(false);
   };
+  useEffect(() => {
+    document.title = 'TechEBlog | Đăng nhập';
+  }, []);
   return (
     <div className='max-w-xl md:max-w-md h-full mx-auto flex flex-col items-center justify-center'>
       <span className='w-64 md:w-80 sm:w-80 text-center text-[32px] leading-10 tracking-tight font-semibold -mt-4 mb-8'>

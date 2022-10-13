@@ -30,7 +30,7 @@ const signUpSchema = yup.object().shape({
     .matches(RegExp('(^.*[a-zA-Z]+.*$)'), 'Bao gồm ít nhất 1 ký tự chữ'),
 });
 
-const SignUpModal = ({ onCancel }) => {
+const SignUpModal = ({ onCancel, setStep }) => {
   const [togglePass, setTogglePass] = useState(false);
   const [showMore, setShowMore] = useState(true);
   const [errorPassword, setErrorPassword] = useState([]);
@@ -65,9 +65,8 @@ const SignUpModal = ({ onCancel }) => {
         message: 'Đăng ký thành công',
         description: 'Vui lòng vào cài đặt để tùy chỉnh lại thông tin cá nhân!',
       });
-      navigate('/');
+      setStep((prev) => prev + 1);
     } catch (err) {
-      console.log('🚀 ~ file: SignUpModal.jsx ~ line 65 ~ handleSignUp ~ err', err);
       actions.setFieldError('email', 'Email đã tồn tại');
     }
   };

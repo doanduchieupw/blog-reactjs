@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { collection, getDocs, query, where } from 'firebase/firestore';
+import { arrayRemove, arrayUnion, collection, doc, getDocs, query, updateDoc, where } from 'firebase/firestore';
 import { useParams } from 'react-router-dom';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faBookmark } from '@fortawesome/free-regular-svg-icons';
@@ -7,11 +7,17 @@ import { faBookmark } from '@fortawesome/free-regular-svg-icons';
 import { NormalButton } from '../components/Button';
 import { db } from '../firebase-app/firebase-config';
 import { getTime } from '../utils/time';
+import { getUserInfo } from '../hooks';
 
 const Topic = () => {
+  const [user, setUser] = getUserInfo();
   const [topic, setTopic] = useState();
   const [blog, setBlog] = useState();
   const { slug } = useParams();
+  const [isSubTopic, setSubTopic] = useState(false);
+  useEffect(() => {
+    document.title = `TechEBlog | ${topic.name}`;
+  }, [topic]);
   useEffect(() => {
     const fetchData = async () => {
       try {
@@ -54,9 +60,23 @@ const Topic = () => {
     };
     fetchData();
   }, [topic]);
+  useEffect(() => {
+    if (!user || !topic) return;
+    setSubTopic(user.topic.includes(topic.name));
+  }, [user]);
+  const handleSubTopic = () => {
+    const updateData = async () => {
+      const userRef = doc(db, 'users', user.userID);
+      await updateDoc(userRef, {
+        topic: user.topic.includes(topic.name) ? arrayRemove(topic.name) : arrayUnion(topic.name),
+      });
+      setSubTopic(!isSubTopic);
+    };
+    updateData();
+  };
   return (
     <div className='pt-16 w-[calc(100%-32px)] mx-auto mt-4 mb-12 max-w-6xl'>
-      {topic && blog && (
+      {user && topic && blog && (
         <div className='flex items-start justify-start flex-wrap'>
           <div className='max-w-full lg:max-w-3xl lg:pr-4 w-full order-2 lg:order-1'>
             {/* First article */}
@@ -106,7 +126,7 @@ const Topic = () => {
                 {topic.name}
               </h3>
               <p className='text-sm text-primary-bg mb-3'>{topic.desc}</p>
-              <NormalButton title='Theo dõi' />
+              <NormalButton title={`${isSubTopic ? 'Bỏ theo dõi' : 'Theo dõi'}`} onClick={handleSubTopic} />
             </div>
             <div className='mb-14'>
               <h3 className='text-base font-semibold uppercase mb-4'>Chủ đề liên quan</h3>

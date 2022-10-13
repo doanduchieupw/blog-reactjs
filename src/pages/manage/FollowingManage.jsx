@@ -9,7 +9,9 @@ function FollowingManage() {
   const [following, setFollowing] = useState([]);
   const [user, setUser] = getUserInfo();
   const [loading, setLoading] = useState(false);
-
+  useEffect(() => {
+    document.title = 'TechEBlog | Quản lý theo dõi';
+  }, []);
   useEffect(() => {
     if (!user) return;
     let ids = [...user.folowing];

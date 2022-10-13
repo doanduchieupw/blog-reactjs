@@ -61,6 +61,10 @@ const FullBlog = ({ layoutRef }) => {
     };
     fetchData();
   }, []);
+  useEffect(() => {
+    if (!blog) return;
+    document.title = blog.titleBlog;
+  }, [blog]);
   return (
     <div className=''>
       {blog && (

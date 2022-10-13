@@ -7,7 +7,7 @@ import { faEnvelope, faAngleLeft } from '@fortawesome/free-solid-svg-icons';
 
 import { FacebookIcon, GoogleIcon } from '../assets/icons';
 import { BorderButton, HoverButton } from '../components/Button';
-import { SignUpModal, ChoiceHobby } from '../components/FormModal';
+import { SignUpModal, ChoiceTopic } from '../components/FormModal';
 
 const SignUp = () => {
   const [showSignUpModal, setShowSignUpModal] = useState(false);
@@ -15,7 +15,10 @@ const SignUp = () => {
   const handleCancel = () => {
     setShowSignUpModal(false);
   };
-  const stepPage = [<SignUpModal onCancel={handleCancel} />, <ChoiceHobby />, <div>content3</div>];
+  useEffect(() => {
+    document.title = 'TechEBlog | Đăng ký';
+  }, []);
+  const stepPage = [<SignUpModal onCancel={handleCancel} setStep={setStep} />, <ChoiceTopic />];
   return (
     <div className='max-w-xl md:max-w-md h-full mx-auto flex flex-col items-center justify-center'>
       {/*========== Title ==========*/}
@@ -66,8 +69,9 @@ const SignUp = () => {
           footer={null}
           // footer={[<div onClick={() => setStep(step + 1)}>Next</div>]}
         >
-          <SignUpModal onCancel={handleCancel} />
-          {/* {stepPage[step]} */}
+          {/* <SignUpModal onCancel={handleCancel} /> */}
+          {/* <ChoiceTopic /> */}
+          {stepPage[step]}
         </Modal>
       </div>
     </div>

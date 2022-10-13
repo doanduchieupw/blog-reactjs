@@ -49,7 +49,9 @@ const CreateBlog = () => {
   const [topic, setTopic] = useState([]);
   const [contentEditor, setContentEditor] = useState('');
   const [loading, setLoading] = useState(false);
-
+  useEffect(() => {
+    document.title = 'TechEBlog | Chỉnh sửa bào viết';
+  }, []);
   //get topic in db
   useEffect(() => {
     const fetchData = async () => {
