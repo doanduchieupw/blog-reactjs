@@ -6,6 +6,7 @@ import { NormalButton } from '../components/Button';
 import { BlogCard } from '../components/BlogModule';
 import { fromNow } from '../utils/time';
 import { useAuth } from '../contexts/auth-context';
+import { notification } from 'antd';
 
 function UserProfile() {
   const { userInfo } = useAuth();
@@ -19,8 +20,14 @@ function UserProfile() {
   const navigate = useNavigate();
 
   const handleFollow = async () => {
+    if (!userInfo) {
+      notification['warning']({
+        message: 'Cảnh báo',
+        description: 'Vui lòng đăng nhập',
+      });
+      return;
+    }
     try {
-      console.log(isFollow);
       const userRef = doc(db, 'users', userID);
       await updateDoc(userRef, {
         folower: isFollow.state ? arrayRemove(userInfo.uid) : arrayUnion(userInfo.uid),
@@ -37,7 +44,7 @@ function UserProfile() {
   };
 
   useEffect(() => {
-    if (userInfo.uid === userID) navigate('/quan-ly/cai-dat');
+    if (userInfo?.uid === userID) navigate('/quan-ly/cai-dat');
     const fetchData = async () => {
       try {
         const userRef = doc(db, 'users', userID);
@@ -56,8 +63,8 @@ function UserProfile() {
     fetchData();
   }, [userInfo]);
   useEffect(() => {
+    if (!user) return;
     const fetchData = async () => {
-      if (!user) return;
       try {
         const blogRef = collection(db, 'blogs');
         const blogQuery = query(blogRef, where('user.id', '==', user.userID));
