@@ -306,15 +306,16 @@ const CommentModal = ({ open, setOpen, blog, commentCount, setCommentCount }) =>
                     {isReply.state && isReply.id === commentItem.id && (
                       <div className='w-full'>
                         <CommentEditor value={reply} setValue={setReply} placeholder='Phản hồi bình luận' />
-                        <div className='flex gap-x-1 mt-3'>
+                        <div className='flex gap-x-1 mt-3 w-full'>
                           <NormalButton
                             title='Hủy'
-                            className='w-full bg-white text-black'
+                            className='w-1/2 shrink-0'
                             onClick={() => setIsReply({ state: false, id: commentItem.id })}
                           />
                           <NormalButton
                             title='TRẢ LỜI'
-                            className='w-full'
+                            className='w-1/2 shrink-0'
+                            primary
                             onClick={() => handleReply(commentItem.id, commentItem.user.name)}
                           />
                         </div>

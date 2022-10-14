@@ -1,3 +1,4 @@
+import { notification } from 'antd';
 import { arrayRemove, arrayUnion, doc, getDoc, updateDoc } from 'firebase/firestore';
 import { useEffect, useState } from 'react';
 import { useAuth } from '../contexts/auth-context';
@@ -7,6 +8,13 @@ const useBookmark = (blogID) => {
   const { userInfo } = useAuth();
   const [isBookMark, setIsBookMark] = useState(false);
   const handleBookmark = () => {
+    if (!userInfo) {
+      notification['warning']({
+        message: 'Cảnh báo',
+        description: 'Vui lòng đăng nhập',
+      });
+      return;
+    }
     const postData = async () => {
       try {
         const blogRef = doc(db, 'blogs', blogID);

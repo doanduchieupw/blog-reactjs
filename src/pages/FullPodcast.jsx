@@ -37,7 +37,7 @@ const PodcastContent = styled.div`
   }
 `;
 
-function FullPodcast() {
+function FullPodcast({ layoutRef }) {
   const { slug } = useParams();
   const [podcast, setPodcast] = useState();
   const [play, setPlay] = useState(false);
@@ -72,6 +72,12 @@ function FullPodcast() {
     if (!podcast) return;
     document.title = podcast.title;
   }, [podcast]);
+  useEffect(() => {
+    layoutRef.current.scroll({
+      top: 0,
+      scroll: 'smooth',
+    });
+  }, []);
   return (
     <div className=''>
       {podcast && (

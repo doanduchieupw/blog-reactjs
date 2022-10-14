@@ -1,4 +1,4 @@
-import { Login, Home, SignUp, NotFound, FullBlog, UserProfile, FullPodcast, Search, Topic } from '../pages';
+import { Login, Home, SignUp, NotFound, FullBlog, UserProfile, FullPodcast, Search, Topic, BlogForYou } from '../pages';
 import {
   CreateBlog,
   CreateTopic,
@@ -21,6 +21,7 @@ const publicPath = [
   { path: '/dang-nhap', component: Login, layout: AuthLayout },
   { path: '/dang-ky', component: SignUp, layout: AuthLayout },
   { path: '/trang-tim-kiem', component: Search, layout: MainLayout },
+  { path: '/danh-cho-ban', component: BlogForYou, layout: MainLayout },
   { path: '/update', component: UpdateFirebase, layout: MainLayout },
   { path: '/thong-tin-tai-khoan/:userID', component: UserProfile, layout: MainLayout },
   { path: '/quan-ly', component: CreateBlog, layout: ManageLayout },

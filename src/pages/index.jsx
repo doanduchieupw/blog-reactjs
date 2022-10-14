@@ -7,3 +7,4 @@ export { default as UserProfile } from './UserProfile';
 export { default as FullPodcast } from './FullPodcast';
 export { default as Search } from './Search';
 export { default as Topic } from './Topic';
+export { default as BlogForYou } from './BlogForYou';

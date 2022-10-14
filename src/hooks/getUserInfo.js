@@ -10,12 +10,16 @@ const getUserInfo = () => {
   useEffect(() => {
     if (!userInfo) return;
     const fetchData = async () => {
-      const userRef = doc(db, 'users', userInfo.uid);
-      const userSnapshot = await getDoc(userRef);
-      setUser({
-        userID: userSnapshot.id,
-        ...userSnapshot.data(),
-      });
+      try {
+        const userRef = doc(db, 'users', userInfo.uid);
+        const userSnapshot = await getDoc(userRef);
+        setUser({
+          userID: userSnapshot.id,
+          ...userSnapshot.data(),
+        });
+      } catch (err) {
+        console.log(err);
+      }
     };
     fetchData();
   }, [userInfo]);

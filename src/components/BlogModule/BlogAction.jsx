@@ -9,6 +9,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faBookmark as fasBookmark } from '@fortawesome/free-solid-svg-icons';
 import { faBookmark as farBookmark } from '@fortawesome/free-regular-svg-icons';
 import { useBookmark } from '../../hooks';
+import { notification } from 'antd';
 
 const BlogActionContainer = styled.div`
   @keyframes pulse {
@@ -36,7 +37,13 @@ const BlogAction = ({ setOpen, commentCount, blog }) => {
     };
     postData();
   };
-
+  const handleCopy = () => {
+    navigator.clipboard.writeText(window.location.href);
+    notification['success']({
+      message: 'Sao chép thành công',
+      description: 'Link bài viết được lưu vào bộ nhớ tạm',
+    });
+  };
   useEffect(() => {
     const fetchData = async () => {
       try {
@@ -65,6 +72,13 @@ const BlogAction = ({ setOpen, commentCount, blog }) => {
         <button
           className='flex items-center py-1 gap-x-2 lg:px-4'
           onClick={() => {
+            if (!userInfo) {
+              notification['warning']({
+                message: 'Cảnh báo',
+                description: 'Vui lòng đăng nhập',
+              });
+              return;
+            }
             setHeartCount((prev) => prev + 1);
             setIsHearted((prev) => ({
               ...prev,
@@ -89,7 +103,7 @@ const BlogAction = ({ setOpen, commentCount, blog }) => {
           <span className='hidden lg:inline-block uppercase text-xs font-semibold'>Share</span>
         </button>
 
-        <button className='px-1 flex items-center gap-x-2 lg:px-4'>
+        <button className='px-1 flex items-center gap-x-2 lg:px-4' onClick={handleCopy}>
           <GetLinkIcon />
           <span className='hidden lg:inline-block uppercase text-xs font-semibold'>Copy Link</span>
         </button>

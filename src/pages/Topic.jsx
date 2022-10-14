@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { arrayRemove, arrayUnion, collection, doc, getDocs, query, updateDoc, where } from 'firebase/firestore';
+import { arrayRemove, arrayUnion, collection, doc, getDoc, getDocs, query, updateDoc, where } from 'firebase/firestore';
 import { useParams } from 'react-router-dom';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faBookmark } from '@fortawesome/free-regular-svg-icons';
@@ -8,6 +8,7 @@ import { NormalButton } from '../components/Button';
 import { db } from '../firebase-app/firebase-config';
 import { getTime } from '../utils/time';
 import { getUserInfo } from '../hooks';
+import { notification } from 'antd';
 
 const Topic = () => {
   const [user, setUser] = getUserInfo();
@@ -65,7 +66,15 @@ const Topic = () => {
     if (!user || !topic) return;
     setSubTopic(user.topic.includes(topic.name));
   }, [user]);
+
   const handleSubTopic = () => {
+    if (!user) {
+      notification['warning']({
+        message: 'Cảnh báo',
+        description: 'Vui lòng đăng nhập để theo dõi chủ đề mong muốn',
+      });
+      return;
+    }
     const updateData = async () => {
       const userRef = doc(db, 'users', user.userID);
       await updateDoc(userRef, {
@@ -77,7 +86,7 @@ const Topic = () => {
   };
   return (
     <div className='pt-16 w-[calc(100%-32px)] mx-auto mt-4 mb-12 max-w-6xl'>
-      {user && topic && blog && (
+      {topic && blog && (
         <div className='flex items-start justify-start flex-wrap'>
           <div className='max-w-full lg:max-w-3xl lg:pr-4 w-full order-2 lg:order-1'>
             {/* First article */}
