@@ -49,7 +49,6 @@ const Search = () => {
     fetchData();
   }, []);
   const handleSearch = (values, action) => {
-    console.log(typeSearch);
     let search = {
       q: values.search,
       query_by: typeSearch.type === 'blogs' ? 'contentBlog,keywordBlog,titleBlog,topic' : 'desc,title,keyword,topic',
@@ -91,7 +90,11 @@ const Search = () => {
               <h3 className='mb-4 text-base text-[#555]'>Tìm kiếm phổ biến: </h3>
               <div className='flex flex-wrap gap-3'>
                 {topic.map((item, index) => (
-                  <div key={index} className='py-1.5 px-3 border rounded-full cursor-pointer'>
+                  <div
+                    key={index}
+                    className='py-1.5 px-3 border rounded-full cursor-pointer'
+                    onClick={() => formik.setFieldValue('search', item.name)}
+                  >
                     <span className='text-xs font-semibold text-blue-font'>{item.name}</span>
                   </div>
                 ))}
