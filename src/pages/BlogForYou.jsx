@@ -12,7 +12,7 @@ const BlogForYou = () => {
   const navigate = useNavigate();
   useEffect(() => {
     const fetchData = async () => {
-      if (user.topic.length === 0) {
+      if (user?.topic?.length === 0 || !user) {
         try {
           const blogRef = collection(db, 'blogs');
           const blogQuery = query(blogRef, orderBy('createdAt', 'desc'));
@@ -39,7 +39,6 @@ const BlogForYou = () => {
               ? topicResult.push(doc.data().name, ...doc.data().relative)
               : topicResult.push(doc.data().name);
           });
-          console.log('🚀 ~ file: BlogForYou.jsx ~ line 37 ~ fetchData ~ topicResult', topicResult);
 
           const blogRef = collection(db, 'blogs');
           const blogQuery = query(blogRef, where('topic', 'in', topicResult), orderBy('createdAt', 'desc'));
