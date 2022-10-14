@@ -65,7 +65,7 @@ const Search = () => {
     <Formik initialValues={initialSearch} onSubmit={handleSearch}>
       {(formik) => (
         <form
-          className={`${result ? 'pt-8 pb-40 px-[100px]' : 'py-40'}  mb-14 min-h-[85vh] max-w-6xl mx-auto`}
+          className={`${result ? 'pt-8 pb-40 md:px-[100px]' : 'py-40'}  mb-14 min-h-[85vh] max-w-6xl w-full mx-auto`}
           onSubmit={formik.handleSubmit}
         >
           {/* Search */}
@@ -102,8 +102,8 @@ const Search = () => {
             </div>
           )}
           {result && (
-            <div className='px-4 mt-6 flex'>
-              <div className='sticky top-[196px] w-[276px] pr-6 flex flex-col uppercase text-xs font-semibold'>
+            <div className='md:px-4 mt-0 md:mt-6 flex flex-col md:flex-row'>
+              <div className='sticky top-[63px] w-full p-4 bg-white shadow-xl md:w-[276px] md:pr-6 flex flex-row gap-x-3 md:flex-col uppercase text-xs font-semibold'>
                 {searchTab.map((item, index) => (
                   <button
                     className={`p-3 mb-2bg-primary-bg rounded-lg flex items-center justify-between cursor-pointer uppercase ${
@@ -121,7 +121,7 @@ const Search = () => {
                   </button>
                 ))}
               </div>
-              <div className='w-[calc(100%-276px)] pl-6 border-l'>
+              <div className='w-full px-4 mt-4 md:mt-0 md:w-[calc(100%-276px)] md:pl-6 md:border-l'>
                 {result?.hits.map((item, index) => (
                   <div className='flex items-center mb-8'>
                     <div className='w-2/5 mr-4'>

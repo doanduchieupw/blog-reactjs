@@ -34,7 +34,7 @@ const MainLayout = ({ children }) => {
       <Footer />
       {scrollToTop && (
         <button
-          className='fixed bottom-10 right-10 p-3 bg-gray-bg-btn border border-lightest-gray hover:bg-[#ebeceed8] rounded-full'
+          className='fixed bottom-15 md:bottom-10 right-10 p-3 bg-gray-bg-btn border border-lightest-gray hover:bg-[#ebeceed8] rounded-full'
           onClick={handleScrollToTop}
         >
           <FontAwesomeIcon icon={faChevronUp} className='w-4 h-4 block' />

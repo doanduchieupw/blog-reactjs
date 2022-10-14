@@ -8,7 +8,7 @@ import { fromNow } from '../utils/time';
 import { useAuth } from '../contexts/auth-context';
 import { notification } from 'antd';
 
-function UserProfile() {
+function UserProfile({ layoutRef }) {
   const { userInfo } = useAuth();
   const { userID } = useParams();
   const [user, setUser] = useState();
@@ -18,7 +18,12 @@ function UserProfile() {
     title: 'Theo dõi',
   });
   const navigate = useNavigate();
-
+  useEffect(() => {
+    layoutRef.current.scroll({
+      top: 0,
+      scroll: 'smooth',
+    });
+  }, []);
   const handleFollow = async () => {
     if (!userInfo) {
       notification['warning']({

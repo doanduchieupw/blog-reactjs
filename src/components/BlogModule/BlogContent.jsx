@@ -43,7 +43,6 @@ export const BlogContentContainer = styled.div`
   h3 {
     font-size: 20px;
     line-height: 28px;
-    padding: 0;
   }
 
   ul {
