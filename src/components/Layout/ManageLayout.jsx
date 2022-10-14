@@ -26,7 +26,12 @@ const ManageLayout = ({ children }) => {
   const [user, setUser] = useState();
   const manageItemRef = useRef();
   const indicatorRef = useRef();
+  const manageItemContainerRef = useRef();
   const locationCurrent = useLocation();
+  const [size, setSize] = useState({
+    width: undefined,
+    height: undefined,
+  });
   // render indicator in first time
   useEffect(() => {
     const checkPath = manageList.map((item, index) => {
@@ -57,22 +62,36 @@ const ManageLayout = ({ children }) => {
       fetchData();
     }
   }, [userInfo]);
-
+  useEffect(() => {
+    setSize({
+      width: window.innerWidth,
+      height: window.innerHeight,
+    });
+  }, []);
   // dynamic indicator
   useEffect(() => {
     if (!user) return;
-    const manageItemHeight = manageItemRef.current.clientHeight;
-    indicatorRef.current.style.height = `${manageItemHeight}px`;
-    indicatorRef.current.style.top = `${manageActive * manageItemHeight}px`;
-  }, [manageActive, user]);
+    if (size.width > 768) {
+      const manageItemHeight = manageItemRef.current.clientHeight;
+      indicatorRef.current.style.height = `${manageItemHeight}px`;
+      indicatorRef.current.style.top = `${manageActive * manageItemHeight}px`;
+    } else {
+      const manageItemWidth = manageItemContainerRef.current.children[manageActive + 1].clientWidth;
+      indicatorRef.current.style.width = `${manageItemWidth}px`;
+      indicatorRef.current.style.left = `${manageItemContainerRef.current.children[manageActive + 1].offsetLeft}px`;
+    }
+  }, [manageActive, size.width, user]);
   return (
     <div className='h-screen overflow-y-scroll'>
       <FullHeader />
       <div className='flex w-[90%] max-w-6xl mx-auto pt-28 pb-14 flex-wrap'>
-        <div className='relative w-full md:w-1/4 pr-8 flex flex-col items-start mb-8'>
+        <div
+          ref={manageItemContainerRef}
+          className='relative w-full md:w-1/4 pr-8 flex md:flex-col items-start mb-8 overflow-y-scroll'
+        >
           <div
             ref={indicatorRef}
-            className='absolute -z-10 left-0 w-[calc(100%-32px)] bg-gray-bg before:content-[""] before:left-0 before:h-full before:block before:w-0.5 before:bg-primary-bg duration-300'
+            className='absolute -z-10 left-0 w-[calc(100%-32px)] h-full md:h-auto bg-gray-bg before:content-[""] before:bottom-0 md:before:left-0 before:h-0.5 md:before:h-full before:block  before:w-full md:before:w-0.5 before:bg-primary-bg duration-300'
           ></div>
           {user &&
             manageList.map((item, index) => {
@@ -82,7 +101,7 @@ const ManageLayout = ({ children }) => {
                     key={index}
                     ref={manageItemRef}
                     to={`/quan-ly/${item.slug}`}
-                    className={`w-full px-8 py-4 text-lighter-gray-font text-sm font-semibold  ${
+                    className={`min-w-fit md:w-full px-8 py-4 text-lighter-gray-font text-sm font-semibold  ${
                       manageActive === index ? 'text-primary-bg hover:text-primary-bg' : ''
                     }`}
                     onClick={() => setManageActive(index)}
