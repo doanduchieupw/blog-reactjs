@@ -87,7 +87,7 @@ const ManageLayout = ({ children }) => {
       <div className='flex w-[90%] max-w-6xl mx-auto pt-28 pb-14 flex-wrap'>
         <div
           ref={manageItemContainerRef}
-          className='relative w-full md:w-1/4 pr-8 flex md:flex-col items-start mb-8 overflow-y-scroll'
+          className='relative w-full md:w-1/4 pr-8 flex md:flex-col items-start mb-8 overflow-y-scroll md:overflow-y-hidden'
         >
           <div
             ref={indicatorRef}
